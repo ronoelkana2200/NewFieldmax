@@ -1,0 +1,104 @@
+<!-- templates/sales/sales_list.html -->
+{% extends 'website/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-cart-check"></i> Sales</h2>
+        <div>
+            <a href="{% url 'reversal_history' %}" class="btn btn-info">
+                <i class="bi bi-clock-history"></i> Reversal History
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filter Tabs -->
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link {% if status_filter == 'all' %}active{% endif %}" 
+               href="?status=all">
+                All Sales
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if status_filter == 'active' %}active{% endif %}" 
+               href="?status=active">
+                Active Sales
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if status_filter == 'reversed' %}active{% endif %}" 
+               href="?status=reversed">
+                Reversed Sales
+            </a>
+        </li>
+    </ul>
+    
+    <!-- Sales Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Sale ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>ETR</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr {% if sale.is_reversed %}class="table-secondary"{% endif %}>
+                            <td>
+                                <a href="{% url 'sale_detail' sale.sale_id %}">
+                                    #{{ sale.sale_id }}
+                                </a>
+                            </td>
+                            <td>{{ sale.product.name }}</td>
+                            <td>{{ sale.quantity }}</td>
+                            <td>KSH {{ sale.total_price|floatformat:2 }}</td>
+                            <td>{{ sale.buyer_name|default:"Walk-in" }}</td>
+                            <td>{{ sale.sale_date|date:"Y-m-d" }}</td>
+                            <td>
+                                {% if sale.is_reversed %}
+                                    <span class="badge bg-danger">REVERSED</span>
+                                {% else %}
+                                    <span class="badge bg-success">ACTIVE</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if sale.etr_status == 'processed' %}
+                                    <span class="badge bg-success">✓</span>
+                                {% elif sale.etr_status == 'pending' %}
+                                    <span class="badge bg-warning">⏳</span>
+                                {% elif sale.etr_status == 'failed' %}
+                                    <span class="badge bg-danger">✗</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'sale_detail' sale.sale_id %}" 
+                                   class="btn btn-sm btn-primary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">
+                                No sales found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

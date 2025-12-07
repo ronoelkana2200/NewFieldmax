@@ -1,0 +1,435 @@
+{% extends "website/base.html" %}
+{% load static %}
+{% block title %}Batch Receipt #{{ receipt.receipt_number }}{% endblock %}
+
+{% block head %}
+<!-- Auto-redirect to agent dashboard after 10 seconds -->
+<meta http-equiv="refresh" content="10;url=/agent-dashboard/">
+{% endblock %}
+
+{% block content %}
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #101212;
+    padding: 20px;
+}
+
+.receipt-container {
+    width: 500px;
+    margin: 0 auto;
+    background: rgb(255, 255, 255);
+    padding: 40px 35px 30px 35px;
+    border: 2px solid #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border-radius: 4px;
+}
+
+.receipt-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.company-name {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.receipt-info {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #333;
+}
+
+/* BATCH INDICATOR */
+.batch-indicator {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.batch-indicator i {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.receipt-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333;
+}
+
+.receipt-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.receipt-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.receipt-value {
+    text-align: right;
+    color: #000;
+}
+
+.receipt-section {
+    font-size: 13px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #333;
+}
+
+.items-table {
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.items-table th, .items-table td {
+    padding: 6px 4px;
+    border-bottom: 1px dotted #999;
+    vertical-align: top;
+}
+
+.items-table th {
+    border-bottom: 2px solid #000000;
+    text-align: left;
+    font-weight: bold;
+    padding-bottom: 8px;
+    background-color: #f5f5f5;
+}
+
+.items-table tbody tr:last-child td {
+    border-bottom: 2px solid #000000;
+}
+
+.items-table .text-center { text-align: center; }
+.items-table .text-right { text-align: right; }
+
+.item-sku { 
+    font-size: 10px; 
+    color: #000000; 
+    display: block; 
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.total-section {
+    margin-top: 10px;
+    border-top: 2px solid #000;
+    padding-top: 8px;
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 6px 0;
+}
+
+.batch-summary {
+    background-color: #e0f7ff;
+    border: 2px solid #0dcaf0;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+
+.batch-summary-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #0a7a8f;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.batch-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted #0dcaf0;
+}
+
+.batch-summary-row:last-child {
+    border-bottom: none;
+    font-weight: bold;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 2px solid #0dcaf0;
+}
+
+.receipt-footer {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 12px;
+    border-top: 2px solid #333;
+    padding-top: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.qr-code-section {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #333;
+}
+
+.qr-code-section img {
+    width: 120px;
+    height: 120px;
+    margin: 10px auto;
+    display: block;
+}
+
+.qr-code-label {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.no-print { 
+    text-align: center; 
+    margin-top: 15px; 
+}
+
+.btn {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 13px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-print { background: #28a745; color: #fff; }
+.btn-download { background: #007bff; color: #fff; }
+.btn-close { background: #ff0000; color: #fff; }
+
+.btn:hover { 
+    opacity: 0.85; 
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+@media print {
+    body { 
+        background: white; 
+        padding: 0;
+        margin: 0;
+    }
+    
+    body * {
+        visibility: hidden;
+    }
+    
+    .receipt-container,
+    .receipt-container * {
+        visibility: visible;
+    }
+    
+    .receipt-container { 
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%; 
+        border: none; 
+        box-shadow: none; 
+        padding: 10px;
+        margin: 0;
+    }
+    
+    .no-print { 
+        display: none !important;
+    }
+    
+    nav, header, footer, .sidebar, .navbar {
+        display: none !important;
+    }
+}
+
+
+</style>
+
+<div class="receipt-container" id="receipt">
+    <!-- Header -->
+    <div class="receipt-header">
+        <div class="company-name">{{ receipt.company_name }}</div>
+        <div class="receipt-info">
+            Address: {{ receipt.address }}<br>
+            Tel: {{ receipt.tel }}<br>
+            Pin: {{ receipt.pin }}
+        </div>
+    </div>
+
+    <!-- BATCH INDICATOR -->
+    <div class="batch-indicator">
+        <i class="bi bi-receipt-cutoff"></i>
+        FIELDMAX TRANSACTION RECEIPT
+    </div>
+
+    <!-- Receipt Details -->
+    <div class="receipt-details">
+        <div class="receipt-column">
+            <div class="receipt-row">
+                <span class="receipt-label">Rcpt_No:</span>
+                <span class="receipt-value">{{ receipt.receipt_number }}</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-label">User:</span>
+                <span class="receipt-value">{{ receipt.user }}</span>
+            </div>
+        </div>
+        <div class="receipt-column">
+            <div class="receipt-row">
+                <span class="receipt-label">Date:</span>
+                <span class="receipt-value">{{ receipt.date }}</span>
+            </div>
+            <div class="receipt-row">
+                <span class="receipt-label">Time:</span>
+                <span class="receipt-value">{{ receipt.time }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Information -->
+    {% if receipt.client_name %}
+    <div class="receipt-section">
+        <div class="receipt-row">
+            <span class="receipt-label">Client Name:</span>
+            <span class="receipt-value">{{ receipt.client_name }}</span>
+        </div>
+        {% if receipt.client_phone %}
+        <div class="receipt-row">
+            <span class="receipt-label">Client Phone:</span>
+            <span class="receipt-value">{{ receipt.client_phone }}</span>
+        </div>
+        {% endif %}
+        {% if receipt.client_id %}
+        <div class="receipt-row">
+            <span class="receipt-label">Client ID:</span>
+            <span class="receipt-value">{{ receipt.client_id }}</span>
+        </div>
+        {% endif %}
+        {% if receipt.nok_name %}
+        <div class="receipt-row">
+            <span class="receipt-label">NOK Name:</span>
+            <span class="receipt-value">{{ receipt.nok_name }}</span>
+        </div>
+        {% endif %}
+        {% if receipt.nok_phone %}
+        <div class="receipt-row">
+            <span class="receipt-label">NOK Phone:</span>
+            <span class="receipt-value">{{ receipt.nok_phone }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Items Table -->
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Items</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in receipt.items %}
+            <tr>
+                <td>
+                    {{ item.name }}
+                    <span class="item-sku">{{ item.sku_type }}: {{ item.sku }}</span>
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-right">KSH {{ item.price|floatformat:2 }}</td>
+                <td class="text-right">KSH {{ item.total|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <!-- Total -->
+    <div class="total-section">
+        <div class="total-row">
+            <span>GROSS TOTAL:</span>
+            <span>KSH {{ receipt.gross_total|floatformat:2 }}</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="receipt-footer">
+        Goods Once Sold Cannot Be Re-Accepted!
+        <div style="font-size: 10px; margin-top: 8px; font-weight: normal;">
+            Thank you for shopping with Us {{ receipt.batch_id }}
+        </div>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="qr-code-section">
+        <div class="qr-code-label">📱 Scan for Digital Receipt</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data={{ request.scheme }}://{{ request.get_host }}" 
+             alt="Batch Receipt QR Code"
+             style="border: 3px solid #059669; border-radius: 8px; padding: 5px; background: white;">
+        <div class="qr-code-label" style="margin-top: 5px; font-style: italic;">
+            FELDMAX RECEIPT {{ receipt.batch_id }}
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Print/Download/Close Buttons -->
+<div class="no-print">
+    <button class="btn btn-print" onclick="window.print()">🖨️ Print Batch Receipt</button>
+    <button class="btn btn-download" onclick="downloadPDF()">📥 Download PDF</button>
+    <button class="btn btn-close" onclick="window.close()">✖️ Close</button>
+</div>
+
+<script>
+function downloadPDF() {
+    window.print();
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+from django.urls import path
+from . import views
+from .views import (
+    SaleListView,
+    SaleDetailView,
+    SaleCreateView,
+    SaleUpdateView,
+    RestockView,
+    SaleDeleteView,
+    SaleReverseView,
+    ProductLookupView,
+    ClientLookupView,
+    sale_etr_view,
+    download_receipt_view,
+)
+
+app_name = 'sales'
+
+urlpatterns = [
+    # Product Lookup
+    path('product-lookup/', views.ProductLookupView.as_view(), name='product-lookup'),
+    path('client-lookup/', views.ClientLookupView.as_view(), name='client-lookup'),
+    path('api/get-sellers/', views.get_sellers, name='get-sellers'),
+
+    # Sale CRUD
+    path('create/', views.SaleCreateView.as_view(), name='sale-create'),
+    path('sale/<str:sale_id>/update/', views.SaleUpdateView.as_view(), name='sale-update'),
+    path('sale/<str:sale_id>/delete/', views.SaleDeleteView.as_view(), name='sale-delete'),
+
+    # Restock
+    path('product/<int:product_id>/restock/', views.RestockView.as_view(), name='sale-restock'),
+
+    # Receipts / ETR
+    path('sale/<str:sale_id>/etr/', views.sale_etr_view, name='sale-etr'),
+    path('sale/<str:sale_id>/download/', views.download_receipt_view, name='download-receipt'),
+
+    # Reversal endpoints
+    path('sale/<str:sale_id>/', views.SaleDetailView.as_view(), name='sale-detail'),
+
+    # Accept any slug/string as sale_id
+    path("reverse/<str:sale_id>/", SaleReverseView.as_view(), name="reverse-sale"),
+
+    # ============================================
+    # BATCH SALE ENDPOINTS
+    # ============================================
+    path('batch-create/', 
+         views.BatchSaleCreateView.as_view(), 
+         name='batch-sale-create'),
+
+     # Batch receipt view
+    path('batch-receipt/<str:batch_id>/', 
+         views.batch_receipt_view, 
+         name='batch-receipt'),
+    
+    # Optional: Download batch receipt as PDF
+    path('batch-receipt/<str:batch_id>/download/', 
+         views.download_batch_receipt_view, 
+         name='download-batch-receipt'),
+]

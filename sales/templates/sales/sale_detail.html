@@ -1,0 +1,193 @@
+{% extends 'website/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Sale #{{ sale.sale_id }}</h4>
+                    {% if sale.is_reversed %}
+                        <span class="badge bg-danger">REVERSED</span>
+                    {% else %}
+                        <span class="badge bg-success">ACTIVE</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <!-- Product Information -->
+                    <h5>Product Details</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="200">Product</th>
+                            <td>{{ sale.product.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Product Code</th>
+                            <td>{{ sale.product_code }}</td>
+                        </tr>
+                        <tr>
+                            <th>Quantity</th>
+                            <td>{{ sale.quantity }}</td>
+                        </tr>
+                        <tr>
+                            <th>Unit Price</th>
+                            <td>KSH {{ sale.unit_price|floatformat:2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Price</th>
+                            <td><strong>KSH {{ sale.total_price|floatformat:2 }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Sale Date</th>
+                            <td>{{ sale.sale_date|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Seller</th>
+                            <td>{{ sale.seller.username|default:"N/A" }}</td>
+                        </tr>
+                    </table>
+
+                    <!-- Client Information -->
+                    <h5 class="mt-4">Client Information</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="200">Name</th>
+                            <td>{{ sale.buyer_name|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{ sale.buyer_phone|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th>ID Number</th>
+                            <td>{{ sale.buyer_id_number|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Next of Kin</th>
+                            <td>{{ sale.nok_name|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th>NOK Phone</th>
+                            <td>{{ sale.nok_phone|default:"N/A" }}</td>
+                        </tr>
+                    </table>
+
+                    <!-- ETR Information -->
+                    <h5 class="mt-4">ETR Details</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="200">Receipt Number</th>
+                            <td>{{ sale.etr_receipt_number|default:"N/A" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ sale.etr_display_status }}</td>
+                        </tr>
+                        <tr>
+                            <th>Control Code</th>
+                            <td>{{ sale.etr_control_code|default:"N/A" }}</td>
+                        </tr>
+                        {% if sale.etr_processed_at %}
+                        <tr>
+                            <th>Processed At</th>
+                            <td>{{ sale.etr_processed_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+
+                    <!-- Reversal Information (if reversed) -->
+                    {% if sale.is_reversed %}
+                    <div class="alert alert-warning mt-4">
+                        <h5><i class="bi bi-exclamation-triangle"></i> Reversal Information</h5>
+                        <table class="table table-sm mb-0">
+                            <tr>
+                                <th width="200">Reversed At</th>
+                                <td>{{ sale.reversed_at|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reversed By</th>
+                                <td>{{ sale.reversed_by.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reason</th>
+                                <td>{{ sale.reversal_reason }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'sales_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Sales
+                    </a>
+                    
+                    {% if can_reverse %}
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#reversalModal">
+                        <i class="bi bi-arrow-counterclockwise"></i> Reverse Sale
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reversal Confirmation Modal -->
+<div class="modal fade" id="reversalModal" tabindex="-1" aria-labelledby="reversalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'reverse_sale' sale.sale_id %}">
+                {% csrf_token %}
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="reversalModalLabel">
+                        <i class="bi bi-exclamation-triangle"></i> Confirm Sale Reversal
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> This action will:
+                        <ul class="mb-0">
+                            <li>Return {{ sale.quantity }} unit(s) to inventory</li>
+                            <li>Mark this sale as reversed</li>
+                            <li>Create an audit trail record</li>
+                            <li>This action cannot be undone</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Reason for Reversal *</label>
+                        <textarea 
+                            class="form-control" 
+                            id="reason" 
+                            name="reason" 
+                            rows="3" 
+                            required
+                            placeholder="Please provide a detailed reason for reversing this sale..."
+                        ></textarea>
+                        <small class="text-muted">This will be recorded in the system for audit purposes</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-check"></i> Confirm Reversal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

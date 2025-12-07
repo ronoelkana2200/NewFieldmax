@@ -1,0 +1,1231 @@
+# Django core imports
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.http import JsonResponse, HttpResponse
+from django.db import transaction
+from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib import messages
+from django.db.models import Sum, Q
+from django.core.exceptions import ValidationError
+from django.template.loader import render_to_string
+
+# Third-party imports
+from rest_framework import viewsets, generics
+import json
+import logging
+from decimal import Decimal
+from . import models
+
+from django.http import JsonResponse
+from django.db.models import Count
+from django.contrib.auth.models import User
+
+def get_sellers(request):
+    """Return all users who have made sales"""
+    sellers = User.objects.filter(
+        sales_made__isnull=False
+    ).distinct().values('id', 'username', 'first_name', 'last_name')
+    
+    return JsonResponse({
+        'sellers': list(sellers)
+    })
+
+# App imports
+from .models import Sale, SaleReversal, SaleItem
+from .forms import SaleForm
+from .serializers import SaleSerializer
+from inventory.models import Product, StockEntry
+
+try:
+    from .etr import process_fieldmax_etr_for_sale, process_etr_for_sale
+except ImportError:
+    process_fieldmax_etr_for_sale = None
+    process_etr_for_sale = None
+
+try:
+    import pdfkit
+except ImportError:
+    pdfkit = None
+
+logger = logging.getLogger(__name__)
+
+
+
+
+
+# =========================================
+# GET SELLER
+# =========================================
+def get_sellers(request):
+    """Return all users who have made sales"""
+    sellers = User.objects.filter(
+        sales_made__isnull=False
+    ).distinct().values('id', 'username', 'first_name', 'last_name')
+    
+    return JsonResponse({
+        'sellers': list(sellers)
+    })
+
+
+
+
+# =========================================
+# SALE CREATION VIEW WITH FIFO LOGIC
+# =========================================
+
+@method_decorator(login_required, name='dispatch')
+class SaleCreateView(View):
+    """
+    Create sale with STRICT FIFO logic + SOLD PROTECTION:
+    - Single items: Sell OLDEST available unit (by created_at)
+    - BLOCKS sold products from being resold
+    - Bulk items: Deduct from shared product record
+    - GUARANTEES: StockEntry + Product updates happen atomically
+    """
+    
+    @transaction.atomic
+    def post(self, request):
+        try:
+            # Parse request data
+            data = json.loads(request.body) if request.content_type == "application/json" else request.POST
+            
+            product_code = data.get("product_code", "").strip()
+            quantity = int(data.get("quantity", 1) or 1)
+            unit_price_input = data.get("unit_price", "")
+            
+            # Client details
+            buyer_name = data.get("buyer_name", "").strip()
+            buyer_phone = data.get("buyer_phone", "").strip()
+            buyer_id_number = data.get("buyer_id_number", "").strip()
+            nok_name = data.get("nok_name", "").strip()
+            nok_phone = data.get("nok_phone", "").strip()
+
+            # Validations
+            if not product_code:
+                return JsonResponse({"status": "error", "message": "Product code/SKU is required"}, status=400)
+            if quantity <= 0:
+                return JsonResponse({"status": "error", "message": "Quantity must be greater than 0"}, status=400)
+
+            # Parse price
+            try:
+                unit_price = Decimal(str(unit_price_input)) if unit_price_input else Decimal('0')
+            except (ValueError, TypeError):
+                unit_price = Decimal('0')
+
+            # ============================================
+            # FIFO PRODUCT LOOKUP (EXCLUDES SOLD ITEMS)
+            # ============================================
+            products = Product.objects.filter(
+                Q(product_code__iexact=product_code) | Q(sku_value__iexact=product_code),
+                is_active=True
+            ).exclude(
+                status='sold'  # 🔒 CRITICAL: Prevent sold items from being selected
+            ).select_related('category').select_for_update().order_by('created_at')  # LOCK + FIFO
+
+            if not products.exists():
+                # Check if product exists but is sold
+                sold_check = Product.objects.filter(
+                    Q(product_code__iexact=product_code) | Q(sku_value__iexact=product_code),
+                    status='sold'
+                ).first()
+                
+                if sold_check:
+                    return JsonResponse({
+                        "status": "error",
+                        "message": f"❌ Product '{product_code}' has been SOLD."
+                    }, status=400)
+                
+                return JsonResponse({
+                    "status": "error", 
+                    "message": f"Product '{product_code}' not found in inventory"
+                }, status=404)
+
+            first_product = products.first()
+            
+            # ============================================
+            # SINGLE ITEMS: STRICT FIFO SELECTION
+            # ============================================
+            if first_product.category.is_single_item:
+                logger.info(f"[FIFO SINGLE ITEM] Searching for oldest available unit...")
+                
+                available_product = products.filter(
+                    status='available',
+                    quantity=1
+                ).first()
+                
+                if not available_product:
+                    total_units = Product.objects.filter(
+                        Q(product_code__iexact=product_code) | Q(sku_value__iexact=product_code)
+                    ).count()
+                    
+                    sold_units = Product.objects.filter(
+                        Q(product_code__iexact=product_code) | Q(sku_value__iexact=product_code),
+                        status='sold'
+                    ).count()
+                    
+                    return JsonResponse({
+                        "status": "error",
+                        "message": (
+                            f"❌ No available units of {first_product.name}. "
+                            f"Total units: {total_units}, Sold: {sold_units}. "
+                            f"Reverse a sale to make units available."
+                        )
+                    }, status=400)
+                
+                if quantity != 1:
+                    return JsonResponse({
+                        "status": "error",
+                        "message": "❌ Can only sell 1 single item at a time"
+                    }, status=400)
+                
+                product_to_sell = available_product
+                
+                logger.info(
+                    f"[FIFO SELECTED] Product: {product_to_sell.product_code} | "
+                    f"SKU: {product_to_sell.sku_value} | "
+                    f"Status: {product_to_sell.status} | "
+                    f"Created: {product_to_sell.created_at} | "
+                    f"Age: {(timezone.now() - product_to_sell.created_at).days} days"
+                )
+
+            # ============================================
+            # BULK ITEMS: QUANTITY DEDUCTION
+            # ============================================
+            else:
+                logger.info(f"[BULK ITEM] Processing sale...")
+                product_to_sell = first_product
+                
+                if product_to_sell.status == 'outofstock':
+                    return JsonResponse({
+                        "status": "error",
+                        "message": f"❌ {product_to_sell.name} is OUT OF STOCK"
+                    }, status=400)
+                
+                if product_to_sell.quantity < quantity:
+                    return JsonResponse({
+                        "status": "error",
+                        "message": f"❌ Insufficient stock! Only {product_to_sell.quantity} available."
+                    }, status=400)
+
+            # ============================================
+            # DOUBLE-CHECK: Validate Product Status
+            # ============================================
+            if product_to_sell.status == 'sold':
+                return JsonResponse({
+                    "status": "error",
+                    "message": "❌ This product has already been SOLD."
+                }, status=400)
+            
+            if product_to_sell.status == 'outofstock':
+                return JsonResponse({
+                    "status": "error",
+                    "message": f"❌ {product_to_sell.name} is OUT OF STOCK"
+                }, status=400)
+
+            # ============================================
+            # PRICE VALIDATION
+            # ============================================
+            if unit_price <= 0:
+                unit_price = product_to_sell.selling_price or Decimal('0')
+            
+            if unit_price <= 0:
+                return JsonResponse({
+                    "status": "error",
+                    "message": "Invalid selling price"
+                }, status=400)
+
+            total_price = unit_price * quantity
+
+            # ============================================
+            # CREATE SALE RECORD FIRST
+            # ============================================
+            client_details_json = json.dumps({
+                "buyer_name": buyer_name,
+                "buyer_phone": buyer_phone,
+                "buyer_id_number": buyer_id_number,
+                "nok_name": nok_name,
+                "nok_phone": nok_phone
+            })
+
+            sale = Sale.objects.create(
+                product=product_to_sell,
+                seller=request.user,
+                quantity=quantity,
+                selling_price=unit_price,
+                unit_price=unit_price,
+                total_price=total_price,
+                product_code=product_to_sell.product_code,
+                client_details=client_details_json,
+                buyer_name=buyer_name,
+                buyer_phone=buyer_phone,
+                buyer_id_number=buyer_id_number,
+                nok_name=nok_name,
+                nok_phone=nok_phone,
+            )
+            
+            logger.info(f"[SALE CREATED] Sale #{sale.sale_id} created for {product_to_sell.product_code}")
+
+            # ============================================
+            # CRITICAL: CREATE STOCK ENTRY (Updates Product)
+            # ============================================
+            logger.info(
+                f"[PRE-SALE] Product: {product_to_sell.product_code} | "
+                f"Current Qty: {product_to_sell.quantity} | "
+                f"Current Status: {product_to_sell.status}"
+            )
+            
+            stock_entry = StockEntry.objects.create(
+                product=product_to_sell,
+                quantity=-quantity,  # NEGATIVE = stock OUT
+                entry_type='sale',
+                unit_price=unit_price,
+                total_amount=total_price,
+                reference_id=f"SALE-{sale.sale_id}",  # ✅ Link to sale
+                created_by=request.user,
+                notes=f"FIFO Sale #{sale.sale_id} to {buyer_name or 'Walk-in'}"
+            )
+            
+            # REFRESH product to see updated values from StockEntry.save()
+            product_to_sell.refresh_from_db()
+            
+            logger.info(
+                f"[POST-SALE] Product: {product_to_sell.product_code} | "
+                f"New Qty: {product_to_sell.quantity} | "
+                f"New Status: {product_to_sell.status} | "
+                f"StockEntry ID: {stock_entry.id}"
+            )
+
+            # ============================================
+            # VERIFY: Ensure status updated correctly
+            # ============================================
+            if first_product.category.is_single_item and product_to_sell.status != 'sold':
+                logger.error(
+                    f"[STATUS ERROR] Single item {product_to_sell.product_code} "
+                    f"not marked as sold! Current status: {product_to_sell.status}"
+                )
+                # Force update
+                product_to_sell.status = 'sold'
+                product_to_sell.quantity = 0
+                product_to_sell.save(update_fields=['status', 'quantity'])
+                logger.warning(f"[FORCED UPDATE] Product {product_to_sell.product_code} manually set to SOLD")
+
+            # ============================================
+            # ETR PROCESSING (Optional)
+            # ============================================
+            if process_fieldmax_etr_for_sale:
+                try:
+                    etr_result = process_fieldmax_etr_for_sale(sale)
+                    if etr_result.get("success"):
+                        sale.etr_status = "processed"
+                        sale.etr_receipt_number = etr_result.get("receipt_number")
+                        sale.save()
+                except Exception as etr_error:
+                    logger.warning(f"ETR processing failed: {etr_error}")
+
+            # ============================================
+            # RESPONSE WITH FIFO CONFIRMATION
+            # ============================================
+            return JsonResponse({
+                "status": "success",
+                "message": f"✅ Sale recorded! {product_to_sell.name} sold for KSH {float(total_price):,.2f}",
+                "sale_id": sale.sale_id,
+                "fifo_details": {
+                    "product_code": product_to_sell.product_code,
+                    "sku": product_to_sell.sku_value or "N/A",
+                    "item_type": product_to_sell.category.item_type,
+                    "created_at": product_to_sell.created_at.isoformat(),
+                    "age_days": (timezone.now() - product_to_sell.created_at).days,
+                    "was_oldest_available": first_product.category.is_single_item,
+                },
+                "product": {
+                    "name": product_to_sell.name,
+                    "new_quantity": product_to_sell.quantity,
+                    "new_status": product_to_sell.status,
+                },
+                "sale_details": {
+                    "quantity": quantity,
+                    "unit_price": float(unit_price),
+                    "total_price": float(total_price),
+                },
+                "stock_alert": self._get_stock_alert(product_to_sell),
+            }, status=200)
+
+        except ValidationError as ve:
+            logger.error(f"ValidationError: {ve}")
+            return JsonResponse({"status": "error", "message": str(ve)}, status=400)
+        
+        except Exception as e:
+            logger.exception(f"SaleCreateView error: {e}")
+            return JsonResponse({"status": "error", "message": f"Server error: {str(e)}"}, status=500)
+
+    def _get_stock_alert(self, product):
+        """Generate stock alert message"""
+        if product.category.is_single_item:
+            return "⚠️ Item is now SOLD" if product.status == 'sold' else "✓ Item still available"
+        else:
+            if product.status == 'outofstock':
+                return "⚠️ OUT OF STOCK"
+            elif product.status == 'lowstock':
+                return f"⚠️ Low stock: {product.quantity} remaining"
+            return f"✓ {product.quantity} units remaining"
+
+
+
+# =========================================
+# SALE REVERSAL VIEW (CALLS Sale.reverse_sale)
+# =========================================
+# views.py
+class SaleReverseView(LoginRequiredMixin, View):
+    def post(self, request, sale_id):
+        sale = get_object_or_404(Sale, sale_id=sale_id)
+        if not sale.can_be_reversed:
+            return JsonResponse({"success": False, "message": "Sale cannot be reversed"}, status=400)
+        
+        reason = request.POST.get("reason", "No reason provided")
+        try:
+            result = sale.reverse_sale(reversed_by=request.user)
+            return JsonResponse({
+                "success": True,
+                "message": f"Sale #{sale.sale_id} reversed successfully",
+                "result": result
+            })
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)}, status=500)
+
+
+
+
+
+
+
+
+
+# =========================================
+# PRODUCT LOOKUP FOR SALES
+# =========================================
+
+class ProductLookupView(View):
+
+    def get(self, request):
+        code = request.GET.get("product_code", "").strip()
+        if not code:
+            return JsonResponse({"success": False, "message": "Product code is required"})
+
+        product = Product.objects.filter(
+            Q(product_code__iexact=code) | Q(sku_value__iexact=code),
+            is_active=True
+        ).select_related('category').first()
+
+        if not product:
+            return JsonResponse({"success": False, "message": "Product not found"})
+
+        # CATEGORY SAFE ACCESS
+        category_name = product.category.name if product.category else "Unknown"
+        is_single_item = product.category.is_single_item if product.category else True
+
+        # SOLD PRODUCT CHECK
+        if product.status == 'sold':
+            recent_sale = Sale.objects.filter(
+                items__product=product,
+                is_reversed=False
+            ).order_by('-sale_date').first()
+            
+            sale_info = ""
+            if recent_sale and recent_sale.sale_date:
+                sale_info = f" (Sold on {recent_sale.sale_date.strftime('%Y-%m-%d')} to {recent_sale.buyer_name or 'customer'})"
+
+            return JsonResponse({
+                "success": False,
+                "is_sold": True,
+                "message": f"❌ This product has been SOLD{sale_info}. Please contact your sales manager.",
+                "product": {
+                    "name": product.name,
+                    "product_code": product.product_code,
+                    "sku_code": product.sku_value or "N/A",
+                    "category": category_name,
+                    "status": "SOLD",
+                    "is_single_item": is_single_item,
+                    "sale_id": recent_sale.sale_id if recent_sale else None,
+                    "created_at": product.created_at.isoformat(),
+                }
+            })
+
+        # STOCK CHECK
+        current_stock = product.quantity or 0
+        is_available = current_stock > 0 and product.status != 'outofstock'
+
+        # STOCK DISPLAY
+        if is_single_item:
+            stock_display = "AVAILABLE" if is_available else "SOLD"
+            stock_status = "AVAILABLE" if is_available else "SOLD"
+        else:
+            if product.status == 'outofstock':
+                stock_display = "OUT OF STOCK"
+                stock_status = "OUT OF STOCK"
+            elif product.status == 'lowstock':
+                stock_display = f"LOW STOCK ({current_stock} remaining)"
+                stock_status = "LOW STOCK"
+            else:
+                stock_display = f"{current_stock} available"
+                stock_status = "AVAILABLE"
+
+        return JsonResponse({
+            "success": True,
+            "is_sold": False,
+            "product": {
+                "name": product.name,
+                "product_code": product.product_code,
+                "sku_code": product.sku_value or "N/A",
+                "unit_price": float(product.selling_price or 0),
+                "quantity": current_stock,
+                "current_stock": current_stock,
+                "is_single_item": is_single_item,
+                "category": category_name,
+                "status": product.status,
+                "stock_display": stock_display,
+                "stock_status": stock_status,
+                "can_sell": is_available,
+                "created_at": product.created_at.isoformat(),
+            }
+        })
+
+
+
+
+
+
+# ============================================
+# EXAMPLE FRONTEND USAGE
+# ============================================
+"""
+JavaScript example for handling sold products:
+
+// In your sale form
+async function lookupProduct(productCode) {
+    const response = await fetch(`/sales/product-lookup/?product_code=${productCode}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+        if (data.is_sold) {
+            // Show special message for sold products
+            showError(data.message);
+            
+            // Optionally offer to reverse sale
+            if (data.product.sale_id) {
+                showReversalOption(data.product.sale_id);
+            }
+        } else {
+            showError(data.message);
+        }
+        return;
+    }
+    
+    // Check if product can be sold
+    if (!data.product.can_sell) {
+        showError(`Cannot sell ${data.product.name}: ${data.product.status}`);
+        return;
+    }
+    
+    // Populate form with product details
+    document.getElementById('product_name').value = data.product.name;
+    document.getElementById('unit_price').value = data.product.unit_price;
+    document.getElementById('stock_info').textContent = data.product.stock_display;
+}
+
+function showReversalOption(saleId) {
+    const reversalLink = `<a href="/sales/sale/${saleId}/reverse/">Reverse this sale</a>`;
+    showMessage(`This item was sold. ${reversalLink} to make it available again.`);
+}
+"""
+
+# =========================================
+# CLIENT LOOKUP (Auto-fill)
+# =========================================
+class ClientLookupView(View):
+    """Auto-fill client details from previous sales"""
+    
+    def get(self, request):
+        phone = request.GET.get("phone", "").strip()
+        
+        if not phone:
+            return JsonResponse({"exists": False})
+
+        # Find most recent sale with this phone
+        sale = Sale.objects.filter(
+            buyer_phone=phone
+        ).order_by('-sale_date').first()
+
+        if not sale:
+            return JsonResponse({"exists": False})
+
+        return JsonResponse({
+            "exists": True,
+            "name": sale.buyer_name or "",
+            "id_number": sale.buyer_id_number or "",
+            "nok_name": sale.nok_name or "",
+            "nok_phone": sale.nok_phone or "",
+        })
+
+# =========================================
+# RECEIPT VIEWS
+# =========================================
+@login_required
+def sale_etr_view(request, sale_id):
+    """Display ETR receipt for a sale (supports multiple items)"""
+    sale = get_object_or_404(Sale, sale_id=sale_id)
+    sale_items = sale.items.select_related('product', 'product__category').all()
+
+    items_data = []
+    gross_total = 0
+
+    for item in sale_items:
+        product = item.product
+        sku_type = product.category.get_sku_type_display() if product.category else "SKU"
+        sku_display = item.sku_value or item.product_code
+
+        items_data.append({
+            "name": item.product_name,
+            "sku_type": sku_type,
+            "sku": sku_display,
+            "quantity": item.quantity,
+            "price": float(item.unit_price),
+            "total": float(item.total_price)
+        })
+        gross_total += float(item.total_price)
+
+    receipt = {
+        "receipt_number": sale.etr_receipt_number or f"RCPT#{sale.sale_id}",
+        "company_name": "FIELDMAX SUPPLIERS LTD",
+        "address": "NAIROBI, KENYA",
+        "tel": "254 722 558 544",
+        "pin": "XXXXXX",
+        "date": sale.sale_date.strftime("%Y-%m-%d"),
+        "time": sale.sale_date.strftime("%H:%M:%S"),
+        "user": sale.seller.username if sale.seller else "N/A",
+        "client_name": sale.buyer_name or "",
+        "client_phone": sale.buyer_phone or "",
+        "client_id": sale.buyer_id_number or "",
+        "nok_name": sale.nok_name or "",
+        "nok_phone": sale.nok_phone or "",
+        "items": items_data,
+        "gross_total": gross_total
+    }
+
+    return render(request, 'sales/fieldmax_receipt.html', {
+        'receipt': receipt,
+        'sale': sale
+    })
+
+
+
+@login_required
+def download_receipt_view(request, sale_id):
+    """Download receipt as PDF"""
+    sale = get_object_or_404(Sale, sale_id=sale_id)
+    product = sale.product
+
+    receipt = {
+        "receipt_number": sale.etr_receipt_number or f"RCPT-{sale.sale_id}",
+        "company_name": "FIELDMAX SUPPLIERS LTD",
+        "address": "NAIROBI, KENYA",
+        "tel": "254 722 558 544",
+        "pin": "XXXXXX",
+        "date": sale.sale_date.strftime("%Y-%m-%d"),
+        "time": sale.sale_date.strftime("%H:%M:%S"),
+        "user": sale.seller.username if sale.seller else "N/A",
+        "client_name": sale.buyer_name or "",
+        "items": [{
+            "name": product.name,
+            "sku": product.product_code,
+            "quantity": sale.quantity,
+            "price": float(sale.unit_price or sale.selling_price),
+            "total": float(sale.total_price)
+        }],
+        "gross_total": float(sale.total_price)
+    }
+
+    html_string = render_to_string('sales/fieldmax_receipt.html', {
+        'receipt': receipt,
+        'sale': sale
+    })
+
+    # Try PDF generation if pdfkit is available
+    if pdfkit:
+        try:
+            pdf = pdfkit.from_string(html_string, False)
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="receipt_{sale.sale_id}.pdf"'
+            return response
+        except Exception as e:
+            logger.exception(f"PDF generation failed: {e}")
+    
+    # Fallback to HTML
+    return HttpResponse(html_string)
+
+
+
+# ============================================
+# BATCH RECEIT VIEW
+# ==========================================
+
+@login_required
+def batch_receipt_view(request, batch_id):
+    """
+    Display SINGLE combined receipt showing ALL sales in separate rows.
+    Each sale appears as a line item in one receipt.
+    """
+    sales = Sale.objects.filter(batch_id=batch_id).select_related(
+        'product', 'product__category', 'seller'
+    ).order_by('batch_sequence')
+    
+    if not sales.exists():
+        return JsonResponse({
+            "error": f"Batch {batch_id} not found"
+        }, status=404)
+    
+    first_sale = sales.first()
+    
+    # ============================================
+    # BUILD SINGLE RECEIPT WITH MULTIPLE ROWS
+    # ============================================
+    receipt = {
+        # Use the sequential Rcpt_No format
+        "receipt_number": first_sale.etr_receipt_number or first_sale.fiscal_receipt_number or f"BATCH-{batch_id}",
+        "batch_id": batch_id,
+        "company_name": "FIELDMAX SUPPLIERS LTD",
+        "address": "NAIROBI, KENYA",
+        "tel": "254 722 558 544",
+        "pin": "P051234567X",  # Update with your actual PIN
+        "date": first_sale.sale_date.strftime("%Y-%m-%d"),
+        "time": first_sale.sale_date.strftime("%H:%M:%S"),
+        "user": first_sale.seller.username if first_sale.seller else "N/A",
+        "client_name": first_sale.buyer_name or "Walk-in Customer",
+        "client_phone": first_sale.buyer_phone or "",
+        "client_id": first_sale.buyer_id_number or "",
+        "nok_name": first_sale.nok_name or "",
+        "nok_phone": first_sale.nok_phone or "",
+        "items": [],
+        "gross_total": Decimal('0.00')
+    }
+    
+    # ============================================
+    # ADD EACH SALE AS A SEPARATE ROW
+    # ============================================
+    for idx, sale in enumerate(sales, 1):
+        product = sale.product
+        sku_type = product.category.get_sku_type_display() if product.category else "SKU"
+        
+        receipt["items"].append({
+            "row_number": idx,
+            "name": product.name,
+            "sku_type": sku_type,
+            "sku": product.sku_value or product.product_code,
+            "quantity": sale.quantity,
+            "price": float(sale.unit_price or sale.selling_price),
+            "total": float(sale.total_price),
+            "sale_id": sale.sale_id
+        })
+        
+        receipt["gross_total"] += sale.total_price
+    
+    # Convert Decimal to float for template
+    receipt["gross_total"] = float(receipt["gross_total"])
+    
+    logger.info(
+        f"[BATCH RECEIPT] Batch: {batch_id} | "
+        f"Receipt: {receipt['receipt_number']} | "
+        f"Items: {len(sales)} | "
+        f"Total: KSH {receipt['gross_total']}"
+    )
+    
+    return render(request, 'sales/batch_receipt.html', {
+        'receipt': receipt,
+        'sales': sales,
+        'batch_id': batch_id,
+        'total_items': len(sales),
+        'etr_number': first_sale.etr_receipt_number,
+        'fiscal_number': first_sale.fiscal_receipt_number
+    })
+
+
+# ============================================
+# OPTIONAL: Add download batch receipt as PDF
+# ============================================
+
+@login_required
+def download_batch_receipt_view(request, batch_id):
+    """
+    Download batch receipt as PDF.
+    """
+    sales = Sale.objects.filter(batch_id=batch_id).select_related(
+        'product', 'product__category', 'seller'
+    ).order_by('batch_sequence')
+    
+    if not sales.exists():
+        return JsonResponse({
+            "error": f"Batch {batch_id} not found"
+        }, status=404)
+    
+    first_sale = sales.first()
+    
+    receipt = {
+        "receipt_number": first_sale.etr_receipt_number or first_sale.fiscal_receipt_number or f"BATCH-{batch_id}",
+        "batch_id": batch_id,
+        "company_name": "FIELDMAX SUPPLIERS LTD",
+        "address": "NAIROBI, KENYA",
+        "tel": "254 722 558 544",
+        "pin": "P051234567X",
+        "date": first_sale.sale_date.strftime("%Y-%m-%d"),
+        "time": first_sale.sale_date.strftime("%H:%M:%S"),
+        "user": first_sale.seller.username if first_sale.seller else "N/A",
+        "client_name": first_sale.buyer_name or "Walk-in Customer",
+        "client_phone": first_sale.buyer_phone or "",
+        "items": [],
+        "gross_total": Decimal('0.00')
+    }
+    
+    for idx, sale in enumerate(sales, 1):
+        product = sale.product
+        sku_type = product.category.get_sku_type_display() if product.category else "SKU"
+        
+        receipt["items"].append({
+            "row_number": idx,
+            "name": product.name,
+            "sku_type": sku_type,
+            "sku": product.sku_value or product.product_code,
+            "quantity": sale.quantity,
+            "price": float(sale.unit_price or sale.selling_price),
+            "total": float(sale.total_price),
+        })
+        
+        receipt["gross_total"] += sale.total_price
+    
+    receipt["gross_total"] = float(receipt["gross_total"])
+    
+    html_string = render_to_string('sales/batch_receipt.html', {
+        'receipt': receipt,
+        'sales': sales,
+        'batch_id': batch_id,
+        'total_items': len(sales),
+        'etr_number': first_sale.etr_receipt_number,
+        'fiscal_number': first_sale.fiscal_receipt_number
+    })
+    
+    # Try PDF generation if pdfkit is available
+    if pdfkit:
+        try:
+            pdf = pdfkit.from_string(html_string, False)
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="batch_receipt_{batch_id}.pdf"'
+            return response
+        except Exception as e:
+            logger.exception(f"PDF generation failed: {e}")
+    
+    # Fallback to HTML
+    return HttpResponse(html_string)
+
+
+# ============================================
+# UPDATE YOUR urls.py TO INCLUDE THESE VIEWS
+# ============================================
+"""
+In sales/urls.py, add these paths:
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ... your existing URLs ...
+    
+    # Batch receipt views
+    path('batch-receipt/<str:batch_id>/', 
+         views.batch_receipt_view, 
+         name='batch-receipt'),
+    
+    path('batch-receipt/<str:batch_id>/download/', 
+         views.download_batch_receipt_view, 
+         name='download-batch-receipt'),
+]
+"""
+
+
+
+
+
+# =========================================
+# LIST VIEWS
+# =========================================
+class SaleListView(LoginRequiredMixin, ListView):
+    model = Sale
+    template_name = 'sales/sale_list.html'
+    context_object_name = 'sales'
+    paginate_by = 50
+
+    def get_queryset(self):
+        return Sale.objects.select_related(
+            'product', 
+            'product__category',
+            'seller'
+        ).order_by('-sale_date')
+
+
+class SaleDetailView(LoginRequiredMixin, DetailView):
+    model = Sale
+    template_name = 'sales/sale_detail.html'
+    pk_url_kwarg = 'sale_id'
+
+
+class SaleUpdateView(LoginRequiredMixin, UpdateView):
+    model = Sale
+    form_class = SaleForm
+    template_name = 'sales/sale_form.html'
+    success_url = '/admin-dashboard/'
+
+
+class SaleDeleteView(LoginRequiredMixin, DeleteView):
+    model = Sale
+    template_name = 'sales/sale_confirm_delete.html'
+    success_url = '/admin-dashboard/'
+
+
+# =========================================
+# DRF API VIEWS
+# =========================================
+class SaleViewSet(viewsets.ModelViewSet):
+    queryset = Sale.objects.all().order_by('-sale_date')
+    serializer_class = SaleSerializer
+
+
+class SaleListCreateView(generics.ListCreateAPIView):
+    queryset = Sale.objects.all()
+    serializer_class = SaleSerializer
+
+
+# =========================================
+# RESTOCK VIEW
+# =========================================
+class RestockView(LoginRequiredMixin, View):
+    """Handle bulk product restocking"""
+    
+    def get(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        
+        if product.category.is_single_item:
+            messages.error(request, 'Single items cannot be restocked. Add new units instead.')
+            return redirect('product-list')
+        
+        return render(request, 'sales/restock.html', {'product': product})
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        
+        if product.category.is_single_item:
+            messages.error(request, 'Single items cannot be restocked.')
+            return redirect('product-list')
+        
+        try:
+            quantity = int(request.POST.get('quantity', 0))
+            if quantity <= 0:
+                messages.error(request, 'Quantity must be greater than 0')
+                return redirect('restock', product_id=product_id)
+            
+            # Create stock entry (will auto-update product)
+            StockEntry.objects.create(
+                product=product,
+                quantity=quantity,
+                entry_type='purchase',
+                unit_price=product.buying_price,
+                total_amount=product.buying_price * quantity,
+                created_by=request.user,
+                notes=f"Restock: Added {quantity} units"
+            )
+            
+            messages.success(request, f'Successfully added {quantity} units to {product.name}')
+            return redirect('product-list')
+            
+        except Exception as e:
+            logger.exception(f"Restock error: {e}")
+            messages.error(request, f'Error: {str(e)}')
+            return redirect('restock', product_id=product_id)
+        
+
+
+
+
+
+# ============================================
+# CORRECTED BATCH SALE VIEW - Uses Rcpt_No:0001 Format
+# ============================================
+
+@method_decorator(login_required, name='dispatch')
+class BatchSaleCreateView(View):
+    """
+    ✅ FIXED: Creates ONE Sale record for entire transaction
+    - Multiple items stored in SaleItem model
+    - ONE receipt number for all items
+    - ONE row in sales table
+    """
+    
+    @transaction.atomic
+    def post(self, request):
+        try:
+            # Parse cart data
+            data = json.loads(request.body)
+            sales_cart = data.get("sales_cart", [])
+            
+            if not sales_cart or len(sales_cart) == 0:
+                return JsonResponse({
+                    "status": "error",
+                    "message": "Cart is empty"
+                }, status=400)
+            
+            # Get client details from first item (applies to entire sale)
+            first_item = sales_cart[0]
+            buyer_name = first_item.get("buyer_name", "").strip() or "Walk-in Customer"
+            buyer_phone = first_item.get("buyer_phone", "").strip()
+            buyer_id_number = first_item.get("buyer_id_number", "").strip()
+            nok_name = first_item.get("nok_name", "").strip()
+            nok_phone = first_item.get("nok_phone", "").strip()
+            
+            # ============================================
+            # STEP 1: Create ONE Sale record
+            # ============================================
+            sale = Sale.objects.create(
+                seller=request.user,
+                buyer_name=buyer_name,
+                buyer_phone=buyer_phone,
+                buyer_id_number=buyer_id_number,
+                nok_name=nok_name,
+                nok_phone=nok_phone,
+                etr_status="pending"
+            )
+            
+            logger.info(f"[SALE CREATED] Sale ID: {sale.sale_id} | Items to process: {len(sales_cart)}")
+            
+            created_items = []
+            
+            # ============================================
+            # STEP 2: Process each item in cart
+            # ============================================
+            for idx, item_data in enumerate(sales_cart, 1):
+                product_code = item_data.get("product_code", "").strip()
+                quantity = int(item_data.get("quantity", 1))
+                unit_price_input = item_data.get("unit_price", "")
+                
+                try:
+                    unit_price = Decimal(str(unit_price_input)) if unit_price_input else Decimal('0')
+                except (ValueError, TypeError):
+                    unit_price = Decimal('0')
+                
+                # FIFO Product Lookup
+                products = Product.objects.filter(
+                    Q(product_code__iexact=product_code) | Q(sku_value__iexact=product_code),
+                    is_active=True
+                ).exclude(
+                    status='sold'
+                ).select_related('category').select_for_update().order_by('created_at')
+                
+                if not products.exists():
+                    raise ValueError(f"Product '{product_code}' not found or already sold")
+                
+                first_product = products.first()
+                
+                # Single Item FIFO
+                if first_product.category.is_single_item:
+                    available_product = products.filter(status='available', quantity=1).first()
+                    if not available_product:
+                        raise ValueError(f"No available units of {first_product.name}")
+                    product_to_sell = available_product
+                else:
+                    # Bulk Item
+                    product_to_sell = first_product
+                    if product_to_sell.quantity < quantity:
+                        raise ValueError(
+                            f"Insufficient stock for {product_to_sell.name}. "
+                            f"Only {product_to_sell.quantity} available."
+                        )
+                
+                # Validate price
+                if unit_price <= 0:
+                    unit_price = product_to_sell.selling_price or Decimal('0')
+                
+                # ============================================
+                # Create SaleItem (not Sale!)
+                # ============================================
+                sale_item = SaleItem.objects.create(
+                    sale=sale,
+                    product=product_to_sell,
+                    product_code=product_to_sell.product_code,
+                    product_name=product_to_sell.name,
+                    sku_value=product_to_sell.sku_value,
+                    quantity=quantity,
+                    unit_price=unit_price
+                )
+                
+                # Process the sale (deducts stock)
+                sale_item.process_sale()
+                
+                created_items.append({
+                    "product_name": product_to_sell.name,
+                    "product_code": product_to_sell.product_code,
+                    "sku": product_to_sell.sku_value or product_to_sell.product_code,
+                    "quantity": quantity,
+                    "unit_price": float(unit_price),
+                    "total_price": float(sale_item.total_price),
+                })
+                
+                logger.info(
+                    f"[ITEM {idx}/{len(sales_cart)}] "
+                    f"Product: {product_to_sell.product_code} | "
+                    f"Qty: {quantity} | "
+                    f"Total: KSH {sale_item.total_price}"
+                )
+            
+            # ============================================
+            # STEP 3: Refresh sale to get calculated totals
+            # ============================================
+            sale.refresh_from_db()
+            
+            # ============================================
+            # STEP 4: Generate receipt numbers
+            # ============================================
+            from django.utils.crypto import get_random_string
+            fiscal_receipt_number = f"FR-{sale.sale_date.strftime('%Y%m%d%H%M%S')}-{get_random_string(6)}"
+            
+            # Assign ETR receipt number
+            sale.assign_etr_receipt_number(fiscal_receipt_number=fiscal_receipt_number)
+            
+            logger.info(
+                f"[SALE COMPLETED] Sale: {sale.sale_id} | "
+                f"Receipt: {sale.etr_receipt_number} | "
+                f"Items: {len(created_items)} | "
+                f"Total: KSH {sale.total_amount}"
+            )
+            
+            # ============================================
+            # STEP 5: Return success response
+            # ============================================
+            return JsonResponse({
+                "status": "success",
+                "message": f"✅ Sale recorded! {len(created_items)} items with 1 receipt",
+                "sale_id": sale.sale_id,
+                "total_items": len(created_items),
+                "total_amount": float(sale.total_amount),
+                "etr_receipt_number": sale.etr_receipt_number,
+                "fiscal_receipt_number": sale.fiscal_receipt_number,
+                "items": created_items,
+                "receipt_url": f"/sales/receipt/{sale.sale_id}/",
+            }, status=200)
+            
+        except ValueError as ve:
+            logger.error(f"Validation error: {ve}")
+            return JsonResponse({
+                "status": "error",
+                "message": str(ve)
+            }, status=400)
+            
+        except Exception as e:
+            logger.exception(f"Batch sale error: {e}")
+            return JsonResponse({
+                "status": "error",
+                "message": f"Server error: {str(e)}"
+            }, status=500)
+
+
+# ============================================
+# RECEIPT VIEW
+# ============================================
+
+@login_required
+def sale_receipt_view(request, sale_id):
+    """Display receipt for a sale (shows all items)"""
+    from django.shortcuts import get_object_or_404, render
+    
+    sale = get_object_or_404(
+        Sale.objects.prefetch_related('items__product__category'),
+        sale_id=sale_id
+    )
+    
+    # Build receipt data
+    receipt = {
+        "receipt_number": sale.etr_receipt_number or f"RCPT-{sale.sale_id}",
+        "company_name": "FIELDMAX SUPPLIERS LTD",
+        "address": "NAIROBI, KENYA",
+        "tel": "254 722 558 544",
+        "pin": "P051234567X",
+        "date": sale.sale_date.strftime("%Y-%m-%d"),
+        "time": sale.sale_date.strftime("%H:%M:%S"),
+        "user": sale.seller.username if sale.seller else "N/A",
+        "client_name": sale.buyer_name or "Walk-in Customer",
+        "client_phone": sale.buyer_phone or "",
+        "client_id": sale.buyer_id_number or "",
+        "items": [],
+        "gross_total": float(sale.total_amount)
+    }
+    
+    # Add each item
+    for idx, item in enumerate(sale.items.all(), 1):
+        sku_type = item.product.category.get_sku_type_display() if item.product.category else "SKU"
+        
+        receipt["items"].append({
+            "row_number": idx,
+            "name": item.product_name,
+            "sku_type": sku_type,
+            "sku": item.sku_value or item.product_code,
+            "quantity": item.quantity,
+            "price": float(item.unit_price),
+            "total": float(item.total_price),
+        })
+    
+    return render(request, 'sales/receipt.html', {
+        'receipt': receipt,
+        'sale': sale,
+        'total_items': len(receipt['items'])
+    })
+
+
+# ============================================
+# COMPARISON: BEFORE vs AFTER
+# ============================================
+"""
+BEFORE (WRONG):
+--------------
+Database:
+  Sale #1: Product A, Qty 1, Total 1000  [batch_id: ABC123, batch_seq: 1]
+  Sale #2: Product B, Qty 2, Total 2000  [batch_id: ABC123, batch_seq: 2]
+  Sale #3: Product C, Qty 1, Total 500   [batch_id: ABC123, batch_seq: 3]
+  
+Sales Table View:
+  3 rows shown (one per product)
+  
+Issues:
+  ❌ Sales table cluttered with item-level entries
+  ❌ Hard to see transactions at a glance
+  ❌ Confusing for reports
+
+
+AFTER (CORRECT):
+---------------
+Database:
+  Sale #SL20251201120000ABC123:
+    - Total items: 3
+    - Total amount: 3500
+    - Receipt: Rcpt_No:0001
+    
+  SaleItem #1: Product A, Qty 1, Total 1000  [sale_id: SL20251201120000ABC123]
+  SaleItem #2: Product B, Qty 2, Total 2000  [sale_id: SL20251201120000ABC123]
+  SaleItem #3: Product C, Qty 1, Total 500   [sale_id: SL20251201120000ABC123]
+  
+Sales Table View:
+  1 row shown (one per transaction)
+  
+Benefits:
+  ✅ Clean sales table (one row = one transaction)
+  ✅ Easy to track receipts and totals
+  ✅ Items viewable in detail view
+  ✅ Standard e-commerce pattern
+"""

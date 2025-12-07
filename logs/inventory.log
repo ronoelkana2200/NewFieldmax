@@ -1,0 +1,1231 @@
+[INFO] 2025-11-28 18:25:30 signals 49432 134236470712000 - Creating new product: SAMSUNG S24
+[INFO] 2025-11-28 18:25:30 signals 49432 134236470712000 - Product created: SFSL001 - SAMSUNG S24 (Category: SMARTPHONES, Quantity: 1)
+[INFO] 2025-11-28 19:14:17 signals 55388 124050785228480 - Creating new product: SAMSUNG S24
+[INFO] 2025-11-28 19:14:17 signals 55388 124050785228480 - Product created: SFSL002 - SAMSUNG S24 (Category: SMARTPHONES, Quantity: 1)
+[INFO] 2025-11-28 22:39:47 signals 69385 138587866666688 - Creating new product: NM GLASS
+[INFO] 2025-11-28 22:39:47 signals 69385 138587866666688 - Product created: AFSL001 - NM GLASS (Category: ACCESSORIES, Quantity: 1)
+[WARNING] 2025-11-28 22:39:47 signals 69385 138587866666688 - LOW STOCK ALERT: NM GLASS (AFSL001) has only 1 units remaining
+[INFO] 2025-11-28 22:42:51 signals 69385 138587866666688 - Creating new product: SONNY TV
+[INFO] 2025-11-28 22:42:51 signals 69385 138587866666688 - Product created: EFSL001 - SONNY TV (Category: ELECTRONICS, Quantity: 1)
+[WARNING] 2025-11-28 22:42:51 signals 69385 138587866666688 - LOW STOCK ALERT: SONNY TV (EFSL001) has only 1 units remaining
+[INFO] 2025-11-28 23:02:09 signals 71857 132847577224896 - Creating new product: BONTELL 100
+[INFO] 2025-11-28 23:02:09 signals 71857 132847577224896 - Product created: FFSL001 - BONTELL 100 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-29 01:41:44 signals 75321 134516804794048 - Creating new product: BONTEL 100
+[INFO] 2025-11-29 01:41:44 signals 75321 134516804794048 - Product created: FFSL001 - BONTEL 100 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-29 02:04:14 signals 76848 137130802419392 - Creating new product: SAMSUNG A16
+[INFO] 2025-11-29 02:04:14 signals 76848 137130802419392 - Product created: SFSL001 - SAMSUNG A16 (Category: SMARTPHONES, Quantity: 1)
+[INFO] 2025-11-29 02:04:14 signals 76848 137130802419392 - Stock IN: Purchase - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-29 02:04:14 signals 76848 137130802419392 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A16) | Quantity: 1 | Unit Price: $100 | Total: $100 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-28 23:04:14.764304+00:00
+[INFO] 2025-11-29 04:14:02 signals 86583 128637505164992 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 04:14:02 signals 86583 128637505164992 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300.0 | Total: $300.0 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 01:14:02.219398+00:00
+[INFO] 2025-11-29 04:17:37 signals 87052 127270927521472 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 04:17:37 signals 87052 127270927521472 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300.0 | Total: $300.0 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 01:17:37.268536+00:00
+[INFO] 2025-11-29 04:17:37 signals 87052 127270927521472 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 04:17:37 signals 87052 127270927521472 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300.0 | Total: $300.0 | Reference: SALE-2 | User: LYN | Timestamp: 2025-11-29 01:17:37.281277+00:00
+[INFO] 2025-11-29 05:13:15 signals 91666 123391735568064 - Stock OUT: Sale - Product: FFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 05:13:15 signals 91666 123391735568064 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Unit Price: $1000.0 | Total: $1000.0 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 02:13:15.913609+00:00
+[INFO] 2025-11-29 05:13:15 signals 91666 123391735568064 - Stock OUT: Sale - Product: FFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 05:13:15 signals 91666 123391735568064 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Unit Price: $1000.0 | Total: $1000.0 | Reference: SALE-3 | User: LYN | Timestamp: 2025-11-29 02:13:15.929689+00:00
+[INFO] 2025-11-29 05:13:34 signals 91666 123391735568064 - Stock OUT: Sale - Product: FFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 05:13:34 signals 91666 123391735568064 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Unit Price: $1000.0 | Total: $1000.0 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 02:13:34.342044+00:00
+[INFO] 2025-11-29 05:13:34 signals 91666 123391735568064 - Stock OUT: Sale - Product: FFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 05:13:34 signals 91666 123391735568064 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Unit Price: $1000.0 | Total: $1000.0 | Reference: SALE-4 | User: LYN | Timestamp: 2025-11-29 02:13:34.402293+00:00
+[INFO] 2025-11-29 09:39:31 views 11603 126922700297920 - === ProductCreateView POST ===
+[INFO] 2025-11-29 09:39:31 views 11603 126922700297920 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['YgtsaqjLAW8pKE9jr8XwuSgv0b6IvMK2YVY2mKeg8YnaM3e07WZOq1W909J9CXS4'], 'category': ['1'], 'name': ['AMAYA'], 'buying_price': ['35'], 'selling_price': ['70'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 09:39:31 views 11603 126922700297920 - Is AJAX: True
+[INFO] 2025-11-29 09:39:35 views 11603 126922700297920 - === ProductCreateView POST ===
+[INFO] 2025-11-29 09:39:35 views 11603 126922700297920 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['YgtsaqjLAW8pKE9jr8XwuSgv0b6IvMK2YVY2mKeg8YnaM3e07WZOq1W909J9CXS4'], 'category': ['1'], 'name': ['AMAYA'], 'buying_price': ['35'], 'selling_price': ['70'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 09:39:35 views 11603 126922700297920 - Is AJAX: True
+[INFO] 2025-11-29 09:39:36 views 11603 126922700297920 - === ProductCreateView POST ===
+[INFO] 2025-11-29 09:39:36 views 11603 126922700297920 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['YgtsaqjLAW8pKE9jr8XwuSgv0b6IvMK2YVY2mKeg8YnaM3e07WZOq1W909J9CXS4'], 'category': ['1'], 'name': ['AMAYA'], 'buying_price': ['35'], 'selling_price': ['70'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 09:39:36 views 11603 126922700297920 - Is AJAX: True
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - === ProductCreateView POST ===
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['YgtsaqjLAW8pKE9jr8XwuSgv0b6IvMK2YVY2mKeg8YnaM3e07WZOq1W909J9CXS4'], 'category': ['1'], 'name': ['AMAYA'], 'buying_price': ['35'], 'selling_price': ['70'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Is AJAX: True
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Form created successfully
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Form is valid
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - === form_valid START ===
+[INFO] 2025-11-29 09:43:14 signals 12404 135375221683904 - Creating new product: AMAYA
+[INFO] 2025-11-29 09:43:14 signals 12404 135375221683904 - Product created: AFSL002 - AMAYA (Category: ACCESSORIES, Quantity: 5)
+[WARNING] 2025-11-29 09:43:14 signals 12404 135375221683904 - LOW STOCK ALERT: AMAYA (AFSL002) has only 5 units remaining
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Product saved: ID=7, Name=AMAYA, Qty=5
+[INFO] 2025-11-29 09:43:14 signals 12404 135375221683904 - Stock IN: Purchase - Product: AFSL002 - Quantity: 5 - New Stock: 5
+[INFO] 2025-11-29 09:43:14 signals 12404 135375221683904 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (AMAYA) | Quantity: 5 | Unit Price: $35 | Total: $175 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 06:43:14.400096+00:00
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Stock entry created: ID=9
+[INFO] 2025-11-29 09:43:14 views 12404 135375221683904 - Returning JSON response
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - === ProductCreateView POST ===
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['TloYW52Ymea1JKlrcFNItspxaqO8cP9DT0Ty8pXtUgpML9q8StP0pB5baorzj0hF'], 'category': ['1'], 'name': ['YBTT'], 'buying_price': ['40'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['4']}>
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Is AJAX: True
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Form created successfully
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Form is valid
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - === form_valid START ===
+[INFO] 2025-11-29 10:15:06 signals 17824 134939265263296 - Creating new product: YBTT
+[INFO] 2025-11-29 10:15:06 signals 17824 134939265263296 - Product created: AFSL003 - YBTT (Category: ACCESSORIES, Quantity: 4)
+[WARNING] 2025-11-29 10:15:06 signals 17824 134939265263296 - LOW STOCK ALERT: YBTT (AFSL003) has only 4 units remaining
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Product saved: ID=8, Name=YBTT, Qty=4
+[INFO] 2025-11-29 10:15:06 signals 17824 134939265263296 - Stock IN: Purchase - Product: AFSL003 - Quantity: 4 - New Stock: 4
+[INFO] 2025-11-29 10:15:06 signals 17824 134939265263296 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL003 (YBTT) | Quantity: 4 | Unit Price: $40 | Total: $160 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 07:15:06.021320+00:00
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Stock entry created: ID=10
+[INFO] 2025-11-29 10:15:06 views 17824 134939265263296 - Returning JSON response
+[INFO] 2025-11-29 10:32:29 views 21136 139143023335104 - === ProductCreateView POST ===
+[INFO] 2025-11-29 10:32:29 views 21136 139143023335104 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['bEDf9XL5LspGv3jqPgOWK7MFfSMNXx5wbj8PlhGAjuErxso7v4QeGgsjfQpe4Idy'], 'category': ['1'], 'name': ['RXD'], 'buying_price': ['30'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 10:32:29 views 21136 139143023335104 - Is AJAX: True
+[INFO] 2025-11-29 10:32:29 views 21136 139143023335104 - Form created successfully
+[ERROR] 2025-11-29 10:32:29 views 21136 139143023335104 - ================================================================================
+[ERROR] 2025-11-29 10:32:29 views 21136 139143023335104 - ERROR in POST method: 'NoneType' object has no attribute 'strip'
+[ERROR] 2025-11-29 10:32:29 views 21136 139143023335104 - Traceback (most recent call last):
+  File "/home/kk/fieldmax/inventory/views.py", line 314, in post
+    if form.is_valid():
+       ^^^^^^^^^^^^^^^
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 206, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 201, in errors
+    self.full_clean()
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 338, in full_clean
+    self._clean_form()
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 354, in _clean_form
+    cleaned_data = self.clean()
+                   ^^^^^^^^^^^^
+  File "/home/kk/fieldmax/inventory/forms.py", line 138, in clean
+    sku_value = cleaned_data.get('sku_value', '').strip()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'strip'
+
+[ERROR] 2025-11-29 10:32:29 views 21136 139143023335104 - ================================================================================
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - === ProductCreateView POST ===
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['bEDf9XL5LspGv3jqPgOWK7MFfSMNXx5wbj8PlhGAjuErxso7v4QeGgsjfQpe4Idy'], 'category': ['1'], 'name': ['RXD'], 'buying_price': ['30'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - Is AJAX: True
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - Form created successfully
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - Form is valid
+[INFO] 2025-11-29 10:38:13 views 22335 132802774996672 - === form_valid START ===
+[ERROR] 2025-11-29 10:38:13 views 22335 132802774996672 - ================================================================================
+[ERROR] 2025-11-29 10:38:13 views 22335 132802774996672 - ERROR: 'NoneType' object has no attribute 'strip'
+[ERROR] 2025-11-29 10:38:13 views 22335 132802774996672 - Type: AttributeError
+[ERROR] 2025-11-29 10:38:13 views 22335 132802774996672 - Traceback (most recent call last):
+  File "/home/kk/fieldmax/inventory/views.py", line 341, in form_valid
+    sku_value = form.cleaned_data.get('sku_value', '').strip()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'strip'
+
+[ERROR] 2025-11-29 10:38:13 views 22335 132802774996672 - ================================================================================
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - === ProductCreateView POST ===
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['bEDf9XL5LspGv3jqPgOWK7MFfSMNXx5wbj8PlhGAjuErxso7v4QeGgsjfQpe4Idy'], 'category': ['1'], 'name': ['RXD'], 'buying_price': ['30'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - Is AJAX: True
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - Form created successfully
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - Form is valid
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - === form_valid START ===
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - [BULK ITEM] Checking for existing product...
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - [BULK ITEM] Creating new bulk product
+[INFO] 2025-11-29 10:40:45 signals 22836 132705698182848 - Creating new product: RXD
+[INFO] 2025-11-29 10:40:45 signals 22836 132705698182848 - Product created: AFSL004 - RXD (Category: ACCESSORIES, Quantity: 5)
+[WARNING] 2025-11-29 10:40:45 signals 22836 132705698182848 - LOW STOCK ALERT: RXD (AFSL004) has only 5 units remaining
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - Bulk product created: AFSL004 | Qty: 5
+[INFO] 2025-11-29 10:40:45 signals 22836 132705698182848 - Stock IN: Purchase - Product: AFSL004 - Quantity: 5 - New Stock: 5
+[INFO] 2025-11-29 10:40:45 signals 22836 132705698182848 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL004 (RXD) | Quantity: 5 | Unit Price: $30 | Total: $150 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 07:40:45.068905+00:00
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - [SUCCESS] Product saved: AFSL004 | Type: bulk | Qty: 10 | Status: available
+[INFO] 2025-11-29 10:40:45 views 22836 132705698182848 - Returning JSON response
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - === ProductCreateView POST ===
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['tP8VkPqp5ikPEqAtcjjKguP7yTKjIBgstuDvw9lUDkzAGPFaS7l2cDvLyRnKPMou'], 'category': ['1'], 'name': ['AA'], 'buying_price': ['5'], 'selling_price': ['30'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - Is AJAX: True
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - Form created successfully
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - Form is valid
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - === form_valid START ===
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - [BULK ITEM] Checking for existing product...
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - [BULK ITEM] Creating new bulk product
+[INFO] 2025-11-29 13:05:55 signals 22836 132705698182848 - Creating new product: AA
+[INFO] 2025-11-29 13:05:55 signals 22836 132705698182848 - Product created: AFSL005 - AA (Category: ACCESSORIES, Quantity: 5)
+[WARNING] 2025-11-29 13:05:55 signals 22836 132705698182848 - LOW STOCK ALERT: AA (AFSL005) has only 5 units remaining
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - Bulk product created: AFSL005 | Qty: 5
+[INFO] 2025-11-29 13:05:55 signals 22836 132705698182848 - Stock IN: Purchase - Product: AFSL005 - Quantity: 5 - New Stock: 5
+[INFO] 2025-11-29 13:05:55 signals 22836 132705698182848 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL005 (AA) | Quantity: 5 | Unit Price: $5 | Total: $25 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 10:05:55.502822+00:00
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - [SUCCESS] Product saved: AFSL005 | Type: bulk | Qty: 10 | Status: available
+[INFO] 2025-11-29 13:05:55 views 22836 132705698182848 - Returning JSON response
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - === ProductCreateView POST ===
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['FTct4Ubz8FgnbV8IdukRjdiIIpVZBPYOFyH3ge64GHv8dkdpTim9fmYmInyqI06Q'], 'category': ['3'], 'name': ['ABBBB'], 'buying_price': ['5'], 'selling_price': ['6'], 'sku_value': ['23657I56O8643467'], 'quantity': ['1']}>
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - Is AJAX: True
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - Form created successfully
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - Form is valid
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - === form_valid START ===
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - [SINGLE ITEM] Creating unique product unit
+[INFO] 2025-11-29 13:06:49 signals 22836 132705698182848 - Creating new product: ABBBB
+[INFO] 2025-11-29 13:06:49 signals 22836 132705698182848 - Product created: FFSL002 - ABBBB (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - Single item created: FFSL002 | SKU: 23657I56O8643467
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - [SUCCESS] Product saved: FFSL002 | Type: single | Qty: 1 | Status: available
+[INFO] 2025-11-29 13:06:49 views 22836 132705698182848 - Returning JSON response
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - === ProductCreateView POST ===
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['e1zbdTFe2FWKK8WOpWr8mLQyjVhvOgImeG4LpdAJAHbvMx1v5KtqiUwcjTUWVrQo'], 'category': ['1'], 'name': ['POWERBANK'], 'buying_price': ['10'], 'selling_price': ['15'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - Is AJAX: True
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - Form created successfully
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - Form is valid
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - === form_valid START ===
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - [BULK ITEM] Checking for existing product...
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - [BULK ITEM] Creating new bulk product
+[INFO] 2025-11-29 13:33:18 signals 32088 133102388582080 - Creating new product: POWERBANK
+[INFO] 2025-11-29 13:33:18 signals 32088 133102388582080 - Product created: AFSL006 - POWERBANK (Category: ACCESSORIES, Quantity: 5)
+[WARNING] 2025-11-29 13:33:18 signals 32088 133102388582080 - LOW STOCK ALERT: POWERBANK (AFSL006) has only 5 units remaining
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - Bulk product created: AFSL006 | Qty: 5
+[INFO] 2025-11-29 13:33:18 signals 32088 133102388582080 - Stock IN: Purchase - Product: AFSL006 - Quantity: 5 - New Stock: 5
+[INFO] 2025-11-29 13:33:18 signals 32088 133102388582080 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL006 (POWERBANK) | Quantity: 5 | Unit Price: $10 | Total: $50 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 10:33:18.196765+00:00
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - [SUCCESS] Product saved: AFSL006 | Type: bulk | Qty: 10 | Status: available
+[INFO] 2025-11-29 13:33:18 views 32088 133102388582080 - Returning JSON response
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - === ProductCreateView POST ===
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['i8T4H8MeXR8tOvtRiqkMZZwAxz9JNmoMiNoETsHJvTneQUyyYem4V8cexxMaUxwO'], 'category': ['1'], 'name': ['daamn'], 'buying_price': ['2'], 'selling_price': ['5'], 'sku_value': [''], 'quantity': ['4']}>
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - Is AJAX: True
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - Form created successfully
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - Form is valid
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - === form_valid START ===
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - [BULK ITEM] Checking for existing product...
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - [BULK ITEM] Creating new bulk product
+[INFO] 2025-11-29 13:40:48 signals 33910 128356071069376 - Creating new product: daamn
+[INFO] 2025-11-29 13:40:48 signals 33910 128356071069376 - Product created: AFSL007 - daamn (Category: ACCESSORIES, Quantity: 4)
+[WARNING] 2025-11-29 13:40:48 signals 33910 128356071069376 - LOW STOCK ALERT: daamn (AFSL007) has only 4 units remaining
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - Bulk product created: AFSL007 | Qty: 4
+[INFO] 2025-11-29 13:40:48 signals 33910 128356071069376 - Stock IN: Purchase - Product: AFSL007 - Quantity: 4 - New Stock: 4
+[INFO] 2025-11-29 13:40:48 signals 33910 128356071069376 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL007 (daamn) | Quantity: 4 | Unit Price: $2 | Total: $8 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 10:40:48.754992+00:00
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - [SUCCESS] Product saved: AFSL007 | Type: bulk | Qty: 8 | Status: available
+[INFO] 2025-11-29 13:40:48 views 33910 128356071069376 - Returning JSON response
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - === ProductCreateView POST ===
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['tGSFouwS2bTE6UHUygjXARo3PTO3qjaqtlnfAOrnAd8p8jMBe4lfw04HPRruxuis'], 'category': ['1'], 'name': ['new oraimo'], 'buying_price': ['30'], 'selling_price': ['50'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - Is AJAX: True
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - Form created successfully
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - Form is valid
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - === form_valid START ===
+[INFO] 2025-11-29 14:06:57 signals 38081 139801208616640 - Creating new product: new oraimo
+[INFO] 2025-11-29 14:06:57 signals 38081 139801208616640 - Product created: AFSL008 - new oraimo (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-29 14:06:57 signals 38081 139801208616640 - OUT OF STOCK: new oraimo (AFSL008) is out of stock
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - [BULK ITEM] Created new product: AFSL008
+[INFO] 2025-11-29 14:06:57 signals 38081 139801208616640 - Stock IN: Purchase - Product: AFSL008 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-29 14:06:57 signals 38081 139801208616640 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL008 (new oraimo) | Quantity: 5 | Unit Price: $30 | Total: $150 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 11:06:57.237932+00:00
+[WARNING] 2025-11-29 14:06:57 signals 38081 139801208616640 - LOW STOCK ALERT: new oraimo (AFSL008) has only 5 units remaining
+[INFO] 2025-11-29 14:06:57 models 38081 139801208616640 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL008 (new oraimo) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Unit Price: 30 | Total: 150 | User: TREVOR | Timestamp: 2025-11-29 11:06:57.237932+00:00
+[INFO] 2025-11-29 14:06:57 views 38081 139801208616640 - [BULK ITEM] Stock entry created for AFSL008, Qty: 5
+[INFO] 2025-11-29 14:18:02 signals 38081 139801208616640 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:18:02 signals 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 11:18:02.228020+00:00
+[INFO] 2025-11-29 14:18:02 models 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:18:02.228020+00:00
+[INFO] 2025-11-29 14:18:02 signals 38081 139801208616640 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:18:02 signals 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-5 | User: LYN | Timestamp: 2025-11-29 11:18:02.244027+00:00
+[INFO] 2025-11-29 14:18:02 models 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:18:02.244027+00:00
+[INFO] 2025-11-29 14:18:28 signals 38081 139801208616640 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:18:28 signals 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 11:18:28.702777+00:00
+[INFO] 2025-11-29 14:18:28 models 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:18:28.702777+00:00
+[INFO] 2025-11-29 14:18:28 signals 38081 139801208616640 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:18:28 signals 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-6 | User: LYN | Timestamp: 2025-11-29 11:18:28.715708+00:00
+[INFO] 2025-11-29 14:18:28 models 38081 139801208616640 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:18:28.715708+00:00
+[INFO] 2025-11-29 14:55:28 signals 46380 125988794332864 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:55:28 signals 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 11:55:28.507568+00:00
+[INFO] 2025-11-29 14:55:28 models 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:55:28.507568+00:00
+[INFO] 2025-11-29 14:55:28 signals 46380 125988794332864 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:55:28 signals 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-7 | User: LYN | Timestamp: 2025-11-29 11:55:28.527428+00:00
+[INFO] 2025-11-29 14:55:28 models 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:55:28.527428+00:00
+[INFO] 2025-11-29 14:55:49 signals 46380 125988794332864 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:55:49 signals 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 11:55:49.737053+00:00
+[INFO] 2025-11-29 14:55:49 models 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:55:49.737053+00:00
+[INFO] 2025-11-29 14:55:49 signals 46380 125988794332864 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 14:55:49 signals 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-8 | User: LYN | Timestamp: 2025-11-29 11:55:49.774379+00:00
+[INFO] 2025-11-29 14:55:49 models 46380 125988794332864 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 11:55:49.774379+00:00
+[INFO] 2025-11-29 15:03:29 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:03:29 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:03:29.248199+00:00
+[INFO] 2025-11-29 15:03:29 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:03:29.248199+00:00
+[INFO] 2025-11-29 15:03:29 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:03:29 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-9 | User: LYN | Timestamp: 2025-11-29 12:03:29.278852+00:00
+[INFO] 2025-11-29 15:03:29 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:03:29.278852+00:00
+[INFO] 2025-11-29 15:20:59 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:20:59 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:20:59.083124+00:00
+[INFO] 2025-11-29 15:20:59 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:20:59.083124+00:00
+[INFO] 2025-11-29 15:20:59 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:20:59 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-10 | User: LYN | Timestamp: 2025-11-29 12:20:59.106877+00:00
+[INFO] 2025-11-29 15:20:59 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:20:59.106877+00:00
+[INFO] 2025-11-29 15:22:24 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:22:24 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:22:24.975628+00:00
+[INFO] 2025-11-29 15:22:24 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:22:24.975628+00:00
+[INFO] 2025-11-29 15:22:24 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:22:24 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-11 | User: LYN | Timestamp: 2025-11-29 12:22:24.997088+00:00
+[INFO] 2025-11-29 15:22:25 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:22:24.997088+00:00
+[INFO] 2025-11-29 15:28:35 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:28:35 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:28:35.778205+00:00
+[INFO] 2025-11-29 15:28:35 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:28:35.778205+00:00
+[INFO] 2025-11-29 15:28:35 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 15:28:35 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-12 | User: LYN | Timestamp: 2025-11-29 12:28:35.803433+00:00
+[INFO] 2025-11-29 15:28:35 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 12:28:35.803433+00:00
+[INFO] 2025-11-29 15:57:22 signals 47751 123207791843008 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 10
+[INFO] 2025-11-29 15:57:22 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:57:22.704623+00:00
+[INFO] 2025-11-29 15:57:22 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Old Stock: 10 | New Stock: 9 | Unit Price: 100 | Total: 100 | User: LYN | Timestamp: 2025-11-29 12:57:22.704623+00:00
+[INFO] 2025-11-29 15:57:22 signals 47751 123207791843008 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 9
+[INFO] 2025-11-29 15:57:22 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-13 | User: LYN | Timestamp: 2025-11-29 12:57:22.720811+00:00
+[INFO] 2025-11-29 15:57:22 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Old Stock: 9 | New Stock: 8 | Unit Price: 100 | Total: 100 | User: LYN | Timestamp: 2025-11-29 12:57:22.720811+00:00
+[INFO] 2025-11-29 15:58:34 signals 47751 123207791843008 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 8
+[INFO] 2025-11-29 15:58:34 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Unit Price: $1000 | Total: $1000 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 12:58:34.427575+00:00
+[INFO] 2025-11-29 15:58:34 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Old Stock: 8 | New Stock: 7 | Unit Price: 1000 | Total: 1000 | User: LYN | Timestamp: 2025-11-29 12:58:34.427575+00:00
+[INFO] 2025-11-29 15:58:34 signals 47751 123207791843008 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 7
+[INFO] 2025-11-29 15:58:34 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Unit Price: $1000 | Total: $1000 | Reference: SALE-14 | User: LYN | Timestamp: 2025-11-29 12:58:34.443383+00:00
+[INFO] 2025-11-29 15:58:34 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NM GLASS) | Quantity: -1 | Old Stock: 7 | New Stock: 6 | Unit Price: 1000 | Total: 1000 | User: LYN | Timestamp: 2025-11-29 12:58:34.443383+00:00
+[INFO] 2025-11-29 16:05:08 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 16:05:08 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $3000 | Total: $3000 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 13:05:08.076646+00:00
+[INFO] 2025-11-29 16:05:08 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 3000 | Total: 3000 | User: LYN | Timestamp: 2025-11-29 13:05:08.076646+00:00
+[INFO] 2025-11-29 16:05:08 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 16:05:08 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $3000 | Total: $3000 | Reference: SALE-15 | User: LYN | Timestamp: 2025-11-29 13:05:08.102376+00:00
+[INFO] 2025-11-29 16:05:08 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 3000 | Total: 3000 | User: LYN | Timestamp: 2025-11-29 13:05:08.102376+00:00
+[INFO] 2025-11-29 16:07:19 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 16:07:19 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: N/A | User: LYN | Timestamp: 2025-11-29 13:07:19.064202+00:00
+[INFO] 2025-11-29 16:07:19 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 13:07:19.064202+00:00
+[INFO] 2025-11-29 16:07:19 signals 47751 123207791843008 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-29 16:07:19 signals 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $300 | Total: $300 | Reference: SALE-16 | User: LYN | Timestamp: 2025-11-29 13:07:19.118177+00:00
+[INFO] 2025-11-29 16:07:19 models 47751 123207791843008 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 300 | Total: 300 | User: LYN | Timestamp: 2025-11-29 13:07:19.118177+00:00
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['fXFlxCRIx9TLSFzZMW7Lc9D94lcYbJ1rRS8hKW9cOftbiTcgKwawKaBhvqUndFhi'], 'category': ['1'], 'name': ['NORMAL PROTECTOR'], 'buying_price': ['20'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:21:48 signals 1885 133486904075968 - Creating new product: NORMAL PROTECTOR
+[INFO] 2025-11-29 22:21:48 signals 1885 133486904075968 - Product created: AFSL001 - NORMAL PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-29 22:21:48 signals 1885 133486904075968 - OUT OF STOCK: NORMAL PROTECTOR (AFSL001) is out of stock
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - [BULK ITEM] Created new product: AFSL001
+[INFO] 2025-11-29 22:21:48 signals 1885 133486904075968 - Stock IN: Purchase - Product: AFSL001 - Quantity: 50 - New Stock: 0
+[INFO] 2025-11-29 22:21:48 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 50 | Unit Price: $20 | Total: $1000 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:21:48.543557+00:00
+[INFO] 2025-11-29 22:21:48 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Unit Price: 20 | Total: 1000 | User: TREVOR | Timestamp: 2025-11-29 19:21:48.543557+00:00
+[INFO] 2025-11-29 22:21:48 views 1885 133486904075968 - [BULK ITEM] Stock entry created for AFSL001, Qty: 50
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['ImndsCNKyZi0TRGx7cq0D5JVEQkzCqa5khQ9FW5eP5Sqj5jO5MtLb6H35V2YEmqW'], 'category': ['1'], 'name': ['21D PROTECTOR'], 'buying_price': ['25'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:22:29 signals 1885 133486904075968 - Creating new product: 21D PROTECTOR
+[INFO] 2025-11-29 22:22:29 signals 1885 133486904075968 - Product created: AFSL002 - 21D PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-29 22:22:29 signals 1885 133486904075968 - OUT OF STOCK: 21D PROTECTOR (AFSL002) is out of stock
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - [BULK ITEM] Created new product: AFSL002
+[INFO] 2025-11-29 22:22:29 signals 1885 133486904075968 - Stock IN: Purchase - Product: AFSL002 - Quantity: 50 - New Stock: 0
+[INFO] 2025-11-29 22:22:29 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D PROTECTOR) | Quantity: 50 | Unit Price: $25 | Total: $1250 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:22:29.978319+00:00
+[INFO] 2025-11-29 22:22:29 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Unit Price: 25 | Total: 1250 | User: TREVOR | Timestamp: 2025-11-29 19:22:29.978319+00:00
+[INFO] 2025-11-29 22:22:29 views 1885 133486904075968 - [BULK ITEM] Stock entry created for AFSL002, Qty: 50
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['GJjudsGsEFx26BLHbev13PT5aAF5guHNiEMqqMYWVL7swPoY9OyMBQRdBFnuiqXE'], 'category': ['2'], 'name': ['ELECTRIC KETTLE'], 'buying_price': ['500'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:23:34 signals 1885 133486904075968 - Creating new product: ELECTRIC KETTLE
+[INFO] 2025-11-29 22:23:34 signals 1885 133486904075968 - Product created: EFSL001 - ELECTRIC KETTLE (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-29 22:23:34 signals 1885 133486904075968 - OUT OF STOCK: ELECTRIC KETTLE (EFSL001) is out of stock
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - [BULK ITEM] Created new product: EFSL001
+[INFO] 2025-11-29 22:23:34 signals 1885 133486904075968 - Stock IN: Purchase - Product: EFSL001 - Quantity: 10 - New Stock: 0
+[INFO] 2025-11-29 22:23:34 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC KETTLE) | Quantity: 10 | Unit Price: $500 | Total: $5000 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:23:34.382820+00:00
+[INFO] 2025-11-29 22:23:34 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC KETTLE) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Unit Price: 500 | Total: 5000 | User: TREVOR | Timestamp: 2025-11-29 19:23:34.382820+00:00
+[INFO] 2025-11-29 22:23:34 views 1885 133486904075968 - [BULK ITEM] Stock entry created for EFSL001, Qty: 10
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['1fdHwSLqZkq4RlhZeFycTjIDlyXGgztuDaGDJc3Ugq0uhzUgcfBXrkGLMDF5ivJl'], 'category': ['2'], 'name': ['ELECRIC IRON BOX'], 'buying_price': ['500'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:25:01 signals 1885 133486904075968 - Creating new product: ELECRIC IRON BOX
+[INFO] 2025-11-29 22:25:01 signals 1885 133486904075968 - Product created: EFSL002 - ELECRIC IRON BOX (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-29 22:25:01 signals 1885 133486904075968 - OUT OF STOCK: ELECRIC IRON BOX (EFSL002) is out of stock
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - [BULK ITEM] Created new product: EFSL002
+[INFO] 2025-11-29 22:25:01 signals 1885 133486904075968 - Stock IN: Purchase - Product: EFSL002 - Quantity: 10 - New Stock: 0
+[INFO] 2025-11-29 22:25:01 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECRIC IRON BOX) | Quantity: 10 | Unit Price: $500 | Total: $5000 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:25:01.506685+00:00
+[INFO] 2025-11-29 22:25:01 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECRIC IRON BOX) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Unit Price: 500 | Total: 5000 | User: TREVOR | Timestamp: 2025-11-29 19:25:01.506685+00:00
+[INFO] 2025-11-29 22:25:01 views 1885 133486904075968 - [BULK ITEM] Stock entry created for EFSL002, Qty: 10
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['tTwZtbLzTzY9ISbbUGebEdX7vOrvoSlr5OZVGv33aFyz86OsSghWceVfWT9UqOBi'], 'category': ['3'], 'name': ['BONTEL 100'], 'buying_price': ['700'], 'selling_price': ['1250'], 'sku_value': ['345345345345345'], 'quantity': ['1']}>
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:26:07 signals 1885 133486904075968 - Creating new product: BONTEL 100
+[INFO] 2025-11-29 22:26:07 signals 1885 133486904075968 - Product created: FFSL001 - BONTEL 100 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-29 22:26:07 signals 1885 133486904075968 - Stock IN: Purchase - Product: FFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-29 22:26:07 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Unit Price: $700 | Total: $700 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:26:07.655171+00:00
+[INFO] 2025-11-29 22:26:07 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 700 | Total: 700 | User: TREVOR | Timestamp: 2025-11-29 19:26:07.655171+00:00
+[INFO] 2025-11-29 22:26:07 views 1885 133486904075968 - [SINGLE ITEM] Product created: FFSL001
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['fz1nLok6JAL0YUmq8NIQEKPHwf7huNA1RuujYICA0Glqo8ZH6nLBcLNPXkPGwJQS'], 'category': ['3'], 'name': ['NOKIA 105'], 'buying_price': ['900'], 'selling_price': ['1750'], 'sku_value': ['345345345677677'], 'quantity': ['1']}>
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:27:03 signals 1885 133486904075968 - Creating new product: NOKIA 105
+[INFO] 2025-11-29 22:27:03 signals 1885 133486904075968 - Product created: FFSL002 - NOKIA 105 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-29 22:27:03 signals 1885 133486904075968 - Stock IN: Purchase - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-29 22:27:03 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Unit Price: $900 | Total: $900 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:27:03.106971+00:00
+[INFO] 2025-11-29 22:27:03 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 900 | Total: 900 | User: TREVOR | Timestamp: 2025-11-29 19:27:03.106971+00:00
+[INFO] 2025-11-29 22:27:03 views 1885 133486904075968 - [SINGLE ITEM] Product created: FFSL002
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['OmwjioHTiBKNbw4wbGUuCawq8LL7awdhqhZfvIZnzHkdBKHN9gXfabuyzQtwcst8'], 'category': ['4'], 'name': ['SAMSUNG A16'], 'buying_price': ['14000'], 'selling_price': ['25000'], 'sku_value': ['345345345688688'], 'quantity': ['1']}>
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:28:32 signals 1885 133486904075968 - Creating new product: SAMSUNG A16
+[INFO] 2025-11-29 22:28:32 signals 1885 133486904075968 - Product created: SFSL001 - SAMSUNG A16 (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-29 22:28:32 signals 1885 133486904075968 - Stock IN: Purchase - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-29 22:28:32 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A16) | Quantity: 1 | Unit Price: $14000 | Total: $14000 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:28:32.836830+00:00
+[INFO] 2025-11-29 22:28:32 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A16) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 14000 | Total: 14000 | User: TREVOR | Timestamp: 2025-11-29 19:28:32.836830+00:00
+[INFO] 2025-11-29 22:28:32 views 1885 133486904075968 - [SINGLE ITEM] Product created: SFSL001
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - === ProductCreateView POST ===
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['RW7Nq7GmoJn0sy8IMSWGV8xHhtgpOMXetRAJDrYQFPXqSMLZKsZrt9vPIyYOQId5'], 'category': ['4'], 'name': ['OPPO A5 PRO'], 'buying_price': ['12000'], 'selling_price': ['18000'], 'sku_value': ['890890890778778'], 'quantity': ['1']}>
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - Is AJAX: True
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - Form created successfully
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - Form is valid
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - === form_valid START ===
+[INFO] 2025-11-29 22:29:25 signals 1885 133486904075968 - Creating new product: OPPO A5 PRO
+[INFO] 2025-11-29 22:29:25 signals 1885 133486904075968 - Product created: SFSL002 - OPPO A5 PRO (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-29 22:29:25 signals 1885 133486904075968 - Stock IN: Purchase - Product: SFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-29 22:29:25 signals 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5 PRO) | Quantity: 1 | Unit Price: $12000 | Total: $12000 | Reference: N/A | User: TREVOR | Timestamp: 2025-11-29 19:29:25.582464+00:00
+[INFO] 2025-11-29 22:29:25 models 1885 133486904075968 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5 PRO) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 12000 | Total: 12000 | User: TREVOR | Timestamp: 2025-11-29 19:29:25.582464+00:00
+[INFO] 2025-11-29 22:29:25 views 1885 133486904075968 - [SINGLE ITEM] Product created: SFSL002
+[INFO] 2025-11-30 07:19:41 signals 17680 136163318240960 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 50
+[INFO] 2025-11-30 07:19:41 signals 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-1 | User: LYN | Timestamp: 2025-11-30 04:19:41.311998+00:00
+[INFO] 2025-11-30 07:19:41 models 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 50 | New Stock: 49 | Unit Price: 100 | Total: 100 | User: LYN | Timestamp: 2025-11-30 04:19:41.311998+00:00
+[INFO] 2025-11-30 07:20:54 signals 17680 136163318240960 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 07:20:54 signals 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $25000 | Total: $25000 | Reference: SALE-2 | User: LYN | Timestamp: 2025-11-30 04:20:54.284357+00:00
+[INFO] 2025-11-30 07:20:54 models 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 25000 | Total: 25000 | User: LYN | Timestamp: 2025-11-30 04:20:54.284357+00:00
+[INFO] 2025-11-30 07:21:40 signals 17680 136163318240960 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 07:21:40 signals 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Unit Price: $25000 | Total: $25000 | Reference: SALE-3 | User: LYN | Timestamp: 2025-11-30 04:21:40.398766+00:00
+[INFO] 2025-11-30 07:21:40 models 17680 136163318240960 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A16) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 25000 | Total: 25000 | User: LYN | Timestamp: 2025-11-30 04:21:40.398766+00:00
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - === ProductCreateView POST ===
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['8R6UACFrIk5ZsxEI7VZXttZGP3Gz5xPecJtYipnEM9jjjwY38ZaBLRvQh4I1EyfH'], 'category': ['1'], 'name': ['NOR'], 'buying_price': ['20'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - Is AJAX: True
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - Form created successfully
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - Form is valid
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - === form_valid START ===
+[INFO] 2025-11-30 11:09:56 signals 48883 128078810445504 - Creating new product: NOR
+[INFO] 2025-11-30 11:09:56 signals 48883 128078810445504 - Product created: AFSL001 - NOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-30 11:09:56 signals 48883 128078810445504 - OUT OF STOCK: NOR (AFSL001) is out of stock
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - [BULK ITEM] Created new product: AFSL001
+[INFO] 2025-11-30 11:09:56 signals 48883 128078810445504 - Stock IN: Purchase - Product: AFSL001 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-30 11:09:56 signals 48883 128078810445504 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NOR) | Quantity: 5 | Unit Price: $20 | Total: $100 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 08:09:56.576135+00:00
+[WARNING] 2025-11-30 11:09:56 signals 48883 128078810445504 - LOW STOCK ALERT: NOR (AFSL001) has only 5 units remaining
+[INFO] 2025-11-30 11:09:56 models 48883 128078810445504 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NOR) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Unit Price: 20 | Total: 100 | User: FIELDMAX | Timestamp: 2025-11-30 08:09:56.576135+00:00
+[INFO] 2025-11-30 11:09:56 views 48883 128078810445504 - [BULK ITEM] Stock entry created for AFSL001, Qty: 5
+[WARNING] 2025-11-30 11:10:59 signals 48883 128078810445504 - LOW STOCK ALERT: NOR (AFSL001) has only 5 units remaining
+[INFO] 2025-11-30 11:24:14 signals 53089 129621666420416 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 10
+[INFO] 2025-11-30 11:24:14 signals 53089 129621666420416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-1 | User: LYN | Timestamp: 2025-11-30 08:24:14.571072+00:00
+[INFO] 2025-11-30 11:24:14 models 53089 129621666420416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NOR) | Quantity: -1 | Old Stock: 10 | New Stock: 9 | Unit Price: 100 | Total: 100 | User: LYN | Timestamp: 2025-11-30 08:24:14.571072+00:00
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - === ProductCreateView POST ===
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['FBKZHHohcF6jhAjY4Kid9ydLQGzVmKSsnqKsIb2Dn8i7au6e6hH9OCXqhRaTc0sE'], 'category': ['1'], 'name': ['21D GLASS'], 'buying_price': ['25'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - Is AJAX: True
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - Form created successfully
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - Form is valid
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - === form_valid START ===
+[INFO] 2025-11-30 11:46:55 signals 53089 129621666420416 - Creating new product: 21D GLASS
+[INFO] 2025-11-30 11:46:55 signals 53089 129621666420416 - Product created: AFSL002 - 21D GLASS (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-30 11:46:55 signals 53089 129621666420416 - OUT OF STOCK: 21D GLASS (AFSL002) is out of stock
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - [BULK ITEM] Created new product: AFSL002
+[INFO] 2025-11-30 11:46:55 signals 53089 129621666420416 - Stock IN: Purchase - Product: AFSL002 - Quantity: 10 - New Stock: 0
+[INFO] 2025-11-30 11:46:55 signals 53089 129621666420416 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D GLASS) | Quantity: 10 | Unit Price: $25 | Total: $250 | Reference: N/A | User: LYN | Timestamp: 2025-11-30 08:46:55.141934+00:00
+[INFO] 2025-11-30 11:46:55 models 53089 129621666420416 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D GLASS) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Unit Price: 25 | Total: 250 | User: LYN | Timestamp: 2025-11-30 08:46:55.141934+00:00
+[INFO] 2025-11-30 11:46:55 views 53089 129621666420416 - [BULK ITEM] Stock entry created for AFSL002, Qty: 10
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['suXWwgzgsRcfhhaqzAnnSUYA3ewSu4foyO5KyVS6IUjxF5T9kc6d3niceK1G3SZ9'], 'category': ['2'], 'name': ['ELECTRIC IRON BOX'], 'buying_price': ['400'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:39:10 signals 59882 137955282056896 - Creating new product: ELECTRIC IRON BOX
+[INFO] 2025-11-30 12:39:10 signals 59882 137955282056896 - Product created: EFSL001 - ELECTRIC IRON BOX (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-30 12:39:10 signals 59882 137955282056896 - OUT OF STOCK: ELECTRIC IRON BOX (EFSL001) is out of stock
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - [BULK ITEM] Created new product: EFSL001
+[INFO] 2025-11-30 12:39:10 signals 59882 137955282056896 - Stock IN: Purchase - Product: EFSL001 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-30 12:39:10 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: 5 | Unit Price: $400 | Total: $2000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:39:10.182478+00:00
+[WARNING] 2025-11-30 12:39:10 signals 59882 137955282056896 - LOW STOCK ALERT: ELECTRIC IRON BOX (EFSL001) has only 5 units remaining
+[INFO] 2025-11-30 12:39:10 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Unit Price: 400 | Total: 2000 | User: FIELDMAX | Timestamp: 2025-11-30 09:39:10.182478+00:00
+[INFO] 2025-11-30 12:39:10 views 59882 137955282056896 - [BULK ITEM] Stock entry created for EFSL001, Qty: 5
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['arzO5YsUIpbBHUNLVaTGouQoV7dibWgcgLHC7DLKYsiT5IwuGMCwzXa06DI6KK0X'], 'category': ['2'], 'name': ['ELECTRIC KETTLE'], 'buying_price': ['600'], 'selling_price': ['1200'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:40:01 signals 59882 137955282056896 - Creating new product: ELECTRIC KETTLE
+[INFO] 2025-11-30 12:40:01 signals 59882 137955282056896 - Product created: EFSL002 - ELECTRIC KETTLE (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-30 12:40:01 signals 59882 137955282056896 - OUT OF STOCK: ELECTRIC KETTLE (EFSL002) is out of stock
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - [BULK ITEM] Created new product: EFSL002
+[INFO] 2025-11-30 12:40:01 signals 59882 137955282056896 - Stock IN: Purchase - Product: EFSL002 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-30 12:40:01 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC KETTLE) | Quantity: 5 | Unit Price: $600 | Total: $3000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:40:01.939919+00:00
+[WARNING] 2025-11-30 12:40:01 signals 59882 137955282056896 - LOW STOCK ALERT: ELECTRIC KETTLE (EFSL002) has only 5 units remaining
+[INFO] 2025-11-30 12:40:01 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC KETTLE) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Unit Price: 600 | Total: 3000 | User: FIELDMAX | Timestamp: 2025-11-30 09:40:01.939919+00:00
+[INFO] 2025-11-30 12:40:01 views 59882 137955282056896 - [BULK ITEM] Stock entry created for EFSL002, Qty: 5
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['oJ6TWoe8hYfRVvucMyGSvJq2HGrm3GL9u3eHY3xYx1m9jjdVxapIGcKEScWaCuvU'], 'category': ['3'], 'name': ['BONTEL 100'], 'buying_price': ['700'], 'selling_price': ['1500'], 'sku_value': ['345678345678900'], 'quantity': ['1']}>
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:41:16 signals 59882 137955282056896 - Creating new product: BONTEL 100
+[INFO] 2025-11-30 12:41:16 signals 59882 137955282056896 - Product created: FFSL001 - BONTEL 100 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-30 12:41:16 signals 59882 137955282056896 - Stock IN: Purchase - Product: FFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 12:41:16 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Unit Price: $700 | Total: $700 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:41:16.483937+00:00
+[INFO] 2025-11-30 12:41:16 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 700 | Total: 700 | User: FIELDMAX | Timestamp: 2025-11-30 09:41:16.483937+00:00
+[INFO] 2025-11-30 12:41:16 views 59882 137955282056896 - [SINGLE ITEM] Product created: FFSL001
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['kzAT7jtwJu0mCDqqtbTRHXGNTMvihMciqTIH9YMmZx7E0r99eNCHSq0p4i06QAW3'], 'category': ['3'], 'name': ['NOKIA 106'], 'buying_price': ['900'], 'selling_price': ['2000'], 'sku_value': ['345678345678901'], 'quantity': ['1']}>
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:42:11 signals 59882 137955282056896 - Creating new product: NOKIA 106
+[INFO] 2025-11-30 12:42:11 signals 59882 137955282056896 - Product created: FFSL002 - NOKIA 106 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-30 12:42:11 signals 59882 137955282056896 - Stock IN: Purchase - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 12:42:11 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 106) | Quantity: 1 | Unit Price: $900 | Total: $900 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:42:11.795232+00:00
+[INFO] 2025-11-30 12:42:11 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 106) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 900 | Total: 900 | User: FIELDMAX | Timestamp: 2025-11-30 09:42:11.795232+00:00
+[INFO] 2025-11-30 12:42:11 views 59882 137955282056896 - [SINGLE ITEM] Product created: FFSL002
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['dg2W1YVrlCHOSUvzmKyEPQrXvkiYDikbjAaK3DehBFO6gIei7mhu0jLzGQNMc64W'], 'category': ['4'], 'name': ['SAMSUNG A07 64GB'], 'buying_price': ['10000'], 'selling_price': ['17000'], 'sku_value': ['355344366377388'], 'quantity': ['1']}>
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:43:14 signals 59882 137955282056896 - Creating new product: SAMSUNG A07 64GB
+[INFO] 2025-11-30 12:43:14 signals 59882 137955282056896 - Product created: SFSL001 - SAMSUNG A07 64GB (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-30 12:43:14 signals 59882 137955282056896 - Stock IN: Purchase - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 12:43:14 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: 1 | Unit Price: $10000 | Total: $10000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:43:14.162762+00:00
+[INFO] 2025-11-30 12:43:14 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 10000 | Total: 10000 | User: FIELDMAX | Timestamp: 2025-11-30 09:43:14.162762+00:00
+[INFO] 2025-11-30 12:43:14 views 59882 137955282056896 - [SINGLE ITEM] Product created: SFSL001
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - === ProductCreateView POST ===
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['JuCuY81F6OQ5mK9slCJrbq5kAkVInidlPOKi0NkvmRXnKySb6eshmTpWLQqwW6X6'], 'category': ['4'], 'name': ['SAMSUNG A15 4/128GB '], 'buying_price': ['15000'], 'selling_price': ['25000'], 'sku_value': ['355366377388399'], 'quantity': ['1']}>
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - Is AJAX: True
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - Form created successfully
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - Form is valid
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - === form_valid START ===
+[INFO] 2025-11-30 12:44:28 signals 59882 137955282056896 - Creating new product: SAMSUNG A15 4/128GB
+[INFO] 2025-11-30 12:44:28 signals 59882 137955282056896 - Product created: SFSL002 - SAMSUNG A15 4/128GB (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-30 12:44:28 signals 59882 137955282056896 - Stock IN: Purchase - Product: SFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 12:44:28 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (SAMSUNG A15 4/128GB) | Quantity: 1 | Unit Price: $15000 | Total: $15000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 09:44:28.927197+00:00
+[INFO] 2025-11-30 12:44:28 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (SAMSUNG A15 4/128GB) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Unit Price: 15000 | Total: 15000 | User: FIELDMAX | Timestamp: 2025-11-30 09:44:28.927197+00:00
+[INFO] 2025-11-30 12:44:28 views 59882 137955282056896 - [SINGLE ITEM] Product created: SFSL002
+[INFO] 2025-11-30 13:29:18 signals 59882 137955282056896 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 10
+[INFO] 2025-11-30 13:29:18 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D GLASS) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-2 | User: LYN | Timestamp: 2025-11-30 10:29:18.290943+00:00
+[INFO] 2025-11-30 13:29:18 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D GLASS) | Quantity: -1 | Old Stock: 10 | New Stock: 9 | Unit Price: 200 | Total: 200 | User: LYN | Timestamp: 2025-11-30 10:29:18.290943+00:00
+[INFO] 2025-11-30 13:46:59 signals 59882 137955282056896 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 13:46:59 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-3 | User: LYN | Timestamp: 2025-11-30 10:46:59.083797+00:00
+[INFO] 2025-11-30 13:46:59 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 17000 | Total: 17000 | User: LYN | Timestamp: 2025-11-30 10:46:59.083797+00:00
+[INFO] 2025-11-30 14:11:32 signals 59882 137955282056896 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 14:11:32 signals 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-4 | User: LYN | Timestamp: 2025-11-30 11:11:32.234341+00:00
+[INFO] 2025-11-30 14:11:32 models 59882 137955282056896 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 17000 | Total: 17000 | User: LYN | Timestamp: 2025-11-30 11:11:32.234341+00:00
+[INFO] 2025-11-30 16:25:26 signals 80923 135269239121600 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 16:25:26 signals 80923 135269239121600 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-5 | User: LYN | Timestamp: 2025-11-30 13:25:26.812961+00:00
+[INFO] 2025-11-30 16:25:26 models 80923 135269239121600 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 17000 | Total: 17000 | User: LYN | Timestamp: 2025-11-30 13:25:26.812961+00:00
+[INFO] 2025-11-30 16:25:51 signals 80923 135269239121600 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 16:25:51 signals 80923 135269239121600 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-6 | User: LYN | Timestamp: 2025-11-30 13:25:51.381412+00:00
+[INFO] 2025-11-30 16:25:51 models 80923 135269239121600 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Unit Price: 17000 | Total: 17000 | User: LYN | Timestamp: 2025-11-30 13:25:51.381412+00:00
+[INFO] 2025-11-30 16:34:56 signals 90275 123299798951616 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 16:34:56 signals 90275 123299798951616 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-7 | User: LYN | Timestamp: 2025-11-30 13:34:56.040038+00:00
+[INFO] 2025-11-30 16:34:56 models 90275 123299798951616 - [SOLD] Single item SFSL001 marked as SOLD
+[INFO] 2025-11-30 16:34:56 models 90275 123299798951616 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 64GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 17000 | Total: 17000 | User: LYN
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['uYNAmnJ2PJQog08lgIeGS3R9e0BX7dVTUCJXPRSNNgEhy0gIqPkv9QOz0NLfmxNk'], 'category': ['1'], 'name': ['NORMAL PROTECTORS'], 'buying_price': ['20'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:37:49 signals 2139 133353093199552 - Creating new product: NORMAL PROTECTORS
+[INFO] 2025-11-30 20:37:49 signals 2139 133353093199552 - Product created: AFSL001 - NORMAL PROTECTORS (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-30 20:37:49 signals 2139 133353093199552 - OUT OF STOCK: NORMAL PROTECTORS (AFSL001) is out of stock
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - [BULK ITEM] Created new product: AFSL001
+[INFO] 2025-11-30 20:37:49 signals 2139 133353093199552 - Stock IN: Purchase - Product: AFSL001 - Quantity: 50 - New Stock: 0
+[INFO] 2025-11-30 20:37:49 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: 50 | Unit Price: $20 | Total: $1000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:37:49.331144+00:00
+[INFO] 2025-11-30 20:37:49 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Status: available | Unit Price: 20 | Total: 1000 | User: FIELDMAX
+[INFO] 2025-11-30 20:37:49 views 2139 133353093199552 - [BULK ITEM] Stock entry created for AFSL001, Qty: 50
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['SJEjMSjAZ3KOFpWHcTwLpVw5NNle17YIinAGfmslXAyHXp44m0CAGItvzAvwgrQ9'], 'category': ['1'], 'name': ['21D PROTECTOR'], 'buying_price': ['25'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:38:52 signals 2139 133353093199552 - Creating new product: 21D PROTECTOR
+[INFO] 2025-11-30 20:38:52 signals 2139 133353093199552 - Product created: AFSL002 - 21D PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-30 20:38:52 signals 2139 133353093199552 - OUT OF STOCK: 21D PROTECTOR (AFSL002) is out of stock
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - [BULK ITEM] Created new product: AFSL002
+[INFO] 2025-11-30 20:38:52 signals 2139 133353093199552 - Stock IN: Purchase - Product: AFSL002 - Quantity: 50 - New Stock: 0
+[INFO] 2025-11-30 20:38:52 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D PROTECTOR) | Quantity: 50 | Unit Price: $25 | Total: $1250 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:38:52.314353+00:00
+[INFO] 2025-11-30 20:38:52 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Status: available | Unit Price: 25 | Total: 1250 | User: FIELDMAX
+[INFO] 2025-11-30 20:38:52 views 2139 133353093199552 - [BULK ITEM] Stock entry created for AFSL002, Qty: 50
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['6rYj4pKPlAQCBeemSQbuxhYpxUjG5c8Jw5UGxTTAj7EvTemJ2XhjO4VPjHtYkw0a'], 'category': ['1'], 'name': ['METTALIC PROTECTOR'], 'buying_price': ['25'], 'selling_price': ['250'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:40:25 signals 2139 133353093199552 - Creating new product: METTALIC PROTECTOR
+[INFO] 2025-11-30 20:40:25 signals 2139 133353093199552 - Product created: AFSL003 - METTALIC PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-11-30 20:40:25 signals 2139 133353093199552 - OUT OF STOCK: METTALIC PROTECTOR (AFSL003) is out of stock
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - [BULK ITEM] Created new product: AFSL003
+[INFO] 2025-11-30 20:40:25 signals 2139 133353093199552 - Stock IN: Purchase - Product: AFSL003 - Quantity: 50 - New Stock: 0
+[INFO] 2025-11-30 20:40:25 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: 50 | Unit Price: $25 | Total: $1250 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:40:25.500683+00:00
+[INFO] 2025-11-30 20:40:25 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Status: available | Unit Price: 25 | Total: 1250 | User: FIELDMAX
+[INFO] 2025-11-30 20:40:25 views 2139 133353093199552 - [BULK ITEM] Stock entry created for AFSL003, Qty: 50
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['Ul4wyS1UfLsaC6X1QqyhAA2VuTmSpDb1kZ0T1maFdig3U65o0xE6RnZlgGwaEX3s'], 'category': ['2'], 'name': ['ELECTRIC IRON BOX'], 'buying_price': ['500'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:41:22 signals 2139 133353093199552 - Creating new product: ELECTRIC IRON BOX
+[INFO] 2025-11-30 20:41:22 signals 2139 133353093199552 - Product created: EFSL001 - ELECTRIC IRON BOX (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-30 20:41:22 signals 2139 133353093199552 - OUT OF STOCK: ELECTRIC IRON BOX (EFSL001) is out of stock
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - [BULK ITEM] Created new product: EFSL001
+[INFO] 2025-11-30 20:41:22 signals 2139 133353093199552 - Stock IN: Purchase - Product: EFSL001 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-30 20:41:22 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: 5 | Unit Price: $500 | Total: $2500 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:41:22.459994+00:00
+[WARNING] 2025-11-30 20:41:22 signals 2139 133353093199552 - LOW STOCK ALERT: ELECTRIC IRON BOX (EFSL001) has only 5 units remaining
+[INFO] 2025-11-30 20:41:22 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Status: lowstock | Unit Price: 500 | Total: 2500 | User: FIELDMAX
+[INFO] 2025-11-30 20:41:22 views 2139 133353093199552 - [BULK ITEM] Stock entry created for EFSL001, Qty: 5
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['UstatyID0iCIbtu21GaXV3VsI7jWM9QGk6pxW2RoYPqBttCpbNgMcQSSuUte1tI7'], 'category': ['2'], 'name': ['ELECTRIC  KETTLE'], 'buying_price': ['700'], 'selling_price': ['1200'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:43:21 signals 2139 133353093199552 - Creating new product: ELECTRIC  KETTLE
+[INFO] 2025-11-30 20:43:21 signals 2139 133353093199552 - Product created: EFSL002 - ELECTRIC  KETTLE (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-30 20:43:21 signals 2139 133353093199552 - OUT OF STOCK: ELECTRIC  KETTLE (EFSL002) is out of stock
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - [BULK ITEM] Created new product: EFSL002
+[INFO] 2025-11-30 20:43:21 signals 2139 133353093199552 - Stock IN: Purchase - Product: EFSL002 - Quantity: 5 - New Stock: 0
+[INFO] 2025-11-30 20:43:21 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: 5 | Unit Price: $700 | Total: $3500 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:43:21.244017+00:00
+[WARNING] 2025-11-30 20:43:21 signals 2139 133353093199552 - LOW STOCK ALERT: ELECTRIC  KETTLE (EFSL002) has only 5 units remaining
+[INFO] 2025-11-30 20:43:21 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Status: lowstock | Unit Price: 700 | Total: 3500 | User: FIELDMAX
+[INFO] 2025-11-30 20:43:21 views 2139 133353093199552 - [BULK ITEM] Stock entry created for EFSL002, Qty: 5
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['K4gfuaU4UqvenX94RnXyWufeDJwThch1aIcCXE3PSXj7FXhr1u3ndhcEpwGbww9s'], 'category': ['2'], 'name': ['P0WERKING EXTENSION'], 'buying_price': ['600'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:45:32 signals 2139 133353093199552 - Creating new product: P0WERKING EXTENSION
+[INFO] 2025-11-30 20:45:32 signals 2139 133353093199552 - Product created: EFSL003 - P0WERKING EXTENSION (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-11-30 20:45:32 signals 2139 133353093199552 - OUT OF STOCK: P0WERKING EXTENSION (EFSL003) is out of stock
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - [BULK ITEM] Created new product: EFSL003
+[INFO] 2025-11-30 20:45:32 signals 2139 133353093199552 - Stock IN: Purchase - Product: EFSL003 - Quantity: 10 - New Stock: 0
+[INFO] 2025-11-30 20:45:32 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL003 (P0WERKING EXTENSION) | Quantity: 10 | Unit Price: $600 | Total: $6000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:45:32.845762+00:00
+[INFO] 2025-11-30 20:45:32 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL003 (P0WERKING EXTENSION) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Status: available | Unit Price: 600 | Total: 6000 | User: FIELDMAX
+[INFO] 2025-11-30 20:45:32 views 2139 133353093199552 - [BULK ITEM] Stock entry created for EFSL003, Qty: 10
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['2PIQuCEfft0NoZsfvDig55pmrrXriQpastEdX6N0d0OGGZACFKo5mSmMde7JxahB'], 'category': ['3'], 'name': ['BONTEL 100'], 'buying_price': ['700'], 'selling_price': ['1250'], 'sku_value': ['3457689P0976453'], 'quantity': ['1']}>
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:50:29 signals 2139 133353093199552 - Creating new product: BONTEL 100
+[INFO] 2025-11-30 20:50:29 signals 2139 133353093199552 - Product created: FFSL001 - BONTEL 100 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-30 20:50:29 signals 2139 133353093199552 - Stock IN: Purchase - Product: FFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 20:50:29 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Unit Price: $700 | Total: $700 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:50:29.557375+00:00
+[INFO] 2025-11-30 20:50:29 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL 100) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 700 | Total: 700 | User: FIELDMAX
+[INFO] 2025-11-30 20:50:29 views 2139 133353093199552 - [SINGLE ITEM] Product created: FFSL001
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['Tzr5PUbjg2ZfDjzTCUcn6OZ2tYVmN1GVjdnsiok4ezN8VjHgM1icnBWsfL5E2lym'], 'category': ['3'], 'name': ['NOKIA 105'], 'buying_price': ['900'], 'selling_price': ['1750'], 'sku_value': ['234567897654556'], 'quantity': ['1']}>
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:51:39 signals 2139 133353093199552 - Creating new product: NOKIA 105
+[INFO] 2025-11-30 20:51:39 signals 2139 133353093199552 - Product created: FFSL002 - NOKIA 105 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-11-30 20:51:39 signals 2139 133353093199552 - Stock IN: Purchase - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 20:51:39 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Unit Price: $900 | Total: $900 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:51:39.474870+00:00
+[INFO] 2025-11-30 20:51:39 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 900 | Total: 900 | User: FIELDMAX
+[INFO] 2025-11-30 20:51:39 views 2139 133353093199552 - [SINGLE ITEM] Product created: FFSL002
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['BzMJDQGVkd5M4vXPYP1hfPCbaeoEtASa1dI66kPGiKTFmv5c8W76wCzBW1yWIUKB'], 'category': ['4'], 'name': ['SAMSUNG A15'], 'buying_price': ['15000'], 'selling_price': ['25000'], 'sku_value': ['543123478598765423'], 'quantity': ['1']}>
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:53:02 signals 2139 133353093199552 - Creating new product: SAMSUNG A15
+[INFO] 2025-11-30 20:53:02 signals 2139 133353093199552 - Product created: SFSL001 - SAMSUNG A15 (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-30 20:53:02 signals 2139 133353093199552 - Stock IN: Purchase - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 20:53:02 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A15) | Quantity: 1 | Unit Price: $15000 | Total: $15000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:53:02.417805+00:00
+[INFO] 2025-11-30 20:53:02 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A15) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 15000 | Total: 15000 | User: FIELDMAX
+[INFO] 2025-11-30 20:53:02 views 2139 133353093199552 - [SINGLE ITEM] Product created: SFSL001
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - === ProductCreateView POST ===
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['6celeq3IQYtsErtDgyQ6Ee0BmjgQ2JPGwQaIHUctOvhlWrB0qFWVV1X186q8h3H7'], 'category': ['4'], 'name': ['OPPO A5'], 'buying_price': ['12000'], 'selling_price': ['18000'], 'sku_value': ['785643125467898'], 'quantity': ['1']}>
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - Is AJAX: True
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - Form created successfully
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - Form is valid
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - === form_valid START ===
+[INFO] 2025-11-30 20:54:26 signals 2139 133353093199552 - Creating new product: OPPO A5
+[INFO] 2025-11-30 20:54:26 signals 2139 133353093199552 - Product created: SFSL002 - OPPO A5 (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-11-30 20:54:26 signals 2139 133353093199552 - Stock IN: Purchase - Product: SFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-11-30 20:54:26 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5) | Quantity: 1 | Unit Price: $12000 | Total: $12000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-11-30 17:54:26.921921+00:00
+[INFO] 2025-11-30 20:54:26 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 12000 | Total: 12000 | User: FIELDMAX
+[INFO] 2025-11-30 20:54:26 views 2139 133353093199552 - [SINGLE ITEM] Product created: SFSL002
+[INFO] 2025-11-30 20:59:48 signals 2139 133353093199552 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 20:59:48 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A15) | Quantity: -1 | Unit Price: $25000 | Total: $25000 | Reference: SALE-1 | User: LYN | Timestamp: 2025-11-30 17:59:48.835527+00:00
+[INFO] 2025-11-30 20:59:48 models 2139 133353093199552 - [SOLD] Single item SFSL001 marked as SOLD
+[INFO] 2025-11-30 20:59:48 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A15) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 25000 | Total: 25000 | User: LYN
+[INFO] 2025-11-30 21:00:45 signals 2139 133353093199552 - Stock OUT: Sale - Product: EFSL001 - Quantity: -1 - New Stock: 5
+[INFO] 2025-11-30 21:00:45 signals 2139 133353093199552 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: -1 | Unit Price: $1000 | Total: $1000 | Reference: SALE-2 | User: LYN | Timestamp: 2025-11-30 18:00:45.390471+00:00
+[WARNING] 2025-11-30 21:00:45 signals 2139 133353093199552 - LOW STOCK ALERT: ELECTRIC IRON BOX (EFSL001) has only 4 units remaining
+[INFO] 2025-11-30 21:00:45 models 2139 133353093199552 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: -1 | Old Stock: 5 | New Stock: 4 | Status: lowstock | Unit Price: 1000 | Total: 1000 | User: LYN
+[INFO] 2025-11-30 22:02:32 signals 8933 125662415197888 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 50
+[INFO] 2025-11-30 22:02:32 signals 8933 125662415197888 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-3 | User: LYN | Timestamp: 2025-11-30 19:02:32.408672+00:00
+[INFO] 2025-11-30 22:02:32 models 8933 125662415197888 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 50 | New Stock: 49 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-11-30 22:04:11 signals 8933 125662415197888 - Stock OUT: Sale - Product: FFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-11-30 22:04:11 signals 8933 125662415197888 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Unit Price: $1250 | Total: $1250 | Reference: SALE-4 | User: LYN | Timestamp: 2025-11-30 19:04:11.099396+00:00
+[INFO] 2025-11-30 22:04:11 models 8933 125662415197888 - [SOLD] Single item FFSL001 marked as SOLD
+[INFO] 2025-11-30 22:04:11 models 8933 125662415197888 - [STOCK MOVEMENT] Type: Sale | Product: FFSL001 (BONTEL 100) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 1250 | Total: 1250 | User: LYN
+[INFO] 2025-12-01 10:43:41 signals 26031 139960500876992 - Stock OUT: Sale - Product: AFSL001 - Quantity: -9 - New Stock: 49
+[INFO] 2025-12-01 10:43:41 signals 26031 139960500876992 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -9 | Unit Price: $100 | Total: $900 | Reference: SALE-5 | User: LYN | Timestamp: 2025-12-01 07:43:41.783805+00:00
+[INFO] 2025-12-01 10:43:41 models 26031 139960500876992 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -9 | Old Stock: 49 | New Stock: 40 | Status: available | Unit Price: 100 | Total: 900 | User: LYN
+[INFO] 2025-12-01 13:51:01 signals 26517 139402449426112 - Stock OUT: Sale - Product: AFSL001 - Quantity: -5 - New Stock: 40
+[INFO] 2025-12-01 13:51:01 signals 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -5 | Unit Price: $100 | Total: $500 | Reference: SALE-6 | User: LYN | Timestamp: 2025-12-01 10:51:01.689068+00:00
+[INFO] 2025-12-01 13:51:01 models 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -5 | Old Stock: 40 | New Stock: 35 | Status: available | Unit Price: 100 | Total: 500 | User: LYN
+[INFO] 2025-12-01 13:51:01 signals 26517 139402449426112 - Stock OUT: Sale - Product: AFSL002 - Quantity: -12 - New Stock: 50
+[INFO] 2025-12-01 13:51:01 signals 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -12 | Unit Price: $200 | Total: $2400 | Reference: SALE-7 | User: LYN | Timestamp: 2025-12-01 10:51:01.906272+00:00
+[INFO] 2025-12-01 13:51:01 models 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -12 | Old Stock: 50 | New Stock: 38 | Status: available | Unit Price: 200 | Total: 2400 | User: LYN
+[INFO] 2025-12-01 13:51:02 signals 26517 139402449426112 - Stock OUT: Sale - Product: EFSL002 - Quantity: -1 - New Stock: 5
+[INFO] 2025-12-01 13:51:02 signals 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: -1 | Unit Price: $1200 | Total: $1200 | Reference: SALE-8 | User: LYN | Timestamp: 2025-12-01 10:51:02.044890+00:00
+[WARNING] 2025-12-01 13:51:02 signals 26517 139402449426112 - LOW STOCK ALERT: ELECTRIC  KETTLE (EFSL002) has only 4 units remaining
+[INFO] 2025-12-01 13:51:02 models 26517 139402449426112 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: -1 | Old Stock: 5 | New Stock: 4 | Status: lowstock | Unit Price: 1200 | Total: 1200 | User: LYN
+[INFO] 2025-12-01 14:35:43 signals 28916 139335673325248 - Stock OUT: Sale - Product: AFSL002 - Quantity: -8 - New Stock: 38
+[INFO] 2025-12-01 14:35:43 signals 28916 139335673325248 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -8 | Unit Price: $200 | Total: $1600 | Reference: SALE-9 | User: BRENDA | Timestamp: 2025-12-01 11:35:43.018385+00:00
+[INFO] 2025-12-01 14:35:43 models 28916 139335673325248 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -8 | Old Stock: 38 | New Stock: 30 | Status: available | Unit Price: 200 | Total: 1600 | User: BRENDA
+[INFO] 2025-12-01 14:35:43 signals 28916 139335673325248 - Stock OUT: Sale - Product: AFSL001 - Quantity: -5 - New Stock: 35
+[INFO] 2025-12-01 14:35:43 signals 28916 139335673325248 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -5 | Unit Price: $100 | Total: $500 | Reference: SALE-10 | User: BRENDA | Timestamp: 2025-12-01 11:35:43.088560+00:00
+[INFO] 2025-12-01 14:35:43 models 28916 139335673325248 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -5 | Old Stock: 35 | New Stock: 30 | Status: available | Unit Price: 100 | Total: 500 | User: BRENDA
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 30
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512011501363FC9F2 | User: LYN | Timestamp: 2025-12-01 15:01:36.285103+00:00
+[INFO] 2025-12-01 18:01:36 models 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 30 | New Stock: 29 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 30
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251201150136CAAFE8 | User: LYN | Timestamp: 2025-12-01 15:01:36.348212+00:00
+[INFO] 2025-12-01 18:01:36 models 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 30 | New Stock: 29 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - Stock OUT: Sale - Product: AFSL003 - Quantity: -10 - New Stock: 50
+[INFO] 2025-12-01 18:01:36 signals 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -10 | Unit Price: $250 | Total: $2500 | Reference: SALE-SL2025120115013693040A | User: LYN | Timestamp: 2025-12-01 15:01:36.390408+00:00
+[INFO] 2025-12-01 18:01:36 models 29849 133753422304960 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -10 | Old Stock: 50 | New Stock: 40 | Status: available | Unit Price: 250 | Total: 2500 | User: LYN
+[INFO] 2025-12-01 18:32:15 signals 30777 135185607390912 - Stock OUT: Sale - Product: AFSL001 - Quantity: -4 - New Stock: 29
+[INFO] 2025-12-01 18:32:15 signals 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -4 | Unit Price: $100 | Total: $400 | Reference: SALE-SL20251201153215DADD88 | User: LYN | Timestamp: 2025-12-01 15:32:15.493691+00:00
+[INFO] 2025-12-01 18:32:15 models 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -4 | Old Stock: 29 | New Stock: 25 | Status: available | Unit Price: 100 | Total: 400 | User: LYN
+[INFO] 2025-12-01 18:32:15 signals 30777 135185607390912 - Stock OUT: Sale - Product: AFSL002 - Quantity: -4 - New Stock: 29
+[INFO] 2025-12-01 18:32:15 signals 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -4 | Unit Price: $200 | Total: $800 | Reference: SALE-SL20251201153215389C3F | User: LYN | Timestamp: 2025-12-01 15:32:15.530388+00:00
+[INFO] 2025-12-01 18:32:15 models 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -4 | Old Stock: 29 | New Stock: 25 | Status: available | Unit Price: 200 | Total: 800 | User: LYN
+[INFO] 2025-12-01 18:33:57 signals 30777 135185607390912 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 25
+[INFO] 2025-12-01 18:33:57 signals 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512011533577D8824 | User: LYN | Timestamp: 2025-12-01 15:33:57.349409+00:00
+[INFO] 2025-12-01 18:33:57 models 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 25 | New Stock: 24 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-01 18:33:57 signals 30777 135185607390912 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 25
+[INFO] 2025-12-01 18:33:57 signals 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251201153357C80C4F | User: LYN | Timestamp: 2025-12-01 15:33:57.368903+00:00
+[INFO] 2025-12-01 18:33:57 models 30777 135185607390912 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 25 | New Stock: 24 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-01 19:55:59 signals 31920 126125777045184 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 24
+[INFO] 2025-12-01 19:55:59 signals 31920 126125777045184 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL2025120116555953406B | User: CORNELIOUS | Timestamp: 2025-12-01 16:55:59.235097+00:00
+[INFO] 2025-12-01 19:55:59 models 31920 126125777045184 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 24 | New Stock: 23 | Status: available | Unit Price: 100 | Total: 100 | User: CORNELIOUS
+[INFO] 2025-12-01 19:55:59 signals 31920 126125777045184 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 24
+[INFO] 2025-12-01 19:55:59 signals 31920 126125777045184 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251201165559F30985 | User: CORNELIOUS | Timestamp: 2025-12-01 16:55:59.246615+00:00
+[INFO] 2025-12-01 19:55:59 models 31920 126125777045184 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 24 | New Stock: 23 | Status: available | Unit Price: 200 | Total: 200 | User: CORNELIOUS
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 23
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512011926082D50ED | User: LYN | Timestamp: 2025-12-01 19:26:08.353286+00:00
+[INFO] 2025-12-01 22:26:08 models 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 23 | New Stock: 22 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 23
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL202512011926084D14A4 | User: LYN | Timestamp: 2025-12-01 19:26:08.371482+00:00
+[INFO] 2025-12-01 22:26:08 models 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 23 | New Stock: 22 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - Stock OUT: Sale - Product: AFSL003 - Quantity: -5 - New Stock: 40
+[INFO] 2025-12-01 22:26:08 signals 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -5 | Unit Price: $250 | Total: $1250 | Reference: SALE-SL2025120119260812F173 | User: LYN | Timestamp: 2025-12-01 19:26:08.385676+00:00
+[INFO] 2025-12-01 22:26:08 models 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -5 | Old Stock: 40 | New Stock: 35 | Status: available | Unit Price: 250 | Total: 1250 | User: LYN
+[INFO] 2025-12-01 22:36:59 signals 9446 134826061371072 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 22
+[INFO] 2025-12-01 22:36:59 signals 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL20251201193659D7FDA9 | User: BRENDA | Timestamp: 2025-12-01 19:36:59.701914+00:00
+[INFO] 2025-12-01 22:36:59 models 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 22 | New Stock: 21 | Status: available | Unit Price: 100 | Total: 100 | User: BRENDA
+[INFO] 2025-12-01 22:36:59 signals 9446 134826061371072 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 22
+[INFO] 2025-12-01 22:36:59 signals 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL202512011936598FF1F7 | User: BRENDA | Timestamp: 2025-12-01 19:36:59.715351+00:00
+[INFO] 2025-12-01 22:36:59 models 9446 134826061371072 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 22 | New Stock: 21 | Status: available | Unit Price: 200 | Total: 200 | User: BRENDA
+[INFO] 2025-12-01 23:08:27 signals 18162 126685697537728 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 21
+[INFO] 2025-12-01 23:08:27 signals 18162 126685697537728 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512012008271634E8 | User: BRENDA | Timestamp: 2025-12-01 20:08:27.661358+00:00
+[INFO] 2025-12-01 23:08:27 models 18162 126685697537728 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 21 | New Stock: 20 | Status: available | Unit Price: 100 | Total: 100 | User: BRENDA
+[INFO] 2025-12-01 23:08:27 signals 18162 126685697537728 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 21
+[INFO] 2025-12-01 23:08:27 signals 18162 126685697537728 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251201200827D68B91 | User: BRENDA | Timestamp: 2025-12-01 20:08:27.668264+00:00
+[INFO] 2025-12-01 23:08:27 models 18162 126685697537728 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 21 | New Stock: 20 | Status: available | Unit Price: 200 | Total: 200 | User: BRENDA
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 20
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512012015341692DC | User: BRENDA | Timestamp: 2025-12-01 20:15:34.304952+00:00
+[INFO] 2025-12-01 23:15:34 models 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 20 | New Stock: 19 | Status: available | Unit Price: 100 | Total: 100 | User: BRENDA
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 20
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL202512012015349BD2DC | User: BRENDA | Timestamp: 2025-12-01 20:15:34.316717+00:00
+[INFO] 2025-12-01 23:15:34 models 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 20 | New Stock: 19 | Status: available | Unit Price: 200 | Total: 200 | User: BRENDA
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - Stock OUT: Sale - Product: AFSL003 - Quantity: -1 - New Stock: 35
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Unit Price: $250 | Total: $250 | Reference: SALE-SL2025120120153440E0AA | User: BRENDA | Timestamp: 2025-12-01 20:15:34.328050+00:00
+[INFO] 2025-12-01 23:15:34 models 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Old Stock: 35 | New Stock: 34 | Status: available | Unit Price: 250 | Total: 250 | User: BRENDA
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - Stock OUT: Sale - Product: EFSL001 - Quantity: -1 - New Stock: 4
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: -1 | Unit Price: $1000 | Total: $1000 | Reference: SALE-SL202512012015349176DA | User: BRENDA | Timestamp: 2025-12-01 20:15:34.335027+00:00
+[WARNING] 2025-12-01 23:15:34 signals 19646 132982111958720 - LOW STOCK ALERT: ELECTRIC IRON BOX (EFSL001) has only 3 units remaining
+[INFO] 2025-12-01 23:15:34 models 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (ELECTRIC IRON BOX) | Quantity: -1 | Old Stock: 4 | New Stock: 3 | Status: lowstock | Unit Price: 1000 | Total: 1000 | User: BRENDA
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - Stock OUT: Sale - Product: EFSL002 - Quantity: -1 - New Stock: 4
+[INFO] 2025-12-01 23:15:34 signals 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: -1 | Unit Price: $1200 | Total: $1200 | Reference: SALE-SL20251201201534248BDA | User: BRENDA | Timestamp: 2025-12-01 20:15:34.347956+00:00
+[WARNING] 2025-12-01 23:15:34 signals 19646 132982111958720 - LOW STOCK ALERT: ELECTRIC  KETTLE (EFSL002) has only 3 units remaining
+[INFO] 2025-12-01 23:15:34 models 19646 132982111958720 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC  KETTLE) | Quantity: -1 | Old Stock: 4 | New Stock: 3 | Status: lowstock | Unit Price: 1200 | Total: 1200 | User: BRENDA
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - === ProductCreateView POST ===
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['fE8DASbti9iKH4Acaz9y4qbh94ycEl0yCMLBzcdIuTIMYCK39UOTI2kzz42LE045'], 'category': ['5'], 'name': ['VISSION  TV 32" '], 'buying_price': ['10000'], 'selling_price': ['16000'], 'sku_value': ['SN35426YTRTF36'], 'quantity': ['1']}>
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - Is AJAX: True
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - Form created successfully
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - Form is valid
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - === form_valid START ===
+[INFO] 2025-12-02 06:34:38 signals 19646 132982092482240 - Creating new product: VISSION  TV 32"
+[INFO] 2025-12-02 06:34:38 signals 19646 132982092482240 - Product created: TFSL001 - VISSION  TV 32" (Category: TELEVISIONS, Quantity: 1)
+[INFO] 2025-12-02 06:34:38 signals 19646 132982092482240 - Stock IN: Purchase - Product: TFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 06:34:38 signals 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL001 (VISSION  TV 32") | Quantity: 1 | Unit Price: $10000 | Total: $10000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 03:34:38.798890+00:00
+[INFO] 2025-12-02 06:34:38 models 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL001 (VISSION  TV 32") | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 10000 | Total: 10000 | User: FIELDMAX
+[INFO] 2025-12-02 06:34:38 views 19646 132982092482240 - [SINGLE ITEM] Product created: TFSL001
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - === ProductCreateView POST ===
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['16Nnr0VmwCcyQpnnly55GOwxY1kTzTGpoeqlqkXBImCA7XxekTKqkqFPo1OszyKW'], 'category': ['5'], 'name': ['VITRON TV 32"'], 'buying_price': ['11000'], 'selling_price': ['17000'], 'sku_value': ['SN3R594283TYRGYVBSHF'], 'quantity': ['1']}>
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - Is AJAX: True
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - Form created successfully
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - Form is valid
+[INFO] 2025-12-02 06:35:33 views 19646 132982092482240 - === form_valid START ===
+[INFO] 2025-12-02 06:35:33 signals 19646 132982092482240 - Creating new product: VITRON TV 32"
+[INFO] 2025-12-02 06:35:33 signals 19646 132982092482240 - Product created: TFSL002 - VITRON TV 32" (Category: TELEVISIONS, Quantity: 1)
+[INFO] 2025-12-02 06:35:33 signals 19646 132982092482240 - Stock IN: Purchase - Product: TFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 06:35:33 signals 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL002 (VITRON TV 32") | Quantity: 1 | Unit Price: $11000 | Total: $11000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 03:35:33.996623+00:00
+[INFO] 2025-12-02 06:35:34 models 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL002 (VITRON TV 32") | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 11000 | Total: 11000 | User: FIELDMAX
+[INFO] 2025-12-02 06:35:34 views 19646 132982092482240 - [SINGLE ITEM] Product created: TFSL002
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - === ProductCreateView POST ===
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['1Kvg28fW3whIhGGxdHDEmFVcpjPVjzdMoS8e1shbfgHKyeQoc2iZ0h4uPjjujehj'], 'category': ['4'], 'name': ['SONNY TV42"'], 'buying_price': ['16000'], 'selling_price': ['35000'], 'sku_value': ['SNADKLSAFG36R87'], 'quantity': ['1']}>
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - Is AJAX: True
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - Form created successfully
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - Form is valid
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - === form_valid START ===
+[INFO] 2025-12-02 06:36:27 signals 19646 132982092482240 - Creating new product: SONNY TV42"
+[INFO] 2025-12-02 06:36:27 signals 19646 132982092482240 - Product created: SFSL003 - SONNY TV42" (Category: SMARTHPHONES, Quantity: 1)
+[INFO] 2025-12-02 06:36:27 signals 19646 132982092482240 - Stock IN: Purchase - Product: SFSL003 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 06:36:27 signals 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL003 (SONNY TV42") | Quantity: 1 | Unit Price: $16000 | Total: $16000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 03:36:27.327631+00:00
+[INFO] 2025-12-02 06:36:27 models 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL003 (SONNY TV42") | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 16000 | Total: 16000 | User: FIELDMAX
+[INFO] 2025-12-02 06:36:27 views 19646 132982092482240 - [SINGLE ITEM] Product created: SFSL003
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - === ProductCreateView POST ===
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['qX2zMUNAF46ONhNF4Cqfj2IvJmbq5tmIN5FxLePPROwQ4PXw3X5AXERN9mFZ58qf'], 'category': ['5'], 'name': ['SYNIX TV 55"3'], 'buying_price': ['30000'], 'selling_price': ['65000'], 'sku_value': ['SN3564RTFM3553'], 'quantity': ['1']}>
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - Is AJAX: True
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - Form created successfully
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - Form is valid
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - === form_valid START ===
+[INFO] 2025-12-02 06:40:50 signals 19646 132982092482240 - Creating new product: SYNIX TV 55"3
+[INFO] 2025-12-02 06:40:50 signals 19646 132982092482240 - Product created: TFSL003 - SYNIX TV 55"3 (Category: TELEVISIONS, Quantity: 1)
+[INFO] 2025-12-02 06:40:50 signals 19646 132982092482240 - Stock IN: Purchase - Product: TFSL003 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 06:40:50 signals 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL003 (SYNIX TV 55"3) | Quantity: 1 | Unit Price: $30000 | Total: $30000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 03:40:50.154602+00:00
+[INFO] 2025-12-02 06:40:50 models 19646 132982092482240 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL003 (SYNIX TV 55"3) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 30000 | Total: 30000 | User: FIELDMAX
+[INFO] 2025-12-02 06:40:50 views 19646 132982092482240 - [SINGLE ITEM] Product created: TFSL003
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 19
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512020412024EEDF7 | User: LYN | Timestamp: 2025-12-02 04:12:02.753638+00:00
+[INFO] 2025-12-02 07:12:02 models 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 19 | New Stock: 18 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 19
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251202041202D31D0F | User: LYN | Timestamp: 2025-12-02 04:12:02.834735+00:00
+[INFO] 2025-12-02 07:12:02 models 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 19 | New Stock: 18 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - Stock OUT: Sale - Product: AFSL003 - Quantity: -1 - New Stock: 34
+[INFO] 2025-12-02 07:12:02 signals 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Unit Price: $250 | Total: $250 | Reference: SALE-SL2025120204120234163C | User: LYN | Timestamp: 2025-12-02 04:12:02.876994+00:00
+[INFO] 2025-12-02 07:12:02 models 43616 123585314010816 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Old Stock: 34 | New Stock: 33 | Status: available | Unit Price: 250 | Total: 250 | User: LYN
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 18
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL20251202064252F9B6D8 | User: LYN | Timestamp: 2025-12-02 06:42:52.621483+00:00
+[INFO] 2025-12-02 09:42:52 models 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 18 | New Stock: 17 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 18
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251202064252AC4935 | User: LYN | Timestamp: 2025-12-02 06:42:52.669247+00:00
+[INFO] 2025-12-02 09:42:52 models 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 18 | New Stock: 17 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - Stock OUT: Sale - Product: AFSL003 - Quantity: -1 - New Stock: 33
+[INFO] 2025-12-02 09:42:52 signals 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Unit Price: $250 | Total: $250 | Reference: SALE-SL202512020642521B8D19 | User: LYN | Timestamp: 2025-12-02 06:42:52.691114+00:00
+[INFO] 2025-12-02 09:42:52 models 1884 124266536990400 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Old Stock: 33 | New Stock: 32 | Status: available | Unit Price: 250 | Total: 250 | User: LYN
+[INFO] 2025-12-02 10:07:38 signals 5732 126158569588416 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 17
+[INFO] 2025-12-02 10:07:38 signals 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL202512020707387AB959 | User: LYN | Timestamp: 2025-12-02 07:07:38.981841+00:00
+[INFO] 2025-12-02 10:07:38 models 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTORS) | Quantity: -1 | Old Stock: 17 | New Stock: 16 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-02 10:07:39 signals 5732 126158569588416 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 17
+[INFO] 2025-12-02 10:07:39 signals 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251202070738AE5264 | User: LYN | Timestamp: 2025-12-02 07:07:39.004992+00:00
+[INFO] 2025-12-02 10:07:39 models 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D PROTECTOR) | Quantity: -1 | Old Stock: 17 | New Stock: 16 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-02 10:07:39 signals 5732 126158569588416 - Stock OUT: Sale - Product: AFSL003 - Quantity: -1 - New Stock: 32
+[INFO] 2025-12-02 10:07:39 signals 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Unit Price: $250 | Total: $250 | Reference: SALE-SL202512020707398CF7F1 | User: LYN | Timestamp: 2025-12-02 07:07:39.039258+00:00
+[INFO] 2025-12-02 10:07:39 models 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (METTALIC PROTECTOR) | Quantity: -1 | Old Stock: 32 | New Stock: 31 | Status: available | Unit Price: 250 | Total: 250 | User: LYN
+[INFO] 2025-12-02 11:11:51 signals 5732 126158569588416 - Stock OUT: Sale - Product: FFSL002 - Quantity: -1 - New Stock: 1
+[INFO] 2025-12-02 11:11:51 signals 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: FFSL002 (NOKIA 105) | Quantity: -1 | Unit Price: $1750 | Total: $1750 | Reference: SALE-SL2025120208115114466A | User: LYN | Timestamp: 2025-12-02 08:11:51.977200+00:00
+[INFO] 2025-12-02 11:11:51 models 5732 126158569588416 - [SOLD] Single item FFSL002 marked as SOLD
+[INFO] 2025-12-02 11:11:51 models 5732 126158569588416 - [STOCK MOVEMENT] Type: Sale | Product: FFSL002 (NOKIA 105) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 1750 | Total: 1750 | User: LYN
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['fr2IQ8VTLlPsuCjo2ZousybkEjNJcvoKqdI01PfQre1u0hB2u1DxeeNNeXcazYlK'], 'category': ['1'], 'name': ['NORMAL PROTECTOR'], 'buying_price': ['20'], 'selling_price': ['100'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:12:03 signals 16598 129721648084672 - Creating new product: NORMAL PROTECTOR
+[INFO] 2025-12-02 13:12:03 signals 16598 129721648084672 - Product created: AFSL001 - NORMAL PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:12:03 signals 16598 129721648084672 - OUT OF STOCK: NORMAL PROTECTOR (AFSL001) is out of stock
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL001
+[INFO] 2025-12-02 13:12:03 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL001 - Quantity: 50 - New Stock: 0
+[INFO] 2025-12-02 13:12:03 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 50 | Unit Price: $20 | Total: $1000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:12:03.156592+00:00
+[INFO] 2025-12-02 13:12:03 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Status: available | Unit Price: 20 | Total: 1000 | User: FIELDMAX
+[INFO] 2025-12-02 13:12:03 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL001, Qty: 50
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['DodYAhFg94HoLK6J3F8gkimm2MA0HPKwOaTgLYZdPXTqhponvHnj6YYPCqZr4iHw'], 'category': ['1'], 'name': ['21D/METALIC PROTECTOR'], 'buying_price': ['25'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['50']}>
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:12:55 signals 16598 129721648084672 - Creating new product: 21D/METALIC PROTECTOR
+[INFO] 2025-12-02 13:12:55 signals 16598 129721648084672 - Product created: AFSL002 - 21D/METALIC PROTECTOR (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:12:55 signals 16598 129721648084672 - OUT OF STOCK: 21D/METALIC PROTECTOR (AFSL002) is out of stock
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL002
+[INFO] 2025-12-02 13:12:55 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL002 - Quantity: 50 - New Stock: 0
+[INFO] 2025-12-02 13:12:55 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: 50 | Unit Price: $25 | Total: $1250 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:12:55.334661+00:00
+[INFO] 2025-12-02 13:12:55 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: 50 | Old Stock: 0 | New Stock: 50 | Status: available | Unit Price: 25 | Total: 1250 | User: FIELDMAX
+[INFO] 2025-12-02 13:12:55 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL002, Qty: 50
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['JCFT1kZrL2bTJHuGcfK1jMUIVvyIfdYYUolbc1jorVnVfmMkEhZ45swbv9X9CGVY'], 'category': ['1'], 'name': ['AMAYA MICRO-USB CABLES'], 'buying_price': ['50'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['20']}>
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:14:07 signals 16598 129721648084672 - Creating new product: AMAYA MICRO-USB CABLES
+[INFO] 2025-12-02 13:14:07 signals 16598 129721648084672 - Product created: AFSL003 - AMAYA MICRO-USB CABLES (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:14:07 signals 16598 129721648084672 - OUT OF STOCK: AMAYA MICRO-USB CABLES (AFSL003) is out of stock
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL003
+[INFO] 2025-12-02 13:14:07 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL003 - Quantity: 20 - New Stock: 0
+[INFO] 2025-12-02 13:14:07 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 20 | Unit Price: $50 | Total: $1000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:14:07.783909+00:00
+[INFO] 2025-12-02 13:14:07 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 20 | Old Stock: 0 | New Stock: 20 | Status: available | Unit Price: 50 | Total: 1000 | User: FIELDMAX
+[INFO] 2025-12-02 13:14:07 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL003, Qty: 20
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['ypX7IZG4wa4OFtcG2eIOYfABNR3ehePyJbDpTG01c3gQb8ukugXRKVc4nvsFEHMy'], 'category': ['1'], 'name': ['AMAYA TYPE C CABLES'], 'buying_price': ['100'], 'selling_price': ['300'], 'sku_value': [''], 'quantity': ['20']}>
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:14:59 signals 16598 129721648084672 - Creating new product: AMAYA TYPE C CABLES
+[INFO] 2025-12-02 13:14:59 signals 16598 129721648084672 - Product created: AFSL004 - AMAYA TYPE C CABLES (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:14:59 signals 16598 129721648084672 - OUT OF STOCK: AMAYA TYPE C CABLES (AFSL004) is out of stock
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL004
+[INFO] 2025-12-02 13:14:59 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL004 - Quantity: 20 - New Stock: 0
+[INFO] 2025-12-02 13:14:59 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL004 (AMAYA TYPE C CABLES) | Quantity: 20 | Unit Price: $100 | Total: $2000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:14:59.333025+00:00
+[INFO] 2025-12-02 13:14:59 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL004 (AMAYA TYPE C CABLES) | Quantity: 20 | Old Stock: 0 | New Stock: 20 | Status: available | Unit Price: 100 | Total: 2000 | User: FIELDMAX
+[INFO] 2025-12-02 13:14:59 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL004, Qty: 20
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['2UJGeHXLR66aTj86pfdnKIMUq2qDxu68dGpYpohIxZicpYqKRhsqwoon0GP4UX38'], 'category': ['1'], 'name': ['ALDEEPO MICR0-UB CABLE'], 'buying_price': ['50'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['20']}>
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:15:55 signals 16598 129721648084672 - Creating new product: ALDEEPO MICR0-UB CABLE
+[INFO] 2025-12-02 13:15:55 signals 16598 129721648084672 - Product created: AFSL005 - ALDEEPO MICR0-UB CABLE (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:15:55 signals 16598 129721648084672 - OUT OF STOCK: ALDEEPO MICR0-UB CABLE (AFSL005) is out of stock
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL005
+[INFO] 2025-12-02 13:15:55 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL005 - Quantity: 20 - New Stock: 0
+[INFO] 2025-12-02 13:15:55 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL005 (ALDEEPO MICR0-UB CABLE) | Quantity: 20 | Unit Price: $50 | Total: $1000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:15:55.725537+00:00
+[INFO] 2025-12-02 13:15:55 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL005 (ALDEEPO MICR0-UB CABLE) | Quantity: 20 | Old Stock: 0 | New Stock: 20 | Status: available | Unit Price: 50 | Total: 1000 | User: FIELDMAX
+[INFO] 2025-12-02 13:15:55 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL005, Qty: 20
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['9WfrL3ry1uQgWH2Ed0X6oDKkiCL6bV8CkIVJWKLvHn2ismkiF2c9ajmNSgaxyo5C'], 'category': ['1'], 'name': ['ALDEEPO TYPC CABLES'], 'buying_price': ['100'], 'selling_price': ['300'], 'sku_value': [''], 'quantity': ['20']}>
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:17:16 signals 16598 129721648084672 - Creating new product: ALDEEPO TYPC CABLES
+[INFO] 2025-12-02 13:17:16 signals 16598 129721648084672 - Product created: AFSL006 - ALDEEPO TYPC CABLES (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:17:16 signals 16598 129721648084672 - OUT OF STOCK: ALDEEPO TYPC CABLES (AFSL006) is out of stock
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL006
+[INFO] 2025-12-02 13:17:16 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL006 - Quantity: 20 - New Stock: 0
+[INFO] 2025-12-02 13:17:16 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL006 (ALDEEPO TYPC CABLES) | Quantity: 20 | Unit Price: $100 | Total: $2000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:17:16.367033+00:00
+[INFO] 2025-12-02 13:17:16 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL006 (ALDEEPO TYPC CABLES) | Quantity: 20 | Old Stock: 0 | New Stock: 20 | Status: available | Unit Price: 100 | Total: 2000 | User: FIELDMAX
+[INFO] 2025-12-02 13:17:16 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL006, Qty: 20
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['VyMKyktJyFNYTes1vNlSjcPkXb4tPmsh6ks2J1NGeyZ0pTKFXPAV5SrNxPtUcPph'], 'category': ['2'], 'name': ['POWERKING EXTENSIONS'], 'buying_price': ['500'], 'selling_price': ['800'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:18:35 signals 16598 129721648084672 - Creating new product: POWERKING EXTENSIONS
+[INFO] 2025-12-02 13:18:35 signals 16598 129721648084672 - Product created: EFSL001 - POWERKING EXTENSIONS (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-12-02 13:18:35 signals 16598 129721648084672 - OUT OF STOCK: POWERKING EXTENSIONS (EFSL001) is out of stock
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - [BULK ITEM] Created new product: EFSL001
+[INFO] 2025-12-02 13:18:35 signals 16598 129721648084672 - Stock IN: Purchase - Product: EFSL001 - Quantity: 10 - New Stock: 0
+[INFO] 2025-12-02 13:18:35 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 10 | Unit Price: $500 | Total: $5000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:18:35.742154+00:00
+[INFO] 2025-12-02 13:18:35 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Status: available | Unit Price: 500 | Total: 5000 | User: FIELDMAX
+[INFO] 2025-12-02 13:18:35 views 16598 129721648084672 - [BULK ITEM] Stock entry created for EFSL001, Qty: 10
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['Za4NKEeOtccbb74n4b5K9rwLrg3acjLZaWK5VlyL95odHMm1wdkNV78e1UsBzMIZ'], 'category': ['2'], 'name': ['ELECTRIC IRON BOX'], 'buying_price': ['600'], 'selling_price': ['1200'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:19:23 signals 16598 129721648084672 - Creating new product: ELECTRIC IRON BOX
+[INFO] 2025-12-02 13:19:23 signals 16598 129721648084672 - Product created: EFSL002 - ELECTRIC IRON BOX (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-12-02 13:19:23 signals 16598 129721648084672 - OUT OF STOCK: ELECTRIC IRON BOX (EFSL002) is out of stock
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - [BULK ITEM] Created new product: EFSL002
+[INFO] 2025-12-02 13:19:23 signals 16598 129721648084672 - Stock IN: Purchase - Product: EFSL002 - Quantity: 10 - New Stock: 0
+[INFO] 2025-12-02 13:19:23 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC IRON BOX) | Quantity: 10 | Unit Price: $600 | Total: $6000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:19:23.926622+00:00
+[INFO] 2025-12-02 13:19:23 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL002 (ELECTRIC IRON BOX) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Status: available | Unit Price: 600 | Total: 6000 | User: FIELDMAX
+[INFO] 2025-12-02 13:19:23 views 16598 129721648084672 - [BULK ITEM] Stock entry created for EFSL002, Qty: 10
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['9RYjQmxpntFUaTPHznMYkGRS7P3h3EyZkDEB13Rm3mRWGy7l1p116mtlHtsIq7vZ'], 'category': ['1'], 'name': ['ELECTRIC KETTLE'], 'buying_price': ['700'], 'selling_price': ['1000'], 'sku_value': [''], 'quantity': ['10']}>
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:20:20 signals 16598 129721648084672 - Creating new product: ELECTRIC KETTLE
+[INFO] 2025-12-02 13:20:20 signals 16598 129721648084672 - Product created: AFSL007 - ELECTRIC KETTLE (Category: ACCESSORIES, Quantity: 0)
+[ERROR] 2025-12-02 13:20:20 signals 16598 129721648084672 - OUT OF STOCK: ELECTRIC KETTLE (AFSL007) is out of stock
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - [BULK ITEM] Created new product: AFSL007
+[INFO] 2025-12-02 13:20:20 signals 16598 129721648084672 - Stock IN: Purchase - Product: AFSL007 - Quantity: 10 - New Stock: 0
+[INFO] 2025-12-02 13:20:20 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL007 (ELECTRIC KETTLE) | Quantity: 10 | Unit Price: $700 | Total: $7000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:20:20.132164+00:00
+[INFO] 2025-12-02 13:20:20 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL007 (ELECTRIC KETTLE) | Quantity: 10 | Old Stock: 0 | New Stock: 10 | Status: available | Unit Price: 700 | Total: 7000 | User: FIELDMAX
+[INFO] 2025-12-02 13:20:20 views 16598 129721648084672 - [BULK ITEM] Stock entry created for AFSL007, Qty: 10
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['NKxvZsCgHl9n3OdEXb6z17ebC6lwQbPGYwdNa9WdnelpztvipdlCNNQEcKKXdEMG'], 'category': ['2'], 'name': ['AVC BULDS 15W'], 'buying_price': ['50'], 'selling_price': ['200'], 'sku_value': [''], 'quantity': ['20']}>
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:31:23 signals 16598 129721648084672 - Creating new product: AVC BULDS 15W
+[INFO] 2025-12-02 13:31:23 signals 16598 129721648084672 - Product created: EFSL003 - AVC BULDS 15W (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-12-02 13:31:23 signals 16598 129721648084672 - OUT OF STOCK: AVC BULDS 15W (EFSL003) is out of stock
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - [BULK ITEM] Created new product: EFSL003
+[INFO] 2025-12-02 13:31:23 signals 16598 129721648084672 - Stock IN: Purchase - Product: EFSL003 - Quantity: 20 - New Stock: 0
+[INFO] 2025-12-02 13:31:23 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL003 (AVC BULDS 15W) | Quantity: 20 | Unit Price: $50 | Total: $1000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:31:23.181165+00:00
+[INFO] 2025-12-02 13:31:23 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL003 (AVC BULDS 15W) | Quantity: 20 | Old Stock: 0 | New Stock: 20 | Status: available | Unit Price: 50 | Total: 1000 | User: FIELDMAX
+[INFO] 2025-12-02 13:31:23 views 16598 129721648084672 - [BULK ITEM] Stock entry created for EFSL003, Qty: 20
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['1gZV27ijL8YTH8JWlZcu9atKHOuGuyyqc2FddOCgr1aVdN1AN1rxVQ5dhsT7R1vq'], 'category': ['4'], 'name': ['BONTEL'], 'buying_price': ['700'], 'selling_price': ['1250'], 'sku_value': ['674584209573642095723'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:32:06 signals 16598 129721648084672 - Creating new product: BONTEL
+[INFO] 2025-12-02 13:32:06 signals 16598 129721648084672 - Product created: FFSL001 - BONTEL (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-12-02 13:32:06 signals 16598 129721648084672 - Stock IN: Purchase - Product: FFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:32:06 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL) | Quantity: 1 | Unit Price: $700 | Total: $700 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:32:06.369191+00:00
+[INFO] 2025-12-02 13:32:06 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL001 (BONTEL) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 700 | Total: 700 | User: FIELDMAX
+[INFO] 2025-12-02 13:32:06 views 16598 129721648084672 - [SINGLE ITEM] Product created: FFSL001
+[INFO] 2025-12-02 13:32:42 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:32:42 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['ky8xiHxRpUpO4tyNyJdxIibawPMYzeRSvkOPtoRO5NBQA8Qr0LsAuYND6tbpWHOS'], 'category': ['4'], 'name': ['NOKIA 105'], 'buying_price': ['900'], 'selling_price': ['54131762459856'], 'sku_value': ['32986529565786348776'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:32:42 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:32:42 views 16598 129721648084672 - Form created successfully
+[ERROR] 2025-12-02 13:32:42 views 16598 129721648084672 - ================================================================================
+[ERROR] 2025-12-02 13:32:42 views 16598 129721648084672 - ERROR in POST: '>' not supported between instances of 'decimal.Decimal' and 'NoneType'
+[ERROR] 2025-12-02 13:32:42 views 16598 129721648084672 - Traceback (most recent call last):
+  File "/home/kk/fieldmax/inventory/views.py", line 348, in post
+    if form.is_valid():
+       ^^^^^^^^^^^^^^^
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 206, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 201, in errors
+    self.full_clean()
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/forms.py", line 339, in full_clean
+    self._post_clean()
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/forms/models.py", line 498, in _post_clean
+    self.instance.full_clean(exclude=exclude, validate_unique=False)
+  File "/home/kk/fieldmax/venv/lib/python3.12/site-packages/django/db/models/base.py", line 1654, in full_clean
+    self.clean()
+  File "/home/kk/fieldmax/inventory/models.py", line 194, in clean
+    if self.buying_price > self.selling_price:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'decimal.Decimal' and 'NoneType'
+
+[ERROR] 2025-12-02 13:32:42 views 16598 129721648084672 - ================================================================================
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['ky8xiHxRpUpO4tyNyJdxIibawPMYzeRSvkOPtoRO5NBQA8Qr0LsAuYND6tbpWHOS'], 'category': ['4'], 'name': ['NOKIA 105'], 'buying_price': ['900'], 'selling_price': ['1750'], 'sku_value': ['329865295657863'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:33:01 signals 16598 129721648084672 - Creating new product: NOKIA 105
+[INFO] 2025-12-02 13:33:01 signals 16598 129721648084672 - Product created: FFSL002 - NOKIA 105 (Category: FEATUREPHONES, Quantity: 1)
+[INFO] 2025-12-02 13:33:01 signals 16598 129721648084672 - Stock IN: Purchase - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:33:01 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Unit Price: $900 | Total: $900 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:33:01.281864+00:00
+[INFO] 2025-12-02 13:33:01 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 900 | Total: 900 | User: FIELDMAX
+[INFO] 2025-12-02 13:33:01 views 16598 129721648084672 - [SINGLE ITEM] Product created: FFSL002
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['daXHoXJmkDXMEQGb7wWUavM7QkLwgFleoWDZzE3j0w9OavYPzybXWboAqYaXD8ie'], 'category': ['5'], 'name': ['SAMSUNG A07 128 GB'], 'buying_price': ['10000'], 'selling_price': ['17000'], 'sku_value': ['756234789R8435'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:33:57 signals 16598 129721648084672 - Creating new product: SAMSUNG A07 128 GB
+[INFO] 2025-12-02 13:33:57 signals 16598 129721648084672 - Product created: SFSL001 - SAMSUNG A07 128 GB (Category: SMARTPHONES, Quantity: 1)
+[INFO] 2025-12-02 13:33:57 signals 16598 129721648084672 - Stock IN: Purchase - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:33:57 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Unit Price: $10000 | Total: $10000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:33:57.871243+00:00
+[INFO] 2025-12-02 13:33:57 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 10000 | Total: 10000 | User: FIELDMAX
+[INFO] 2025-12-02 13:33:57 views 16598 129721648084672 - [SINGLE ITEM] Product created: SFSL001
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['dCjBD1OUB4gEZiy7RIySZ3jNwhLIDimVooZTOI8RhXsGvXQLjKNVLJVg6Va90LjV'], 'category': ['5'], 'name': ['OPPO A5 302'], 'buying_price': ['15000'], 'selling_price': ['25000'], 'sku_value': ['43526897404836899'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:34:40 signals 16598 129721648084672 - Creating new product: OPPO A5 302
+[INFO] 2025-12-02 13:34:40 signals 16598 129721648084672 - Product created: SFSL002 - OPPO A5 302 (Category: SMARTPHONES, Quantity: 1)
+[INFO] 2025-12-02 13:34:40 signals 16598 129721648084672 - Stock IN: Purchase - Product: SFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:34:40 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5 302) | Quantity: 1 | Unit Price: $15000 | Total: $15000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:34:40.016617+00:00
+[INFO] 2025-12-02 13:34:40 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: SFSL002 (OPPO A5 302) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 15000 | Total: 15000 | User: FIELDMAX
+[INFO] 2025-12-02 13:34:40 views 16598 129721648084672 - [SINGLE ITEM] Product created: SFSL002
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['1KbV219kmjjiQkipgx1Qxd6mRpRFdKuMcwRddIth2cvkmZA3IzgTjTIPr3g6AdrM'], 'category': ['3'], 'name': ['SONNY TV'], 'buying_price': ['13000'], 'selling_price': ['24000'], 'sku_value': ['SM23854678EUUYD'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:35:21 signals 16598 129721648084672 - Creating new product: SONNY TV
+[INFO] 2025-12-02 13:35:21 signals 16598 129721648084672 - Product created: TFSL001 - SONNY TV (Category: TELEVISIONS, Quantity: 1)
+[INFO] 2025-12-02 13:35:21 signals 16598 129721648084672 - Stock IN: Purchase - Product: TFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:35:21 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL001 (SONNY TV) | Quantity: 1 | Unit Price: $13000 | Total: $13000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:35:21.666741+00:00
+[INFO] 2025-12-02 13:35:21 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL001 (SONNY TV) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 13000 | Total: 13000 | User: FIELDMAX
+[INFO] 2025-12-02 13:35:21 views 16598 129721648084672 - [SINGLE ITEM] Product created: TFSL001
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - === ProductCreateView POST ===
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['PZQdrVhGHILZza6jPtz3JhR4SeHq15Ub0LwvCCBDnBX15PoXhvO6vXtxsS6RoyRb'], 'category': ['3'], 'name': ['VITRON TV'], 'buying_price': ['20000'], 'selling_price': ['32000'], 'sku_value': ['SNWRHIEUGFRU9'], 'quantity': ['1']}>
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - Is AJAX: True
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - Form created successfully
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - Form is valid
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - === form_valid START ===
+[INFO] 2025-12-02 13:37:40 signals 16598 129721648084672 - Creating new product: VITRON TV
+[INFO] 2025-12-02 13:37:40 signals 16598 129721648084672 - Product created: TFSL002 - VITRON TV (Category: TELEVISIONS, Quantity: 1)
+[INFO] 2025-12-02 13:37:40 signals 16598 129721648084672 - Stock IN: Purchase - Product: TFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-02 13:37:40 signals 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL002 (VITRON TV) | Quantity: 1 | Unit Price: $20000 | Total: $20000 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-02 10:37:40.928229+00:00
+[INFO] 2025-12-02 13:37:40 models 16598 129721648084672 - [STOCK MOVEMENT] Type: Purchase | Product: TFSL002 (VITRON TV) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 20000 | Total: 20000 | User: FIELDMAX
+[INFO] 2025-12-02 13:37:40 views 16598 129721648084672 - [SINGLE ITEM] Product created: TFSL002
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 50
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-SL20251202104842E3486A | User: CALEB | Timestamp: 2025-12-02 10:48:42.204758+00:00
+[INFO] 2025-12-02 13:48:42 models 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 50 | New Stock: 49 | Status: available | Unit Price: 100 | Total: 100 | User: CALEB
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 50
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-SL20251202104842E3486A | User: CALEB | Timestamp: 2025-12-02 10:48:42.222594+00:00
+[INFO] 2025-12-02 13:48:42 models 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: -1 | Old Stock: 50 | New Stock: 49 | Status: available | Unit Price: 200 | Total: 200 | User: CALEB
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - Stock OUT: Sale - Product: EFSL001 - Quantity: -1 - New Stock: 10
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -1 | Unit Price: $800 | Total: $800 | Reference: SALE-SL20251202104842E3486A | User: CALEB | Timestamp: 2025-12-02 10:48:42.232723+00:00
+[INFO] 2025-12-02 13:48:42 models 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -1 | Old Stock: 10 | New Stock: 9 | Status: available | Unit Price: 800 | Total: 800 | User: CALEB
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - Stock OUT: Sale - Product: EFSL002 - Quantity: -1 - New Stock: 10
+[INFO] 2025-12-02 13:48:42 signals 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC IRON BOX) | Quantity: -1 | Unit Price: $1200 | Total: $1200 | Reference: SALE-SL20251202104842E3486A | User: CALEB | Timestamp: 2025-12-02 10:48:42.253046+00:00
+[INFO] 2025-12-02 13:48:42 models 20582 129824020059840 - [STOCK MOVEMENT] Type: Sale | Product: EFSL002 (ELECTRIC IRON BOX) | Quantity: -1 | Old Stock: 10 | New Stock: 9 | Status: available | Unit Price: 1200 | Total: 1200 | User: CALEB
+[INFO] 2025-12-02 13:54:58 signals 21005 134478072116928 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-12-02 13:54:58 signals 21005 134478072116928 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-SL202512021054587CD177 | User: CALEB | Timestamp: 2025-12-02 10:54:58.474239+00:00
+[INFO] 2025-12-02 13:54:58 models 21005 134478072116928 - [SOLD] Single item SFSL001 marked as SOLD
+[INFO] 2025-12-02 13:54:58 models 21005 134478072116928 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 17000 | Total: 17000 | User: CALEB
+[INFO] 2025-12-02 15:55:37 signals 2310 125423044261568 - Stock OUT: Sale - Product: AFSL001 - Quantity: -2 - New Stock: 49
+[INFO] 2025-12-02 15:55:37 signals 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -2 | Unit Price: $100 | Total: $200 | Reference: SALE-SL20251202125537AC7EF8 | User: CORNELIOUS | Timestamp: 2025-12-02 12:55:37.923806+00:00
+[INFO] 2025-12-02 15:55:37 models 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -2 | Old Stock: 49 | New Stock: 47 | Status: available | Unit Price: 100 | Total: 200 | User: CORNELIOUS
+[INFO] 2025-12-02 15:55:37 signals 2310 125423044261568 - Stock OUT: Sale - Product: AFSL003 - Quantity: -5 - New Stock: 20
+[INFO] 2025-12-02 15:55:37 signals 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -5 | Unit Price: $200 | Total: $1000 | Reference: SALE-SL20251202125537AC7EF8 | User: CORNELIOUS | Timestamp: 2025-12-02 12:55:37.941600+00:00
+[INFO] 2025-12-02 15:55:37 models 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -5 | Old Stock: 20 | New Stock: 15 | Status: available | Unit Price: 200 | Total: 1000 | User: CORNELIOUS
+[INFO] 2025-12-02 15:57:15 signals 2310 125423044261568 - Stock OUT: Sale - Product: AFSL001 - Quantity: -2 - New Stock: 47
+[INFO] 2025-12-02 15:57:15 signals 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -2 | Unit Price: $100 | Total: $200 | Reference: SALE-SL202512021257158CD49A | User: BRENDA | Timestamp: 2025-12-02 12:57:15.748438+00:00
+[INFO] 2025-12-02 15:57:15 models 2310 125423044261568 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -2 | Old Stock: 47 | New Stock: 45 | Status: available | Unit Price: 100 | Total: 200 | User: BRENDA
+[INFO] 2025-12-02 16:29:59 signals 23901 130090007434944 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 45
+[INFO] 2025-12-02 16:29:59 signals 23901 130090007434944 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-FSL2025001 | User: LYN | Timestamp: 2025-12-02 13:29:59.768059+00:00
+[INFO] 2025-12-02 16:29:59 models 23901 130090007434944 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 45 | New Stock: 44 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-02 16:29:59 signals 23901 130090007434944 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 44
+[INFO] 2025-12-02 16:29:59 signals 23901 130090007434944 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-FSL2025001 | User: LYN | Timestamp: 2025-12-02 13:29:59.781817+00:00
+[INFO] 2025-12-02 16:29:59 models 23901 130090007434944 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 44 | New Stock: 43 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-02 17:01:46 signals 30283 140018231187136 - Stock OUT: Sale - Product: AFSL001 - Quantity: -3 - New Stock: 43
+[INFO] 2025-12-02 17:01:46 signals 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -3 | Unit Price: $100 | Total: $300 | Reference: SALE-FSL2025002 | User: LYN | Timestamp: 2025-12-02 14:01:46.385828+00:00
+[INFO] 2025-12-02 17:01:46 models 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -3 | Old Stock: 43 | New Stock: 40 | Status: available | Unit Price: 100 | Total: 300 | User: LYN
+[INFO] 2025-12-02 17:07:40 signals 30283 140018231187136 - Stock OUT: Sale - Product: AFSL003 - Quantity: -5 - New Stock: 15
+[INFO] 2025-12-02 17:07:40 signals 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -5 | Unit Price: $300 | Total: $1500 | Reference: SALE-FSL2025003 | User: LYN | Timestamp: 2025-12-02 14:07:40.913496+00:00
+[INFO] 2025-12-02 17:07:40 models 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -5 | Old Stock: 15 | New Stock: 10 | Status: available | Unit Price: 300 | Total: 1500 | User: LYN
+[INFO] 2025-12-02 17:07:40 signals 30283 140018231187136 - Stock OUT: Sale - Product: EFSL001 - Quantity: -4 - New Stock: 9
+[INFO] 2025-12-02 17:07:40 signals 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -4 | Unit Price: $700 | Total: $2800 | Reference: SALE-FSL2025003 | User: LYN | Timestamp: 2025-12-02 14:07:40.942744+00:00
+[WARNING] 2025-12-02 17:07:40 signals 30283 140018231187136 - LOW STOCK ALERT: POWERKING EXTENSIONS (EFSL001) has only 5 units remaining
+[INFO] 2025-12-02 17:07:40 models 30283 140018231187136 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -4 | Old Stock: 9 | New Stock: 5 | Status: lowstock | Unit Price: 700 | Total: 2800 | User: LYN
+[INFO] 2025-12-02 20:52:04 signals 1673 138694590846656 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 40
+[INFO] 2025-12-02 20:52:04 signals 1673 138694590846656 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $345 | Total: $345 | Reference: SALE-FSL2025004 | User: LYN | Timestamp: 2025-12-02 17:52:04.353689+00:00
+[INFO] 2025-12-02 20:52:04 models 1673 138694590846656 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 40 | New Stock: 39 | Status: available | Unit Price: 345 | Total: 345 | User: LYN
+[INFO] 2025-12-02 20:52:04 signals 1673 138694590846656 - Stock OUT: Sale - Product: EFSL001 - Quantity: -1 - New Stock: 5
+[INFO] 2025-12-02 20:52:04 signals 1673 138694590846656 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -1 | Unit Price: $800 | Total: $800 | Reference: SALE-FSL2025004 | User: LYN | Timestamp: 2025-12-02 17:52:04.452852+00:00
+[WARNING] 2025-12-02 20:52:04 signals 1673 138694590846656 - LOW STOCK ALERT: POWERKING EXTENSIONS (EFSL001) has only 4 units remaining
+[INFO] 2025-12-02 20:52:04 models 1673 138694590846656 - [STOCK MOVEMENT] Type: Sale | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: -1 | Old Stock: 5 | New Stock: 4 | Status: lowstock | Unit Price: 800 | Total: 800 | User: LYN
+[INFO] 2025-12-05 13:02:00 signals 1561 138531700999872 - Stock OUT: Sale - Product: TFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-12-05 13:02:00 signals 1561 138531700999872 - [STOCK MOVEMENT] Type: Sale | Product: TFSL001 (SONNY TV) | Quantity: -1 | Unit Price: $24000 | Total: $24000 | Reference: SALE-FSL2025005 | User: BRENDA | Timestamp: 2025-12-05 10:02:00.238321+00:00
+[INFO] 2025-12-05 13:02:00 models 1561 138531700999872 - [SOLD] Single item TFSL001 marked as SOLD
+[INFO] 2025-12-05 13:02:00 models 1561 138531700999872 - [STOCK MOVEMENT] Type: Sale | Product: TFSL001 (SONNY TV) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 24000 | Total: 24000 | User: BRENDA
+[INFO] 2025-12-05 15:46:06 signals 13735 132623279263872 - Stock IN:  - Product: TFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-05 15:46:06 signals 13735 132623279263872 - [STOCK MOVEMENT] Type:  | Product: TFSL001 (SONNY TV) | Quantity: 1 | Unit Price: $13000.00 | Total: $13000.00 | Reference: REVERSE-FSL2025005 | User: System | Timestamp: 2025-12-05 12:46:06.723159+00:00
+[INFO] 2025-12-05 15:46:06 models 13735 132623279263872 - [STOCK MOVEMENT] Type:  | Product: TFSL001 (SONNY TV) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 13000.00 | Total: 13000.00 | User: System
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - === ProductCreateView POST ===
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - POST data: <QueryDict: {'csrfmiddlewaretoken': ['u6X7F3g5LAVDgKjxYWQWfsG1ndA55aJmNisH2U0y3h4eb0gw72CoNCq0qJEJt8uh'], 'category': ['2'], 'name': ['ORAIMO EXTENTIONS  '], 'buying_price': ['1500'], 'selling_price': ['2500'], 'sku_value': [''], 'quantity': ['5']}>
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - Is AJAX: True
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - Form created successfully
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - Form is valid
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - === form_valid START ===
+[INFO] 2025-12-05 18:15:29 signals 23625 125192234026688 - Creating new product: ORAIMO EXTENTIONS
+[INFO] 2025-12-05 18:15:29 signals 23625 125192234026688 - Product created: EFSL004 - ORAIMO EXTENTIONS (Category: ELECTRONICS, Quantity: 0)
+[ERROR] 2025-12-05 18:15:29 signals 23625 125192234026688 - OUT OF STOCK: ORAIMO EXTENTIONS (EFSL004) is out of stock
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - [BULK ITEM] Created new product: EFSL004
+[INFO] 2025-12-05 18:15:29 signals 23625 125192234026688 - Stock IN: Purchase - Product: EFSL004 - Quantity: 5 - New Stock: 0
+[INFO] 2025-12-05 18:15:29 signals 23625 125192234026688 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL004 (ORAIMO EXTENTIONS) | Quantity: 5 | Unit Price: $1500 | Total: $7500 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-05 15:15:29.777417+00:00
+[WARNING] 2025-12-05 18:15:29 signals 23625 125192234026688 - LOW STOCK ALERT: ORAIMO EXTENTIONS (EFSL004) has only 5 units remaining
+[INFO] 2025-12-05 18:15:29 models 23625 125192234026688 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL004 (ORAIMO EXTENTIONS) | Quantity: 5 | Old Stock: 0 | New Stock: 5 | Status: lowstock | Unit Price: 1500 | Total: 7500 | User: FIELDMAX
+[INFO] 2025-12-05 18:15:29 views 23625 125192234026688 - [BULK ITEM] Stock entry created for EFSL004, Qty: 5
+[INFO] 2025-12-05 18:33:24 signals 29057 130169258283136 - Stock IN:  - Product: AFSL001 - Quantity: 1 - New Stock: 40
+[INFO] 2025-12-05 18:33:24 signals 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 1 | Unit Price: $20.00 | Total: $20.00 | Reference: REVERSE-FSL2025004 | User: System | Timestamp: 2025-12-05 15:33:24.977248+00:00
+[INFO] 2025-12-05 18:33:24 models 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 1 | Old Stock: 40 | New Stock: 40 | Status: available | Unit Price: 20.00 | Total: 20.00 | User: System
+[WARNING] 2025-12-05 18:33:24 signals 29057 130169258283136 - LOW STOCK ALERT: POWERKING EXTENSIONS (EFSL001) has only 5 units remaining
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - Stock IN:  - Product: EFSL001 - Quantity: 1 - New Stock: 5
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 1 | Unit Price: $500.00 | Total: $500.00 | Reference: REVERSE-FSL2025004 | User: System | Timestamp: 2025-12-05 15:33:25.000198+00:00
+[WARNING] 2025-12-05 18:33:25 signals 29057 130169258283136 - LOW STOCK ALERT: POWERKING EXTENSIONS (EFSL001) has only 5 units remaining
+[INFO] 2025-12-05 18:33:25 models 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 1 | Old Stock: 5 | New Stock: 5 | Status: lowstock | Unit Price: 500.00 | Total: 500.00 | User: System
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - Stock IN:  - Product: AFSL001 - Quantity: 1 - New Stock: 41
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 1 | Unit Price: $345.00 | Total: $345.00 | Reference: REVERSE-FSL2025004 | User: System | Timestamp: 2025-12-05 15:33:25.029720+00:00
+[INFO] 2025-12-05 18:33:25 models 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 1 | Old Stock: 41 | New Stock: 41 | Status: available | Unit Price: 345.00 | Total: 345.00 | User: System
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - Stock IN:  - Product: EFSL001 - Quantity: 1 - New Stock: 6
+[INFO] 2025-12-05 18:33:25 signals 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 1 | Unit Price: $800.00 | Total: $800.00 | Reference: REVERSE-FSL2025004 | User: System | Timestamp: 2025-12-05 15:33:25.035672+00:00
+[INFO] 2025-12-05 18:33:25 models 29057 130169258283136 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 1 | Old Stock: 6 | New Stock: 6 | Status: available | Unit Price: 800.00 | Total: 800.00 | User: System
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - Stock IN:  - Product: AFSL003 - Quantity: 5 - New Stock: 15
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Unit Price: $50.00 | Total: $250.00 | Reference: REVERSE-FSL2025003 | User: System | Timestamp: 2025-12-05 15:55:32.115015+00:00
+[INFO] 2025-12-05 18:55:32 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Old Stock: 15 | New Stock: 15 | Status: available | Unit Price: 50.00 | Total: 250.00 | User: System
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - Stock IN:  - Product: EFSL001 - Quantity: 4 - New Stock: 10
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 4 | Unit Price: $500.00 | Total: $2000.00 | Reference: REVERSE-FSL2025003 | User: System | Timestamp: 2025-12-05 15:55:32.169934+00:00
+[INFO] 2025-12-05 18:55:32 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 4 | Old Stock: 10 | New Stock: 10 | Status: available | Unit Price: 500.00 | Total: 2000.00 | User: System
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - Stock IN:  - Product: AFSL003 - Quantity: 5 - New Stock: 20
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Unit Price: $300.00 | Total: $1500.00 | Reference: REVERSE-FSL2025003 | User: System | Timestamp: 2025-12-05 15:55:32.224213+00:00
+[INFO] 2025-12-05 18:55:32 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Old Stock: 20 | New Stock: 20 | Status: available | Unit Price: 300.00 | Total: 1500.00 | User: System
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - Stock IN:  - Product: EFSL001 - Quantity: 4 - New Stock: 14
+[INFO] 2025-12-05 18:55:32 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 4 | Unit Price: $700.00 | Total: $2800.00 | Reference: REVERSE-FSL2025003 | User: System | Timestamp: 2025-12-05 15:55:32.231928+00:00
+[INFO] 2025-12-05 18:55:32 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: EFSL001 (POWERKING EXTENSIONS) | Quantity: 4 | Old Stock: 14 | New Stock: 14 | Status: available | Unit Price: 700.00 | Total: 2800.00 | User: System
+[INFO] 2025-12-05 20:33:57 signals 31645 132261895947968 - Stock IN:  - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-05 20:33:57 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Unit Price: $10000.00 | Total: $10000.00 | Reference: REVERSE-SL202512021054587CD177 | User: System | Timestamp: 2025-12-05 17:33:57.796323+00:00
+[INFO] 2025-12-05 20:33:57 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 10000.00 | Total: 10000.00 | User: System
+[INFO] 2025-12-05 20:33:57 signals 31645 132261895947968 - Stock IN:  - Product: SFSL001 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-05 20:33:57 signals 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Unit Price: $17000.00 | Total: $17000.00 | Reference: REVERSE-SL202512021054587CD177 | User: System | Timestamp: 2025-12-05 17:33:57.838522+00:00
+[INFO] 2025-12-05 20:33:57 models 31645 132261895947968 - [STOCK MOVEMENT] Type:  | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 17000.00 | Total: 17000.00 | User: System
+[INFO] 2025-12-05 20:40:30 signals 31645 132261895947968 - Stock OUT: Sale - Product: SFSL001 - Quantity: -1 - New Stock: 1
+[INFO] 2025-12-05 20:40:30 signals 31645 132261895947968 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: -1 | Unit Price: $17000 | Total: $17000 | Reference: SALE-FSL2025006 | User: CALEB | Timestamp: 2025-12-05 17:40:30.497335+00:00
+[INFO] 2025-12-05 20:40:30 models 31645 132261895947968 - [SOLD] Single item SFSL001 marked as SOLD
+[INFO] 2025-12-05 20:40:30 models 31645 132261895947968 - [STOCK MOVEMENT] Type: Sale | Product: SFSL001 (SAMSUNG A07 128 GB) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 17000 | Total: 17000 | User: CALEB
+[INFO] 2025-12-05 21:28:51 signals 41573 131366019782336 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 41
+[INFO] 2025-12-05 21:28:51 signals 41573 131366019782336 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-FSL2025007 | User: LYN | Timestamp: 2025-12-05 18:28:51.601849+00:00
+[INFO] 2025-12-05 21:28:51 models 41573 131366019782336 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 41 | New Stock: 40 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-06 10:03:44 signals 2182 127425702786752 - Stock IN:  - Product: AFSL001 - Quantity: 3 - New Stock: 43
+[INFO] 2025-12-06 10:03:44 signals 2182 127425702786752 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 3 | Unit Price: $20.00 | Total: $60.00 | Reference: REVERSE-FSL2025002 | User: System | Timestamp: 2025-12-06 07:03:44.384732+00:00
+[INFO] 2025-12-06 10:03:44 models 2182 127425702786752 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 3 | Old Stock: 43 | New Stock: 43 | Status: available | Unit Price: 20.00 | Total: 60.00 | User: System
+[INFO] 2025-12-06 10:03:44 signals 2182 127425702786752 - Stock IN:  - Product: AFSL001 - Quantity: 3 - New Stock: 46
+[INFO] 2025-12-06 10:03:44 signals 2182 127425702786752 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 3 | Unit Price: $100.00 | Total: $300.00 | Reference: REVERSE-FSL2025002 | User: System | Timestamp: 2025-12-06 07:03:44.458734+00:00
+[INFO] 2025-12-06 10:03:44 models 2182 127425702786752 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 3 | Old Stock: 46 | New Stock: 46 | Status: available | Unit Price: 100.00 | Total: 300.00 | User: System
+[INFO] 2025-12-06 11:30:24 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL001 - Quantity: -6 - New Stock: 46
+[INFO] 2025-12-06 11:30:24 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -6 | Unit Price: $100 | Total: $600 | Reference: SALE-FSL2025008 | User: LYN | Timestamp: 2025-12-06 08:30:24.552186+00:00
+[INFO] 2025-12-06 11:30:24 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -6 | Old Stock: 46 | New Stock: 40 | Status: available | Unit Price: 100 | Total: 600 | User: LYN
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 40
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-FSL2025009 | User: LYN | Timestamp: 2025-12-06 09:15:40.816152+00:00
+[INFO] 2025-12-06 12:15:40 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 40 | New Stock: 39 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL002 - Quantity: -1 - New Stock: 49
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-FSL2025009 | User: LYN | Timestamp: 2025-12-06 09:15:40.899713+00:00
+[INFO] 2025-12-06 12:15:40 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL002 (21D/METALIC PROTECTOR) | Quantity: -1 | Old Stock: 49 | New Stock: 48 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL001 - Quantity: -1 - New Stock: 39
+[INFO] 2025-12-06 12:15:40 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Unit Price: $100 | Total: $100 | Reference: SALE-FSL2025009 | User: LYN | Timestamp: 2025-12-06 09:15:40.958059+00:00
+[INFO] 2025-12-06 12:15:40 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: -1 | Old Stock: 39 | New Stock: 38 | Status: available | Unit Price: 100 | Total: 100 | User: LYN
+[INFO] 2025-12-06 12:15:41 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL003 - Quantity: -1 - New Stock: 20
+[INFO] 2025-12-06 12:15:41 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-FSL2025009 | User: LYN | Timestamp: 2025-12-06 09:15:41.003538+00:00
+[INFO] 2025-12-06 12:15:41 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: -1 | Old Stock: 20 | New Stock: 19 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-06 12:15:41 signals 8289 131861535782592 - Stock OUT: Sale - Product: AFSL005 - Quantity: -1 - New Stock: 20
+[INFO] 2025-12-06 12:15:41 signals 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL005 (ALDEEPO MICR0-UB CABLE) | Quantity: -1 | Unit Price: $200 | Total: $200 | Reference: SALE-FSL2025009 | User: LYN | Timestamp: 2025-12-06 09:15:41.053507+00:00
+[INFO] 2025-12-06 12:15:41 models 8289 131861535782592 - [STOCK MOVEMENT] Type: Sale | Product: AFSL005 (ALDEEPO MICR0-UB CABLE) | Quantity: -1 | Old Stock: 20 | New Stock: 19 | Status: available | Unit Price: 200 | Total: 200 | User: LYN
+[INFO] 2025-12-06 13:41:43 signals 21657 128340787631808 - Stock OUT: Sale - Product: FFSL002 - Quantity: -1 - New Stock: 1
+[INFO] 2025-12-06 13:41:43 signals 21657 128340787631808 - [STOCK MOVEMENT] Type: Sale | Product: FFSL002 (NOKIA 105) | Quantity: -1 | Unit Price: $1750 | Total: $1750 | Reference: SALE-FSL2025010 | User: CALEB | Timestamp: 2025-12-06 10:41:43.425945+00:00
+[INFO] 2025-12-06 13:41:43 models 21657 128340787631808 - [SOLD] Single item FFSL002 marked as SOLD
+[INFO] 2025-12-06 13:41:43 models 21657 128340787631808 - [STOCK MOVEMENT] Type: Sale | Product: FFSL002 (NOKIA 105) | Quantity: -1 | Old Stock: 1 | New Stock: 1 | Status: sold | Unit Price: 1750 | Total: 1750 | User: CALEB
+[INFO] 2025-12-06 13:44:07 signals 21657 128340787631808 - Stock IN:  - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-06 13:44:07 signals 21657 128340787631808 - [STOCK MOVEMENT] Type:  | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Unit Price: $900.00 | Total: $900.00 | Reference: REVERSE-FSL2025010 | User: System | Timestamp: 2025-12-06 10:44:07.197551+00:00
+[INFO] 2025-12-06 13:44:07 models 21657 128340787631808 - [STOCK MOVEMENT] Type:  | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 900.00 | Total: 900.00 | User: System
+[INFO] 2025-12-06 13:44:07 signals 21657 128340787631808 - Stock IN:  - Product: FFSL002 - Quantity: 1 - New Stock: 1
+[INFO] 2025-12-06 13:44:07 signals 21657 128340787631808 - [STOCK MOVEMENT] Type:  | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Unit Price: $1750.00 | Total: $1750.00 | Reference: REVERSE-FSL2025010 | User: System | Timestamp: 2025-12-06 10:44:07.229956+00:00
+[INFO] 2025-12-06 13:44:07 models 21657 128340787631808 - [STOCK MOVEMENT] Type:  | Product: FFSL002 (NOKIA 105) | Quantity: 1 | Old Stock: 1 | New Stock: 1 | Status: available | Unit Price: 1750.00 | Total: 1750.00 | User: System
+[INFO] 2025-12-06 14:53:37 signals 31671 125590430344896 - Stock IN: Purchase - Product: AFSL001 - Quantity: 12 - New Stock: 38
+[INFO] 2025-12-06 14:53:37 signals 31671 125590430344896 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 12 | Unit Price: $25.0 | Total: $300.0 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-06 11:53:37.037839+00:00
+[INFO] 2025-12-06 14:53:37 models 31671 125590430344896 - [STOCK MOVEMENT] Type: Purchase | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 12 | Old Stock: 38 | New Stock: 50 | Status: available | Unit Price: 25.0 | Total: 300.0 | User: FIELDMAX
+[INFO] 2025-12-06 14:53:37 views 31671 125590430344896 - Restocked: AFSL001 - Qty: 12
+[INFO] 2025-12-06 17:23:25 signals 1559 131964294256320 - Stock IN: Purchase - Product: EFSL004 - Quantity: 5 - New Stock: 5
+[INFO] 2025-12-06 17:23:25 signals 1559 131964294256320 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL004 (ORAIMO EXTENTIONS) | Quantity: 5 | Unit Price: $1500.0 | Total: $7500.0 | Reference: N/A | User: FIELDMAX | Timestamp: 2025-12-06 14:23:25.728510+00:00
+[INFO] 2025-12-06 17:23:25 models 1559 131964294256320 - [STOCK MOVEMENT] Type: Purchase | Product: EFSL004 (ORAIMO EXTENTIONS) | Quantity: 5 | Old Stock: 5 | New Stock: 10 | Status: available | Unit Price: 1500.0 | Total: 7500.0 | User: FIELDMAX
+[INFO] 2025-12-06 17:23:25 views 1559 131964294256320 - Restocked: EFSL004 - Qty: 5
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - Stock IN:  - Product: AFSL001 - Quantity: 2 - New Stock: 52
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 2 | Unit Price: $25.00 | Total: $50.00 | Reference: REVERSE-SL20251202125537AC7EF8 | User: System | Timestamp: 2025-12-06 22:15:25.479164+00:00
+[INFO] 2025-12-07 01:15:25 models 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 2 | Old Stock: 52 | New Stock: 52 | Status: available | Unit Price: 25.00 | Total: 50.00 | User: System
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - Stock IN:  - Product: AFSL003 - Quantity: 5 - New Stock: 24
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Unit Price: $50.00 | Total: $250.00 | Reference: REVERSE-SL20251202125537AC7EF8 | User: System | Timestamp: 2025-12-06 22:15:25.532933+00:00
+[INFO] 2025-12-07 01:15:25 models 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Old Stock: 24 | New Stock: 24 | Status: available | Unit Price: 50.00 | Total: 250.00 | User: System
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - Stock IN:  - Product: AFSL001 - Quantity: 2 - New Stock: 54
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 2 | Unit Price: $100.00 | Total: $200.00 | Reference: REVERSE-SL20251202125537AC7EF8 | User: System | Timestamp: 2025-12-06 22:15:25.608792+00:00
+[INFO] 2025-12-07 01:15:25 models 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL001 (NORMAL PROTECTOR) | Quantity: 2 | Old Stock: 54 | New Stock: 54 | Status: available | Unit Price: 100.00 | Total: 200.00 | User: System
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - Stock IN:  - Product: AFSL003 - Quantity: 5 - New Stock: 29
+[INFO] 2025-12-07 01:15:25 signals 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Unit Price: $200.00 | Total: $1000.00 | Reference: REVERSE-SL20251202125537AC7EF8 | User: System | Timestamp: 2025-12-06 22:15:25.629190+00:00
+[INFO] 2025-12-07 01:15:25 models 6865 138591026288320 - [STOCK MOVEMENT] Type:  | Product: AFSL003 (AMAYA MICRO-USB CABLES) | Quantity: 5 | Old Stock: 29 | New Stock: 29 | Status: available | Unit Price: 200.00 | Total: 1000.00 | User: System
