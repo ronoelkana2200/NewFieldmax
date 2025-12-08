@@ -200,6 +200,8 @@ DECIMAL_SEPARATOR = '.'
 
 # URL to access static files
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Directories where Django looks for static files
 STATICFILES_DIRS = [
@@ -214,6 +216,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
 
 
 # ============================================
