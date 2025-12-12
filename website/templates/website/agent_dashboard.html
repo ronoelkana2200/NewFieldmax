@@ -473,7 +473,7 @@
             <!-- Column B: Cart Display -->
             <div class="card cart-card">
                 <h3>Sales Cart</h3>
-                <!-- Messages Container - Moved Here -->
+                <!-- Messages Container -->
                 <div id="messageContainer"></div>
                 <table>
                     <thead>
@@ -544,9 +544,6 @@
                 <button class="submit-btn" data-payment="points">Submit Sale</button>
             </div>
         </div>
-
-        <!-- Messages -->
-        <div id="messageContainer"></div>
     </div>
 
     <!-- Processing Overlay -->
@@ -648,12 +645,10 @@
         // ============================================
         document.getElementById('quantity').addEventListener('input', updateSaleAmount);
 
-        // FIX 1: Allow manual editing of sale amount
+        // Allow manual editing of sale amount
         document.getElementById('saleAmount').addEventListener('input', function() {
-            // User is manually editing, don't auto-update
             const manualAmount = parseFloat(this.value);
             if (manualAmount && currentProduct) {
-                // Update unit price based on manual entry
                 const qty = parseInt(document.getElementById('quantity').value) || 1;
                 currentProduct.manual_unit_price = manualAmount / qty;
             }
@@ -664,12 +659,10 @@
             const saleAmountInput = document.getElementById('saleAmount');
             
             if (currentProduct && qty > 0) {
-                // Only auto-fill if field is empty or user hasn't manually edited
                 if (!saleAmountInput.value || !currentProduct.manual_unit_price) {
                     const amount = currentProduct.unit_price * qty;
                     saleAmountInput.value = amount.toFixed(2);
                 } else {
-                    // Recalculate based on manual unit price
                     const amount = currentProduct.manual_unit_price * qty;
                     saleAmountInput.value = amount.toFixed(2);
                 }
@@ -677,7 +670,7 @@
         }
 
         // ============================================
-        // ADD TO CART - ENHANCED DUPLICATE PREVENTION
+        // ADD TO CART - SMART DUPLICATE HANDLING
         // ============================================
         document.getElementById('addToCartBtn').addEventListener('click', addToCart);
 
@@ -688,7 +681,6 @@
         });
 
         function addToCart() {
-            // FIX 2: Prevent rapid duplicate additions
             if (isAddingToCart) {
                 console.log('Already adding to cart, please wait...');
                 showMessage('Please wait, adding item...', 'danger');
@@ -724,17 +716,31 @@
             addBtn.textContent = 'Adding...';
 
             try {
-                // Check if product already in cart
-                const existingItem = cart.find(item => item.code === code);
+                // Check if exact same product with same unit price exists
+                const existingItem = cart.find(item => 
+                    item.code === code && 
+                    Math.abs(item.amount - unitPrice) < 0.01
+                );
+                
                 if (existingItem) {
-                    // Ask user if they want to add more
-                    if (confirm(`${code} is already in cart. Add ${qty} more units?`)) {
+                    // Same product, same price - ask to combine
+                    if (confirm(`${code} at KSh ${unitPrice.toFixed(2)} is already in cart.\n\nCombine quantities?\nYES = Add ${qty} more units\nNO = Add as separate line`)) {
                         existingItem.quantity += qty;
                         existingItem.totalPrice = existingItem.quantity * existingItem.amount;
+                        showMessage(`✅ Combined: ${existingItem.quantity} units at KSh ${unitPrice.toFixed(2)} each`, 'success');
                     } else {
-                        return;
+                        // Add as new line item
+                        cart.push({
+                            code: code,
+                            name: currentProduct.name,
+                            quantity: qty,
+                            amount: unitPrice,
+                            totalPrice: totalAmount
+                        });
+                        showMessage('✅ Added as separate line item', 'success');
                     }
                 } else {
+                    // Different price or product not in cart
                     cart.push({
                         code: code,
                         name: currentProduct.name,
@@ -742,6 +748,14 @@
                         amount: unitPrice,
                         totalPrice: totalAmount
                     });
+                    
+                    // Check if same product exists with different price
+                    const sameProductDifferentPrice = cart.filter(item => item.code === code).length > 1;
+                    if (sameProductDifferentPrice) {
+                        showMessage(`✅ Added ${code} at KSh ${unitPrice.toFixed(2)} (different price)`, 'success');
+                    } else {
+                        showMessage('✅ Added to cart successfully', 'success');
+                    }
                 }
 
                 // Clear inputs
@@ -751,10 +765,8 @@
                 currentProduct = null;
 
                 updateCartDisplay();
-                showMessage('✅ Added to cart successfully', 'success');
 
             } finally {
-                // Re-enable after short delay
                 setTimeout(() => {
                     isAddingToCart = false;
                     addBtn.disabled = false;
@@ -810,7 +822,7 @@
         }
 
         // ============================================
-        // PAYMENT METHODS - ENHANCED DUPLICATE PREVENTION
+        // PAYMENT METHODS
         // ============================================
         const paymentCards = document.querySelectorAll('.payment-card');
         const paymentInputs = {
@@ -848,13 +860,12 @@
             document.querySelector('.row-4').scrollIntoView({ behavior: 'smooth' });
         });
 
-        // FIX 3: Enhanced payment submission with cooldown
+        // Payment submission with duplicate prevention
         document.querySelectorAll('.submit-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Check cooldown period
                 const now = Date.now();
                 if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
                     const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
@@ -862,7 +873,6 @@
                     return;
                 }
 
-                // Prevent duplicate submissions
                 if (isSubmittingSale) {
                     showMessage('Sale is being processed, please wait...', 'danger');
                     return;
@@ -878,11 +888,10 @@
                 
                 const amount = document.getElementById(`${paymentType}Amount`).value;
                 processSale(paymentMethodMap[paymentType], amount);
-            }, { once: false });
+            });
         });
 
         async function processSale(paymentMethod, amount) {
-            // FIX 4: Triple-check to prevent duplicates
             if (isSubmittingSale) {
                 console.log('Sale already being processed, blocked duplicate');
                 return;
@@ -954,6 +963,9 @@
                 document.getElementById('processingOverlay').classList.remove('active');
 
                 if (data.status === 'success') {
+                    // Reset submission flag immediately on success
+                    isSubmittingSale = false;
+                    
                     const change = amountPaid - total;
                     let message = `✅ SALE COMPLETED!\n\nPayment Method: ${paymentMethod}\nTotal: KSh ${total.toFixed(2)}\nPaid: KSh ${amountPaid.toFixed(2)}`;
                     
@@ -961,23 +973,34 @@
                         message += `\nChange: KSh ${change.toFixed(2)}`;
                     }
 
-                    if (data.receipt_url) {
+                    // Check for batch_id or receipt_url in response
+                    if (data.batch_id) {
+                        const receiptUrl = `/sales/batch-receipt/${data.batch_id}/`;
                         message += `\n\nReceipt generated successfully!`;
-                        setTimeout(() => window.open(data.receipt_url, '_blank'), 1000);
+                        setTimeout(() => window.open(receiptUrl, '_blank'), 500);
+                    } else if (data.receipt_url) {
+                        message += `\n\nReceipt generated successfully!`;
+                        setTimeout(() => window.open(data.receipt_url, '_blank'), 500);
                     }
 
                     showMessage(message, 'success');
 
-                    // Clear everything
+                    // Clear everything immediately
                     cart = [];
                     updateCartDisplay();
                     Object.values(paymentInputs).forEach(input => input.value = '');
                     paymentCards.forEach(c => c.classList.remove('active'));
 
-                    // Reload page after 3 seconds
+                    // Re-enable inputs for next transaction
                     setTimeout(() => {
-                        location.reload();
-                    }, 3000);
+                        document.querySelectorAll('.submit-btn, .add-btn, .checkout-btn').forEach(btn => {
+                            btn.disabled = false;
+                        });
+                        document.querySelectorAll('input').forEach(input => {
+                            input.disabled = false;
+                        });
+                        document.getElementById('productCode').focus();
+                    }, 1500);
                 } else {
                     showMessage(`❌ Sale failed: ${data.message}`, 'danger');
                     
@@ -1019,12 +1042,9 @@
             const container = document.getElementById('messageContainer');
             const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
             
-            // Replace newlines with <br> for proper display
             const formattedMessage = message.replace(/\n/g, '<br>');
             
             container.innerHTML = `<div class="alert ${alertClass}">${formattedMessage}</div>`;
-            
-            // Scroll to message
             container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
             setTimeout(() => {
@@ -1071,11 +1091,9 @@
         // INITIALIZE
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Focus on product code input on load
             document.getElementById('productCode').focus();
-            
             console.log('Cashier Dashboard initialized');
-            console.log('Features: Editable amounts, Duplicate prevention, Keyboard shortcuts');
+            console.log('Features: Smart duplicate handling, Editable amounts, Keyboard shortcuts');
         });
     </script>
 </body>
