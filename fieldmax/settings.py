@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # For number formatting in templates
+    'django_extensions',
     
     # Third-party apps
     'rest_framework',

@@ -38,7 +38,7 @@ urlpatterns = [
     # Reversal endpoints
     path('sale/<str:sale_id>/', views.SaleDetailView.as_view(), name='sale-detail'),
 
-    # Accept any slug/string as sale_id
+    # Accept any slug/string as sale_ida
     path("reverse/<str:sale_id>/", SaleReverseView.as_view(), name="reverse-sale"),
 
     # ============================================

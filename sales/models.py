@@ -83,7 +83,10 @@ class Sale(models.Model):
     - One receipt number per sale
     - One row in sales table per transaction
     """
-
+    
+    batch_id = models.CharField(max_length=50, blank=True, null=True)  # Add this
+    payment_method = models.CharField(max_length=50, default='Cash')    # Add this
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Add this
     sale_id = models.CharField(max_length=40, primary_key=True, editable=False)
     
     # Transaction details

@@ -1,2429 +1,1102 @@
-
 {% extends "website/base.html" %}
-{% block title %}Agent Dashboard - Fieldmax Shop{% endblock %}
+{% block title %}Dashboard - Fieldmax Shop{% endblock %}
 
 {% block content %}
-<style>
-/* ========================================
-   DASHBOARD LAYOUT
-   ======================================== */
-.dashboard-wrapper {
-  display: flex;
-  min-height: calc(100vh - 160px);
-  background-color: #516272;
-}
-
-/* ========================================
-   SIDEBAR NAVIGATION
-   ======================================== */
-.dashboard-sidebar {
-  width: 260px;
-  background: #ffffff;
-  border-right: 1px solid #e5e7eb;
-  padding: 1.5rem 0;
-  position: sticky;
-  top: 76px;
-  height: calc(100vh - 76px);
-  overflow-y: auto;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-  flex-shrink: 0;
-}
-
-.sidebar-header {
-  padding: 0 1.5rem 1.5rem;
-  border-bottom: 2px solid #e5e7eb;
-  margin-bottom: 1rem;
-}
-
-.sidebar-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: #1a1f2e;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.sidebar-title i {
-  font-size: 1.75rem;
-  color: #10b981;
-}
-
-.sidebar-user {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #6c757d;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-
-.sidebar-nav {
-  padding: 0 1rem;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  color: #6c757d;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  width: 100%;
-  text-align: left;
-  font-size: 0.95rem;
-  text-decoration: none;
-  margin-bottom: 0.25rem;
-}
-
-.nav-item:hover {
-  background: #f3f4f6;
-  color: #1a1f2e;
-  text-decoration: none;
-}
-
-.nav-item.active {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-}
-
-.nav-item i {
-  font-size: 1.25rem;
-  width: 24px;
-  text-align: center;
-}
-
-/* ========================================
-   MAIN CONTENT AREA
-   ======================================== */
-.dashboard-content {
-  flex: 1;
-  padding: 2rem;
-  overflow-x: hidden;
-}
-
-.content-section {
-  display: none;
-}
-
-.content-section.active {
-  display: block;
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.content-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 500;
-  color: #1a1f2e;
-  margin: 0;
-}
-
-.mobile-sidebar-toggle {
-  display: none;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  color: #1a1f2e;
-  font-size: 1.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.mobile-sidebar-toggle:hover {
-  background: #10b981;
-  color: #ffffff;
-  border-color: #10b981;
-}
-
-/* ========================================
-   CARDS & GRIDS
-   ======================================== */
-.lookup-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.lookup-card {
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-}
-
-.lookup-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.card-header-custom {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f3f4f6;
-}
-
-.card-icon {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
-}
-
-.card-icon.primary {
-  background: linear-gradient(135deg, rgba(13, 202, 240, 0.15) 0%, rgba(13, 202, 240, 0.05) 100%);
-  color: #0dcaf0;
-}
-
-.card-icon.success {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
-  color: #10b981;
-}
-
-.card-icon.info {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
-  color: #3b82f6;
-}
-
-.card-title-custom {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1a1f2e;
-  margin: 0;
-}
-
-.display-box {
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f9fafb;
-  border: 2px dashed #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.display-box.has-content {
-  background: #ffffff;
-  border: 2px solid #10b981;
-  border-style: solid;
-}
-
-.display-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a1f2e;
-  margin: 0;
-}
-
-.display-label {
-  font-size: 0.875rem;
-  color: #6c757d;
-  margin-top: 0.25rem;
-}
-
-/* ========================================
-   DATA TABLES
-   ======================================== */
-.data-card {
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-.card-header-table {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  background: #f9fafb;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1a1f2e;
-  margin: 0;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table thead {
-  background: #f3f4f6;
-}
-
-.data-table th {
-  padding: 1rem 1.25rem;
-  text-align: left;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #6c757d;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.data-table td {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #1a1f2e;
-  font-size: 0.925rem;
-}
-
-.data-table tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.data-table tbody tr:hover {
-  background: #f9fafb;
-}
-
-.data-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.sale-id {
-  font-family: 'Courier New', monospace;
-  color: #6c757d;
-  font-weight: 600;
-}
-
-.price-tag {
-  color: #10b981;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
-.empty-state {
-  padding: 3rem !important;
-  color: #6c757d;
-  text-align: center;
-}
-
-.empty-state i {
-  font-size: 3rem;
-  color: #d1d5db;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-/* ========================================
-   FORMS & INPUTS
-   ======================================== */
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #1a1f2e;
-  font-size: 0.95rem;
-}
-
-.required::after {
-  content: " *";
-  color: #dc3545;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-}
-
-.form-control-lg {
-  padding: 1rem;
-  font-size: 1.1rem;
-}
-
-/* ========================================
-   BUTTONS
-   ======================================== */
-.btn-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  width: 100%;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #0dcaf0 0%, #0ab4d6 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(13, 202, 240, 0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(13, 202, 240, 0.4);
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.btn-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-}
-
-.btn-success:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-/* ========================================
-   PRODUCT DETAILS
-   ======================================== */
-.product-info-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 2px solid #e2e8f0;
-}
-
-.product-info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.product-info-item:last-child {
-  border-bottom: none;
-}
-
-.product-info-label {
-  color: #64748b;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.product-info-value {
-  color: #1e293b;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.fifo-badge {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.sold-alert {
-  border-left: 4px solid #ef4444;
-  background: #fef2f2;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-.available-alert {
-  border-left: 4px solid #10b981;
-  background: #f0fdf4;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-.product-badge {
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 600;
-}
-
-/* ========================================
-   ALERTS & MESSAGES
-   ======================================== */
-.alert {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.alert-info {
-  background: #e0f7ff;
-  border: 1px solid #0dcaf0;
-  color: #0a7a8f;
-}
-
-.alert-success {
-  background: #d1fae5;
-  border: 1px solid #10b981;
-  color: #065f46;
-}
-
-.alert-danger {
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  color: #991b1b;
-}
-
-.toast-message {
-  position: fixed;
-  top: 20px;
-  right: -300px;
-  padding: 15px 20px;
-  background: #10b981;
-  color: white;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: all 0.4s ease;
-  z-index: 9999;
-  font-weight: bold;
-}
-
-.toast-message.error {
-  background: #ef4444;
-}
-
-.toast-message.show {
-  right: 20px;
-}
-
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-#productDetails {
-  animation: fadeInUp 0.4s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-#emptyState i {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-@media (max-width: 992px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-
-  .dashboard-sidebar {
-    position: fixed;
-    left: -260px;
-    top: 76px;
-    z-index: 998;
-    transition: left 0.3s ease;
-  }
-
-  .dashboard-sidebar.active {
-    left: 0;
-  }
-
-  .mobile-sidebar-toggle {
-    display: block;
-  }
-
-  .dashboard-content {
-    padding: 1.5rem;
-  }
-
-  .lookup-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .col-lg-6 {
-    margin-bottom: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .dashboard-content {
-    padding: 1rem;
-  }
-
-  .page-title {
-    font-size: 1.5rem;
-  }
-}
-
-</style>
-<div class="dashboard-wrapper">
-  
-  <!-- Sidebar Navigation -->
-  <aside class="dashboard-sidebar" id="dashboardSidebar">
-    <div class="sidebar-header">
-      <h2 class="sidebar-title">
-        <i class="bi bi-person-badge"></i>
-        <span>FIELDDMAX STAFF 🪪</span>
-      </h2>
-      <div class="sidebar-user">
-        <i class="bi bi-person-circle"></i>
-        <span>
-          {% if user.is_authenticated %}
-            {{ user.get_full_name|default:user.username }}
-          {% else %}
-            Guest
-          {% endif %}
-        </span>
-      </div>
-    </div>
-    
-    <nav class="sidebar-nav">
-      <button type="button" class="nav-item active" data-section="overview">
-        <i class="bi bi-speedometer2"></i>
-        <span>Overview</span>
-      </button>
-
-      <button type="button" class="nav-item" data-section="product-lookup">
-        <i class="bi bi-search"></i>
-        <span>Product Lookup</span>
-      </button>
-
-      <button type="button" class="nav-item" data-section="record-sale">
-        <i class="bi bi-cart-plus"></i>
-        <span>Record Sale</span>
-      </button>
-
-      <button type="button" class="nav-item" data-section="my-sales">
-        <i class="bi bi-receipt"></i>
-        <span>My Sales</span>
-      </button>
-
-      <button type="button" class="nav-item" data-section="All-inventory">
-        <i class="bi bi-box-seam"></i>
-        <span>All Inventory</span>
-      </button>
-
-      <!-- Logout Section -->
-      <div style="margin-top: auto; padding: 1rem; border-top: 2px solid #e5e7eb;">
-        <form method="post" action="{% url 'logout' %}">
-          {% csrf_token %}
-          <button type="submit" class="nav-item" style="border: 1px solid #dc2626; background: #fee2e2; color: #dc2626; width: 100%;">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-          </button>
-        </form>
-      </div>
-    </nav>
-  </aside>
-
-  <!-- Main Dashboard Content -->
-  <main class="dashboard-content">
-    
-    <!-- ========================================
-         OVERVIEW SECTION
-         ======================================== -->
-    <div id="overview" class="content-section active">
-      <div class="content-header">
-        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
-          <i class="bi bi-list"></i>
-        </button>
-        <h1 class="page-title">Sales Overview</h1>
-      </div>
-
-      <!-- Statistics Cards Grid -->
-      <div class="lookup-grid">
-        <!-- Today's Revenue Card -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon success">
-              <i class="bi bi-currency-dollar"></i>
-            </div>
-            <h3 class="card-title-custom">Today's Sales</h3>
-          </div>
-          <div class="display-box has-content">
-            <div>
-              <p class="display-value">KSH {{ todays_sales|default:"0.00" }}</p>
-              <p class="display-label">Total revenue today</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- All-Time Sales Card -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon primary">
-              <i class="bi bi-graph-up"></i>
-            </div>
-            <h3 class="card-title-custom">Monthly Sales</h3>
-          </div>
-          <div class="display-box has-content">
-            <div>
-              <p class="display-value">KSH {{ monthly_sales|default:"0.00" }}</p>
-              <p class="display-label">{{ monthly_sales_count|default:"0" }} transactions this month</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- All-Time Sales Card -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon primary">
-              <i class="bi bi-graph-up"></i>
-            </div>
-            <h3 class="card-title-custom">Total Sales</h3>
-          </div>
-          <div class="display-box has-content">
-            <div>
-              <p class="display-value">KSH {{ total_sales|default:"0.00" }}</p>
-              <p class="display-label">{{ total_sales_count|default:"0" }} All time transactions</p>
-            </div>
-          </div>
-        </div>  
-
-        <!-- Inventory Count Card -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon info">
-              <i class="bi bi-box-seam"></i>
-            </div>
-            <h3 class="card-title-custom">My Products</h3>
-          </div>
-          <div class="display-box has-content">
-            <div>
-              <p class="display-value">{{ my_products_count|default:"0" }}</p>
-              <p class="display-label">Items in inventory</p>
-            </div>
-          </div>
-        </div>        
-
-      </div>
-
-      <!-- Quick Actions Grid -->
-      <div class="lookup-grid">
-        <!-- Product Search Action -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon primary">
-              <i class="bi bi-search"></i>
-            </div>
-            <h3 class="card-title-custom">Quick Lookup</h3>
-          </div>
-          <button type="button" class="btn-action btn-primary" data-section="product-lookup">
-            <i class="bi bi-search"></i>
-            <span>Search Product</span>
-          </button>
-        </div>
-
-        <!-- Record Sale Action -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon success">
-              <i class="bi bi-cart-plus"></i>
-            </div>
-            <h3 class="card-title-custom">Record Sale</h3>
-          </div>
-          <button type="button" class="btn-action btn-success" data-section="record-sale">
-            <i class="bi bi-plus-circle"></i>
-            <span>New Sale</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Recent Sales Table -->
-      <div class="data-card" style="margin-top: 2rem;">
-        <div class="card-header-table">
-          <h2 class="section-title">Recent Sales</h2>
-          <button type="button" class="btn-action btn-success" data-section="record-sale" style="width: auto; padding: 0.5rem 1.25rem;">
-            <i class="bi bi-plus-circle"></i>
-            <span>Record Sale</span>
-          </button>
-        </div>
-        
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Sale ID</th>
-                <th>Buyer</th>
-                <th>Total Price</th>
-                <th>Date Sold</th>
-                <th>View Receipt</th>
-              </tr>
-            </thead>
-        <tbody>
-          {% for sale in recent_sales %}
-          <tr>
-            <!-- Sale ID -->
-            <td>
-              <strong>#{{ sale.sale_id }}</strong>
-              {% if sale.is_reversed %}
-                <span class="badge badge-warning" style="font-size: 10px; background: #fef3c7; color: #92400e;">
-                  <i class="bi bi-arrow-counterclockwise"></i> REVERSED
-                </span>
-              {% endif %}
-            </td>
-
-            <!-- buyer -->
-            <td>{{ sale.buyer_name|default:"Walk-in" }}</td>
-
-            <!-- Total Price -->
-            <td><strong style="color:#10b981;">{{ sale.total_amount }}</strong></td>
-
-
-            <!-- sale date -->
-            <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
-
-            <!-- Vieww etr-->
-            <td>
-              {% if sale.is_reversed %}
-                <span class="btn btn-secondary disabled">ETR Returned</span>
-
-              {% else %}
-                {% if sale.batch_id %}
-                  <a href="{% url 'sales:batch-receipt' sale.batch_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                    View Receipt ({{ sale.batch_total_sales }} items)
-                  </a>
-                {% else %}
-                  <a href="{% url 'sales:sale-etr' sale.sale_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                   View Receipt
-                  </a>
-                {% endif %}
-                {% endif %}
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="9">
-              <div class="empty-state">
-                <i class="bi bi-box-seam"></i>
-                <p>No recent sales found.</p>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-</div>
-
-
-
-
-
-
-
-    <!-- ========================================
-         PRODUCT LOOKUP SECTION
-         ======================================== -->
-    <div id="product-lookup" class="content-section">
-      <div class="content-header">
-        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle2">
-          <i class="bi bi-list"></i>
-        </button>
-        <h1 class="page-title">Product Lookup & Quick Sale</h1>
-      </div>
-
-      <!-- Product Lookup 3-Column Grid -->
-      <div class="lookup-grid">
-        <!-- Product Code Input -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon primary">
-              <i class="bi bi-upc-scan"></i>
-            </div>
-            <h3 class="card-title-custom">Product Code</h3>
-          </div>
-          <input type="text" id="lookup-product-code" class="form-control form-control-lg" placeholder="Enter product code…">
-          <button type="button" class="btn-action btn-primary" id="btn-search-product" style="margin-top: 1rem;">
-            <i class="bi bi-search"></i>
-            <span>Lookup Product</span>
-          </button>
-        </div>
-
-        <!-- Product Name Display -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon success">
-              <i class="bi bi-box"></i>
-            </div>
-            <h3 class="card-title-custom">Product Name</h3>
-          </div>
-          <div class="display-box" id="product-name-display">
-            <p style="color: #9ca3af; margin: 0;">Search for a product</p>
-          </div>
-        </div>
-
-        <!-- Selling Price Display -->
-        <div class="lookup-card">
-          <div class="card-header-custom">
-            <div class="card-icon info">
-              <i class="bi bi-currency-dollar"></i>
-            </div>
-            <h3 class="card-title-custom">Selling Price</h3>
-          </div>
-          <div class="display-box" id="selling-price-display">
-            <p style="color: #9ca3af; margin: 0;">---</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent Sales Table -->
-      <div class="data-card" style="margin-top: 2rem;">
-        <div class="card-header-table">
-          <h2 class="section-title">Recent Sales</h2>
-          <button type="button" class="btn-action btn-success" data-section="record-sale" style="width: auto; padding: 0.5rem 1.25rem;">
-            <i class="bi bi-plus-circle"></i>
-            <span>Record Sale</span>
-          </button>
-        </div>
-        
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Sale ID</th>
-                <th>Buyer</th>
-                <th>Total Price</th>
-                <th>Date Sold</th>
-                <th>View Receipt</th>
-              </tr>
-            </thead>
-        <tbody>
-          {% for sale in recent_sales %}
-          <tr>
-            <!-- Sale ID -->
-            <td>
-              <strong>#{{ sale.sale_id }}</strong>
-              {% if sale.is_reversed %}
-                <span class="badge badge-warning" style="font-size: 10px; background: #fef3c7; color: #92400e;">
-                  <i class="bi bi-arrow-counterclockwise"></i> REVERSED
-                </span>
-              {% endif %}
-            </td>
-
-            <!-- buyer -->
-            <td>{{ sale.buyer_name|default:"Walk-in" }}</td>
-
-            <!-- Total Price -->
-            <td><strong style="color:#10b981;">{{ sale.total_amount }}</strong></td>
-
-
-            <!-- sale date -->
-            <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
-
-            <!-- Vieww etr-->
-            <td>
-              {% if sale.is_reversed %}
-                <span class="btn btn-secondary disabled">ETR Returned</span>
-
-              {% else %}
-                {% if sale.batch_id %}
-                  <a href="{% url 'sales:batch-receipt' sale.batch_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                    View Receipt ({{ sale.batch_total_sales }} items)
-                  </a>
-                {% else %}
-                  <a href="{% url 'sales:sale-etr' sale.sale_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                   View Receipt
-                  </a>
-                {% endif %}
-                {% endif %}
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="9">
-              <div class="empty-state">
-                <i class="bi bi-box-seam"></i>
-                <p>No recent sales found.</p>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-</div>
-
-
-
-
-<!-- Two-Column Record Sale Section -->
-<div id="record-sale" class="content-section">
-
-  <!-- Header -->
-  <div class="content-header">
-    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle3">
-      <i class="bi bi-list"></i>
-    </button>
-    <h1 class="page-title">
-      <i class="bi bi-cart-plus"></i> Record Sale
-    </h1>
-  </div>
-
-  <!-- Two Column Layout -->
-  <div class="row g-4">
-    
-    <!-- ==========================================
-         COLUMN A: INPUT FORM
-    ========================================== -->
-    <div class="col-lg-6">
-      <div class="data-card h-100">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">
-            <i class="bi bi-pencil-square"></i> Sale Input Form
-          </h5>
-        </div>
-        <div class="card-body" style="padding: 2rem;">
-          
-          <form id="saleForm">
-            {% csrf_token %}
-
-            <!-- Product Code / SKU -->
-            <div class="mb-4 position-relative">
-              <label for="productCode" class="form-label required">
-                <i class="bi bi-upc-scan"></i> Product Code / SKU
-              </label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input type="text" 
-                       id="productCode" 
-                       name="product_code" 
-                       class="form-control"
-                       placeholder="Scan or enter code" 
-                       required 
-                       autocomplete="off"
-                       autofocus>
-              </div>
-              <small class="form-text text-muted">
-                IMEI, Serial, Barcode, or Product Code
-              </small>
-            </div>
-
-            <!-- Quantity -->
-            <div class="mb-3">
-              <label for="quantity" class="form-label">
-                <i class="bi bi-123"></i> Quantity
-              </label>
-              <input type="number" 
-                     id="quantity" 
-                     name="quantity" 
-                     class="form-control form-control-lg"
-                     min="1" 
-                     value="1" 
-                     placeholder="Enter quantity">
-              <small class="form-text text-muted">
-                Auto-locked to 1 for single items
-              </small>
-            </div>
-
-            <!-- Unit Price -->
-            <div class="mb-3">
-              <label for="saleAmount" class="form-label">
-                <i class="bi bi-currency-exchange"></i> Unit Price (KSH)
-              </label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">KSH</span>
-                <input type="number" 
-                       id="saleAmount" 
-                       name="unit_price" 
-                       step="0.01" 
-                       min="0"
-                       class="form-control" 
-                       placeholder="0.00">
-              </div>
-            </div>
-
-            <!-- Total Amount -->
-            <div class="mb-4">
-              <label for="totalAmount" class="form-label">
-                <i class="bi bi-calculator"></i> Total Sale Amount
-              </label>
-              <input type="text" 
-                     id="totalAmount" 
-                     name="total_amount" 
-                     class="form-control form-control-lg text-center"
-                     readonly 
-                     style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
-                            font-weight: 700; 
-                            font-size: 1.5rem; 
-                            color: #059669;
-                            border: 2px solid #10b981;">
-            </div>
-
-            <hr class="my-4">
-
-            <!-- Client Details Collapsible -->
-            <div class="mb-4">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label fw-bold mb-0">
-                  <i class="bi bi-person-vcard"></i> Client Details
-                </label>
-                <span class="badge bg-secondary">Optional</span>
-              </div>
-
-              <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center"
-                      type="button" 
-                      data-bs-toggle="collapse" 
-                      data-bs-target="#clientDetailsDropdown"
-                      aria-expanded="false">
-                  <span><i class="bi bi-person-plus"></i> Fill Client Details</span>
-                  <i class="bi bi-chevron-down"></i>
-              </button>
-
-              <!-- Collapsible Form -->
-              <div class="collapse mt-3" id="clientDetailsDropdown">
-                <div class="card card-body bg-light">
-
-                  <div class="mb-3">
-                    <label for="client_phone" class="form-label">
-                      <i class="bi bi-telephone"></i> Phone
-                    </label>
-                    <input type="text" 
-                           id="client_phone" 
-                           name="buyer_phone" 
-                           class="form-control"
-                           placeholder="0712345678">
-                    <small class="form-text text-muted">
-                      Auto-fills if client exists
-                    </small>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="client_name" class="form-label">
-                      <i class="bi bi-person"></i> Name
-                    </label>
-                    <input type="text" 
-                           id="client_name" 
-                           name="buyer_name" 
-                           class="form-control"
-                           placeholder="Full name">
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="client_id" class="form-label">
-                      <i class="bi bi-card-text"></i> ID Number
-                    </label>
-                    <input type="text" 
-                           id="client_id" 
-                           name="buyer_id_number" 
-                           class="form-control"
-                           placeholder="ID number">
-                  </div>
-
-                  <hr>
-
-                  <h6 class="text-muted mb-3">Next of Kin</h6>
-
-                  <div class="mb-3">
-                    <label for="nok_name" class="form-label">
-                      <i class="bi bi-person-badge"></i> NOK Name
-                    </label>
-                    <input type="text" 
-                           id="nok_name" 
-                           name="nok_name" 
-                           class="form-control"
-                           placeholder="NOK name">
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="nok_phone" class="form-label">
-                      <i class="bi bi-telephone-forward"></i> NOK Phone
-                    </label>
-                    <input type="text" 
-                           id="nok_phone" 
-                           name="nok_phone" 
-                           class="form-control"
-                           placeholder="NOK phone">
-                  </div>
-
-                </div>
-              </div>
-            </div>
-<!-- Action Buttons -->
-<div class="d-grid gap-2 mt-4">
-  <button type="button" 
-          id="addToCartBtn" 
-          class="btn btn-primary btn-lg" 
-          disabled>
-    <i class="bi bi-plus-circle"></i> Add to Cart
-  </button>
-  <button type="button" 
-          id="recordAllSalesBtn" 
-          class="btn btn-success btn-lg" 
-          disabled>
-    <i class="bi bi-check-circle"></i> Record All Sales
-  </button>
-</div>
-
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==========================================
-         COLUMN B: DISPLAY SECTION
-    ========================================== -->
-    <div class="col-lg-6">
-      <div class="data-card h-100">
-        <div class="card-header bg-info text-white">
-          <h5 class="mb-0">
-            <i class="bi bi-display"></i> Product Details & Status
-          </h5>
-        </div>
-        <div class="card-body" style="padding: 2rem;">
-          
-          <!-- Initial State (No Product Selected) -->
-          <div id="emptyState" class="text-center py-5">
-            <i class="bi bi-box-seam" style="font-size: 4rem; color: #cbd5e1;"></i>
-            <h5 class="text-muted mt-3">No Product Selected</h5>
-            <p class="text-muted">
-              Scan or enter a product code to view details
-            </p>
-          </div>
-
-          <!-- Product Details Display -->
-          <div id="productDetails" style="display: none;">
-            <!-- Content will be dynamically inserted here -->
-          </div>
-
-          <!-- Sale Messages -->
-          <div id="saleMessage" class="mt-4"></div>
-
-        </div>
-      </div>
-    </div>
-
-  </div><!-- End Row -->
-
-</div>
-
-
-
-    <!-- ========================================
-         MY SALES SECTION
-         ======================================== -->
-    <div id="my-sales" class="content-section">
-      <div class="content-header">
-        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle4">
-          <i class="bi bi-list"></i>
-        </button>
-        <h1 class="page-title">My Sales</h1>
-        <button type="button" class="btn-action btn-success" data-section="record-sale" style="width: auto; padding: 0.75rem 1.5rem;">
-          <i class="bi bi-plus-circle"></i>
-          <span>Record Sale</span>
-        </button>
-      </div>
-      
-      <div class="data-card">
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Sale ID</th>
-                <th>Buyer</th>
-                <th>Total Amount</th>
-                <th>Date Sold</th>
-                <th>View Receipt</th>
-              </tr>
-            </thead>
-            <tbody>
-          {% for sale in all_sales %}
-          <tr>
-            <td class="sale-id">#{{ sale.sale_id }}</td>
-            <td>{{ sale.buyer_name|default:"N/A" }}</td>
-            <td><strong style="color:#10b981;">{{ sale.total_amount }}</strong></td>
-            <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
-            <td>
-              {% if sale.is_reversed %}
-                <span class="btn btn-secondary disabled">ETR Returned</span>
-
-              {% else %}
-                {% if sale.batch_id %}
-                  <a href="{% url 'sales:batch-receipt' sale.batch_id %}"
-                    class="btn btn-primary"
-                     style="display: inline-block;">
-                    View Receipt ({{ sale.batch_total_sales }} items)
-                  </a>
-                {% else %}
-                  <a href="{% url 'sales:sale-etr' sale.sale_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                    View Receipt
-                  </a>
-                {% endif %}
-              {% endif %}
-            </td>
-
-          </tr>
-
-          {% empty %}
-          <tr>
-            <td colspan="8" class="empty-state">
-              <i class="bi bi-receipt"></i>
-              <p>No sales recorded yet</p>
-            </td>
-          </tr>
-          {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========================================
-         ALL INVENTORY SECTION
-         ======================================== -->
-    <div id="All-inventory" class="content-section">
-      <div class="content-header">
-        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle5">
-          <i class="bi bi-list"></i>
-        </button>
-        <h1 class="page-title">All Inventory</h1>
-              <!-- Filter Buttons -->
-        <select id="productStatusFilter" class="form-select" style="width: auto;" onchange="filterProducts()">
-          <option value="all">All Products</option>
-          <option value="instock">In Stock</option>
-          <option value="outofstock">Out of Stock</option>
-          <option value="lowstock">Low Stock (≤5)</option>
-        </select>
-      
-        <select id="productCategoryFilter" class="form-select" style="width: auto;" onchange="filterProducts()">
-          <option value="all">All Categories</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      
-      <div class="data-card">
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Product Code</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Stock</th>
-                <th>IMEI/Serial Number</th>
-                <th>Selling Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for product in my_products %}
-              <tr>
-                <td><strong>{{ product.product_code }}</strong></td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.category.name }}</td>
-
-
-<!-- STOCK COLUMN -->
-<td class="product-quantity">
-  {% if product.category.is_single_item %}
-    {% if product.status == 'sold' %}
-      <strong style="color: #dc3545; font-weight: bold;">
-        <i class="bi bi-x-circle-fill"></i> SOLD
-      </strong>
-    {% else %}
-      <strong style="color: #28a745; font-weight: bold;">
-        <i class="bi bi-check-circle-fill"></i> Available
-      </strong>
-    {% endif %}
-  {% else %}
-    {% if product.quantity > 5 %}
-      <strong style="color: #28a745; font-weight: bold;">
-        {{ product.quantity }} units
-      </strong>
-    {% elif product.quantity > 0 %}
-      <strong style="color: #ffc107; font-weight: bold;">
-        {{ product.quantity }} units (Low)
-      </strong>
-    {% else %}
-      <strong style="color: #dc3545; font-weight: bold;">
-        0 units (Out)
-      </strong>
-    {% endif %}
-  {% endif %}
-</td>
-
-
-                <td>{{ product.sku_value }}</td>
-                <td class="price-tag">KSH {{ product.selling_price }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="7" class="empty-state">
-                  <i class="bi bi-box-seam"></i>
-                  <p>No products in inventory</p>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<script>
-  
-// ================================
-// SECTION NAVIGATION SYSTEM
-// ================================
-
-document.addEventListener('DOMContentLoaded', function() {
-  const navItems = document.querySelectorAll('.nav-item[data-section], .btn-action[data-section], button[data-section]');
-  const sections = document.querySelectorAll('.content-section');
-  const sidebar = document.getElementById('dashboardSidebar');
-  
-  // Get all mobile sidebar toggles
-  const mobileSidebarToggles = [
-    document.getElementById('mobileSidebarToggle'),
-    document.getElementById('mobileSidebarToggle2'),
-    document.getElementById('mobileSidebarToggle3'),
-    document.getElementById('mobileSidebarToggle4'),
-    document.getElementById('mobileSidebarToggle5')
-  ];
-
-  // ============================================
-  // DETECT FRESH LOGIN vs NAVIGATION
-  // ============================================
-  function isFreshLogin() {
-    // Check if this is the first page load after login
-    const isFirstLoad = !sessionStorage.getItem('dashboardVisited');
-    
-    if (isFirstLoad) {
-      // Mark that dashboard has been visited in this session
-      sessionStorage.setItem('dashboardVisited', 'true');
-      return true;
-    }
-    
-    return false;
-  }
-
-  // Navigation handler
-  function navigateToSection(sectionId) {
-    // Hide all sections
-    sections.forEach(section => section.classList.remove('active'));
-    
-    // Remove active class from all sidebar nav items only
-    document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
-      item.classList.remove('active');
-    });
-    
-    // Show target section
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-      targetSection.classList.add('active');
-      
-      // Scroll to top of page
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-    // Add active class to clicked sidebar nav item
-    const activeSidebarNavItem = document.querySelector(`.sidebar-nav .nav-item[data-section="${sectionId}"]`);
-    if (activeSidebarNavItem) {
-      activeSidebarNavItem.classList.add('active');
-    }
-    
-    // Save current section to localStorage
-    localStorage.setItem('activeSection', sectionId);
-    
-    // Close mobile sidebar if open
-    if (window.innerWidth <= 992) {
-      sidebar.classList.remove('active');
-    }
-  }
-
-  // ============================================
-  // RESTORE SECTION ON PAGE LOAD
-  // ============================================
-  function restoreActiveSection() {
-    // ✅ If fresh login, always go to Overview
-    if (isFreshLogin()) {
-      console.log('Fresh login detected - Loading Overview');
-      navigateToSection('overview');
-      return;
-    }
-    
-    // ✅ Otherwise, restore saved section
-    const savedSection = localStorage.getItem('activeSection');
-    if (savedSection) {
-      console.log('Restoring saved section:', savedSection);
-      navigateToSection(savedSection);
-    } else {
-      // Fallback to overview if no saved section
-      navigateToSection('overview');
-    }
-  }
-
-  // Restore section on page load
-  restoreActiveSection();
-
-  // Add click handlers to all navigation items
-  navItems.forEach(item => {
-    item.addEventListener('click', function(e) {
-      // Don't prevent default for logout button
-      if (this.type !== 'submit' || !this.closest('form[action*="logout"]')) {
-        e.preventDefault();
-      }
-      
-      const sectionId = this.getAttribute('data-section');
-      if (sectionId) {
-        navigateToSection(sectionId);
-      }
-    });
-  });
-
-  // Mobile sidebar toggle handlers
-  mobileSidebarToggles.forEach(toggle => {
-    if (toggle) {
-      toggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        sidebar.classList.toggle('active');
-      });
-    }
-  });
-
-  // Close sidebar when clicking outside on mobile
-  document.addEventListener('click', function(e) {
-    if (window.innerWidth <= 992) {
-      const isClickInsideSidebar = sidebar.contains(e.target);
-      const isClickOnToggle = mobileSidebarToggles.some(toggle => toggle && toggle.contains(e.target));
-      
-      if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
-        sidebar.classList.remove('active');
-      }
-    }
-  });
-
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 992) {
-      sidebar.classList.remove('active');
-    }
-  });
-
-  // ============================================
-  // CLEAR SESSION ON LOGOUT
-  // ============================================
-  const logoutButton = document.querySelector('form[action*="logout"] button[type="submit"]');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', function() {
-      // Clear session storage on logout
-      sessionStorage.removeItem('dashboardVisited');
-      console.log('Session cleared on logout');
-    });
-  }
-});
-
-
-// ================================
-// PRODUCT LOOKUP - AJAX FUNCTIONALITY
-// ================================
-
-document.addEventListener('DOMContentLoaded', function() {
-  const lookupBtn = document.getElementById("btn-search-product");
-  const productCodeInput = document.getElementById("lookup-product-code");
-  const nameDisplay = document.getElementById("product-name-display");
-  const priceDisplay = document.getElementById("selling-price-display");
-
-  // Ensure the URL points to your Django AJAX endpoint
-  const productLookupUrl = "{% url 'inventory:product-lookup' %}";
-
-  function resetDisplays() {
-    if (nameDisplay) {
-      nameDisplay.innerHTML = '<p style="color: #9ca3af; margin: 0;">Search for a product</p>';
-      nameDisplay.classList.remove('has-content');
-    }
-    if (priceDisplay) {
-      priceDisplay.innerHTML = '<p style="color: #9ca3af; margin: 0;">---</p>';
-      priceDisplay.classList.remove('has-content');
-    }
-  }
-
-  function showToast(message, type="info") {
-    // Simple toast implementation
-    const toast = document.createElement("div");
-    toast.className = `toast-message ${type}`;
-    toast.innerText = message;
-    document.body.appendChild(toast);
-    setTimeout(() => { toast.classList.add("show"); }, 50);
-    setTimeout(() => { toast.remove(); }, 3000);
-  }
-
-  function lookupProduct() {
-    const code = productCodeInput.value.trim();
-    if (!code) {
-      showToast("Please enter a product code", "error");
-      return;
-    }
-
-    // Show loading
-    lookupBtn.disabled = true;
-    lookupBtn.innerHTML = '<i class="bi bi-hourglass-split"></i><span> Searching...</span>';
-
-    fetch(`${productLookupUrl}?product_code=${encodeURIComponent(code)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "success") {
-          // Update Product Name
-          if (nameDisplay) {
-            nameDisplay.innerHTML = `
-              <div>
-                <p class="display-value">${data.product_name}</p>
-                <p class="display-label">${data.product_code}</p>
-              </div>
-            `;
-            nameDisplay.classList.add('has-content');
-          }
-
-          // Update Selling Price
-          if (priceDisplay) {
-            const price = parseFloat(data.selling_price).toFixed(2);
-            priceDisplay.innerHTML = `
-              <div>
-                <p class="display-value">KSH ${price}</p>
-                <p class="display-label">Current price</p>
-              </div>
-            `;
-            priceDisplay.classList.add('has-content');
-          }
-
-          showToast("Product found!", "success");
-
-        } else {
-          showToast(data.message || "Product not found", "error");
-          resetDisplays();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Dashboard - Fieldmax Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      })
-      .catch(err => {
-        console.error("Product lookup error:", err);
-        showToast("Error connecting to server", "error");
-        resetDisplays();
-      })
-      .finally(() => {
-        lookupBtn.disabled = false;
-        lookupBtn.innerHTML = '<i class="bi bi-search"></i><span> Lookup Product</span>';
-      });
-  }
 
-  // Button click
-  if (lookupBtn) {
-    lookupBtn.addEventListener("click", lookupProduct);
-  }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
 
-  // Enter key support
-  if (productCodeInput) {
-    productCodeInput.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        lookupProduct();
-      }
-    });
-  }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-});
+        .row {
+            margin-bottom: 20px;
+        }
 
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
 
-// ================================
-// FIXED MULTI-SALE RECORD FUNCTIONALITY
-// ================================
+        /* Row 1 - Shop Name */
+        .header-card {
+            text-align: center;
+            background: linear-gradient(135deg, #01e2e6 100%, #01e2e6 100%);
+            color: rgb(0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
 
-// Prevent multiple initializations
-if (!window.saleFormInitialized) {
-    window.saleFormInitialized = true;
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Batch Sale Form Initialized');
-        
-        const form = document.getElementById('saleForm');
-        const productCodeInput = document.getElementById('productCode');
-        const quantityInput = document.getElementById('quantity');
-        const unitPriceInput = document.getElementById('saleAmount');
-        const totalAmountInput = document.getElementById('totalAmount');
-        
-        // Column B - Display Elements
-        const emptyState = document.getElementById('emptyState');
-        const productDetailsDiv = document.getElementById('productDetails');
-        const saleMessageDiv = document.getElementById('saleMessage');
-        
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const recordAllSalesBtn = document.getElementById('recordAllSalesBtn');
-        const clientPhoneInput = document.getElementById('client_phone');
-        
+        .shop-name {
+            font-size: 100px;
+            font-weight: 1000;
+            letter-spacing: 10px;
+        }
+
+        /* Row 2 - 3 Columns */
+        .row-2 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .search-card input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .search-card input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .display-card {
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .display-label {
+            font-size: 14px;
+            color: #000000;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .display-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #000000;
+        }
+
+        .price-value {
+            color: #002fff;
+        }
+
+        /* Row 3 - 2 Columns */
+        .row-3 {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #00ffff;
+        }
+
+        /* Highlight editable sale amount */
+        #saleAmount {
+            background-color: #ffffcc;
+            font-weight: bold;
+            border: 2px solid #667eea;
+        }
+
+        #saleAmount:focus {
+            background-color: #ffff99;
+            border-color: #764ba2;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg,#00ffff 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .add-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Cart Table */
+        .cart-card h3 {
+            margin-bottom: 20px;
+            color: #000000;
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #667eea;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .remove-cell {
+            text-align: center;
+        }
+
+        .remove-icon {
+            cursor: pointer;
+            color: #ff4757;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .remove-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #0c0a0a;
+            font-size: 18px;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 3px solid #667eea;
+            text-align: right;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 100px;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .summary-row.total {
+            font-size: 32px;
+            font-weight: 900;
+            color: #667eea;
+            margin-top: 15px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #218838;
+        }
+
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Row 4 - Payment Methods */
+        .row-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .payment-card {
+            text-align: center;
+            border: 3px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .payment-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+        }
+
+        .payment-card.active {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .payment-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .payment-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .payment-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .payment-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #218838;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .processing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .processing-overlay.active {
+            display: flex;
+        }
+
+        .processing-message {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1200px) {
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+            .row-3 {
+                grid-template-columns: 1fr;
+            }
+            .row-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .shop-name {
+                font-size: 48px;
+                letter-spacing: 4px;
+            }
+            .row-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Row 1: Shop Name -->
+        <div class="row">
+            <div class="card header-card">
+                <div class="shop-name">NEW FIELDMAX SHOP 🏪</div>
+            </div>
+        </div>
+
+        <!-- Row 2: Product Lookup Display -->
+        <div class="row row-2">
+            <div class="card search-card">
+                <input type="text" id="skuLookup" placeholder="Enter Product Code or Scan SKU">
+            </div>
+            <div class="card display-card">
+                <div class="display-label">Product Name</div>
+                <div class="display-value" id="displayName">---</div>
+            </div>
+            <div class="card display-card">
+                <div class="display-label">Selling Price</div>
+                <div class="display-value price-value" id="displayPrice">KSh 0.00</div>
+            </div>
+        </div>
+
+        <!-- Row 3: Sales Recording and Cart -->
+        <div class="row row-3">
+            <!-- Column A: Recording Sale Section -->
+            <div class="card">
+                <h3>Record Sale</h3>
+                <form id="saleForm">
+                    <div class="input-group">
+                        <label>Product Code / SKU</label>
+                        <input type="text" id="productCode" placeholder="Enter or scan SKU" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Quantity</label>
+                        <input type="number" id="quantity" min="1" value="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Sale Amount (Editable)</label>
+                        <input type="number" id="saleAmount" placeholder="KSh 0.00" step="0.01" min="0">
+                    </div>
+                    <button type="button" class="add-btn" id="addToCartBtn">Add to Cart</button>
+                </form>
+            </div>
+
+            <!-- Column B: Cart Display -->
+            <div class="card cart-card">
+                <h3>Sales Cart</h3>
+                <!-- Messages Container -->
+                <div id="messageContainer"></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartTableBody">
+                        <tr>
+                            <td colspan="6" class="empty-cart">Cart is empty. Add products to start.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="cart-summary" id="cartSummary" style="display: none;">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">KSh 0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (16%):</span>
+                        <span id="tax">KSh 0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>TOTAL:</span>
+                        <span id="total">KSh 0.00</span>
+                    </div>
+                    <button class="checkout-btn" id="checkoutBtn">Proceed to Payment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 4: Payment Methods -->
+        <div class="row row-4">
+            <!-- Cash Payment -->
+            <div class="card payment-card" data-payment="cash">
+                <div class="payment-icon">💵</div>
+                <div class="payment-title">Cash</div>
+                <input type="number" class="payment-input" id="cashAmount" placeholder="Enter Amount" min="0" step="0.01">
+                <button class="submit-btn" data-payment="cash">Submit Sale</button>
+            </div>
+
+            <!-- M-Pesa Payment -->
+            <div class="card payment-card" data-payment="mpesa">
+                <div class="payment-icon">📱</div>
+                <div class="payment-title">M-Pesa</div>
+                <input type="number" class="payment-input" id="mpesaAmount" placeholder="Enter Amount" min="0" step="0.01">
+                <button class="submit-btn" data-payment="mpesa">Submit Sale</button>
+            </div>
+
+            <!-- Card Payment -->
+            <div class="card payment-card" data-payment="card">
+                <div class="payment-icon">💳</div>
+                <div class="payment-title">Card</div>
+                <input type="number" class="payment-input" id="cardAmount" placeholder="Enter Amount" min="0" step="0.01">
+                <button class="submit-btn" data-payment="card">Submit Sale</button>
+            </div>
+
+            <!-- Points Payment -->
+            <div class="card payment-card" data-payment="points">
+                <div class="payment-icon">⭐</div>
+                <div class="payment-title">Points</div>
+                <input type="number" class="payment-input" id="pointsAmount" placeholder="Enter Points" min="0" step="1">
+                <button class="submit-btn" data-payment="points">Submit Sale</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" id="processingOverlay">
+        <div class="processing-message">
+            <div class="spinner"></div>
+            <div>Processing Sale...</div>
+            <div style="margin-top: 10px; font-size: 16px; font-weight: normal;">Please wait, do not refresh</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GLOBAL STATE & FLAGS
+        // ============================================
+        let cart = [];
         let currentProduct = null;
         let debounceTimer = null;
-        let salesCart = [];
+        let isAddingToCart = false;
+        let isSubmittingSale = false;
+        let lastSubmissionTime = 0;
+        const SUBMISSION_COOLDOWN = 3000; // 3 seconds cooldown between submissions
 
-        // ============================================
-        // CRITICAL FIX: Check if elements exist
-        // ============================================
-        if (!form || !productCodeInput || !addToCartBtn || !recordAllSalesBtn) {
-            console.error('❌ Required form elements not found!');
-            console.log('Form:', form);
-            console.log('Product Code Input:', productCodeInput);
-            console.log('Add to Cart Button:', addToCartBtn);
-            console.log('Record All Sales Button:', recordAllSalesBtn);
-            return;
-        }
-
-        console.log('✅ All required elements found');
-
-        // ============================================
-        // SALES CART COUNTER CARD (Inject into DOM)
-        // ============================================
-        function injectCartCounter() {
-            const recordSaleSection = document.getElementById('record-sale');
-            if (!recordSaleSection) {
-                console.error('❌ record-sale section not found');
-                return;
-            }
-            
-            const existingCounter = document.getElementById('salesCartCounter');
-            if (existingCounter) {
-                console.log('ℹ️ Cart counter already exists');
-                return;
-            }
-            
-            const counterHTML = `
-                <div id="salesCartCounter" class="alert alert-info d-flex justify-content-between align-items-center" style="display: none; margin-top: 1rem;">
-                    <div>
-                        <i class="bi bi-cart-check-fill"></i>
-                        <strong>Sales in Cart:</strong>
-                        <span id="cartCount">0</span>
-                    </div>
-                    <div>
-                        <strong>Total Value:</strong>
-                        <span id="cartTotal">KSH 0.00</span>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearSalesCart()">
-                        <i class="bi bi-trash"></i> Clear Cart
-                    </button>
-                </div>
-            `;
-            
-            const contentHeader = recordSaleSection.querySelector('.content-header');
-            if (contentHeader) {
-                contentHeader.insertAdjacentHTML('afterend', counterHTML);
-                console.log('✅ Cart counter injected');
-            } else {
-                console.error('❌ Content header not found in record-sale section');
-            }
-        }
-
-        injectCartCounter();
-
-        // ============================================
-        // UPDATE CART COUNTER
-        // ============================================
-        function updateCartCounter() {
-            const counterDiv = document.getElementById('salesCartCounter');
-            const countSpan = document.getElementById('cartCount');
-            const totalSpan = document.getElementById('cartTotal');
-            
-            if (!counterDiv || !countSpan || !totalSpan) {
-                console.error('❌ Cart counter elements not found');
-                return;
-            }
-            
-            if (salesCart.length === 0) {
-                counterDiv.style.display = 'none';
-                recordAllSalesBtn.disabled = true;
-                recordAllSalesBtn.innerHTML = '<i class="bi bi-check-circle"></i> Record All Sales';
-            } else {
-                counterDiv.style.display = 'flex';
-                countSpan.textContent = salesCart.length;
-                
-                const totalValue = salesCart.reduce((sum, sale) => sum + (sale.quantity * sale.unit_price), 0);
-                totalSpan.textContent = `KSH ${totalValue.toLocaleString('en-KE', {minimumFractionDigits: 2})}`;
-                
-                recordAllSalesBtn.disabled = false;
-                recordAllSalesBtn.innerHTML = `
-                    <i class="bi bi-receipt-cutoff"></i> 
-                    Record Batch (${salesCart.length} items) - One Receipt
-                `;
-                recordAllSalesBtn.title = `Submit ${salesCart.length} sale(s) as one batch with single combined receipt`;
-                
-                console.log(`📊 Cart updated: ${salesCart.length} items, Total: KSH ${totalValue}`);
-            }
+        // Get CSRF token
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
         }
 
         // ============================================
-        // CLEAR SALES CART (GLOBAL FUNCTION)
+        // ROW 2: SKU LOOKUP (Display Only)
         // ============================================
-        window.clearSalesCart = function() {
-            console.log('🗑️ Clear cart requested');
-            if (salesCart.length === 0) return;
-            
-            if (confirm(`Clear ${salesCart.length} sale(s) from cart?`)) {
-                salesCart = [];
-                updateCartCounter();
-                showMessage('Cart cleared', 'info');
-                console.log('✅ Cart cleared');
-            }
-        };
-
-        // ============================================
-        // PRODUCT CODE LOOKUP WITH DEBOUNCE
-        // ============================================
-        productCodeInput.addEventListener('input', function() {
+        document.getElementById('skuLookup').addEventListener('input', function(e) {
             clearTimeout(debounceTimer);
-            const code = this.value.trim();
-            
-            console.log(`🔍 Product code input: "${code}"`);
+            const code = e.target.value.trim().toUpperCase();
             
             if (code.length < 2) {
-                showEmptyState();
+                document.getElementById('displayName').textContent = '---';
+                document.getElementById('displayPrice').textContent = 'KSh 0.00';
                 return;
             }
             
-            showLoadingState();
-            debounceTimer = setTimeout(() => lookupProduct(code), 500);
+            debounceTimer = setTimeout(() => lookupProductDisplay(code), 300);
         });
 
-        // ============================================
-        // SHOW LOADING STATE
-        // ============================================
-        function showLoadingState() {
-            if (!emptyState || !productDetailsDiv) {
-                console.error('❌ Display elements not found');
-                return;
-            }
-            
-            emptyState.style.display = 'none';
-            productDetailsDiv.style.display = 'block';
-            productDetailsDiv.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="text-muted mt-3">Searching product...</p>
-                </div>
-            `;
-        }
-
-        // ============================================
-        // SHOW EMPTY STATE
-        // ============================================
-        function showEmptyState() {
-            if (!emptyState || !productDetailsDiv) return;
-            
-            emptyState.style.display = 'block';
-            productDetailsDiv.style.display = 'none';
-            if (saleMessageDiv) saleMessageDiv.innerHTML = '';
-            currentProduct = null;
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
- // ============================================
-// PRODUCT LOOKUP API CALL
-// ============================================
-async function lookupProduct(code) {
-    console.log(`🔎 Looking up product: ${code}`);
-    
-    try {
-        const response = await fetch(`/sales/product-lookup/?product_code=${encodeURIComponent(code)}`);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('📦 Product lookup response:', data);
-        
-        emptyState.style.display = 'none';
-
-        // 🔒 Check if product is sold (backend indicates this)
-        if (!data.success && data.is_sold) {
-            displaySoldProduct(data.product);
-            currentProduct = null;
-            return;
-        }
-        
-        if (!data.success) {
-            displayProductError(data.message || 'Product not found');
-            currentProduct = null;
-            return;
-        }
-        
-        const product = data.product;
-        
-        // Check stock for bulk items
-        if (!product.is_single_item && product.quantity === 0) {
-            displayOutOfStockProduct(product);
-            currentProduct = null;
-            return;
-        }
-        
-        // Available product
-        currentProduct = product;
-        displayAvailableProduct(product);
-        
-    } catch (error) {
-        console.error('❌ Lookup error:', error);
-        displayProductError('Error looking up product. Please try again.');
-    }
-}
-
-
-
-        // ============================================
-        // DISPLAY AVAILABLE PRODUCT
-        // ============================================
-        function displayAvailableProduct(product) {
-            console.log('📋 Displaying product:', product.name);
-            
-            const itemTypeIcon = product.is_single_item ? '📱' : '📦';
-            
-            let statusBadge, statusText;
-            if (product.is_single_item) {
-                statusBadge = '<span class="badge bg-success product-badge"><i class="bi bi-check-circle-fill"></i> AVAILABLE</span>';
-                statusText = '<span class="text-success"><strong>Available</strong></span>';
-            } else {
-                if (product.quantity > 5) {
-                    statusBadge = '<span class="badge bg-success product-badge"><i class="bi bi-check-circle-fill"></i> IN STOCK</span>';
-                    statusText = `<span class="text-success"><strong>${product.quantity} units</strong></span>`;
-                } else if (product.quantity > 0) {
-                    statusBadge = '<span class="badge bg-warning product-badge"><i class="bi bi-exclamation-triangle-fill"></i> LOW STOCK</span>';
-                    statusText = `<span class="text-warning"><strong>${product.quantity} units (Low)</strong></span>`;
-                }
-            }
-            
-            const createdDate = new Date(product.created_at);
-            const ageInDays = Math.floor((new Date() - createdDate) / (1000 * 60 * 60 * 24));
-            
-            let html = `
-                <div class="available-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0">${itemTypeIcon} ${product.name}</h4>
-                        ${statusBadge}
-                    </div>
-                    
-                    <div class="product-info-card mt-3">
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-tag"></i> Product Code</span>
-                            <span class="product-info-value">${product.product_code}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-upc"></i> SKU / Identifier</span>
-                            <span class="product-info-value">${product.sku_code}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-folder"></i> Category</span>
-                            <span class="product-info-value">${product.category}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-box-seam"></i> Stock Status</span>
-                            <span class="product-info-value">${statusText}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-cash"></i> Unit Price</span>
-                            <span class="product-info-value text-primary">
-                                KSH ${parseFloat(product.unit_price).toLocaleString('en-KE', {minimumFractionDigits: 2})}
-                            </span>
-                        </div>
-            `;
-            
-            if (product.is_single_item) {
-                html += `
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-clock-history"></i> Item Age</span>
-                            <span class="product-info-value">${ageInDays} days</span>
-                        </div>
-                    </div>
-                    <div class="fifo-badge mt-3">
-                        <i class="bi bi-check-circle-fill"></i> FIFO: Oldest Available Unit
-                        <span class="ms-2">(${ageInDays} days old)</span>
-                    </div>
-                `;
-            } else {
-                html += `</div>`;
-            }
-            
-            html += `</div>`;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            
-            if (unitPriceInput) unitPriceInput.value = product.unit_price;
-            
-            if (product.is_single_item) {
-                if (quantityInput) {
-                    quantityInput.value = 1;
-                    quantityInput.max = 1;
-                    quantityInput.disabled = true;
-                }
-            } else {
-                if (quantityInput) {
-                    quantityInput.value = 1;
-                    quantityInput.max = product.quantity;
-                    quantityInput.disabled = false;
-                }
-            }
-            
-            calculateTotal();
-            enableSaleForm();
-        }
-
-        // ============================================
-        // DISPLAY SOLD/OUT OF STOCK PRODUCTS
-        // ============================================
-        function displaySoldProduct(product) {
-            let html = `
-                <div class="sold-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0 text-danger"><i class="bi bi-x-circle-fill"></i> Product Already Sold</h4>
-                        <span class="badge bg-danger product-badge">SOLD</span>
-                    </div>
-                    <div class="alert alert-warning mb-3">
-                        <strong>⚠️ Cannot Sell This Product</strong>
-                        <p class="mb-0 mt-2">This single-item product has already been sold.</p>
-                    </div>
-                    <div class="product-info-card">
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-box"></i> Product Name</span>
-                            <span class="product-info-value">${product.name}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-tag"></i> Product Code</span>
-                            <span class="product-info-value">${product.product_code}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        function displayOutOfStockProduct(product) {
-            let html = `
-                <div class="sold-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0 text-danger"><i class="bi bi-x-circle-fill"></i> Product Out of Stock</h4>
-                        <span class="badge bg-danger product-badge">OUT OF STOCK</span>
-                    </div>
-                    <div class="alert alert-danger mb-3">
-                        <strong>⚠️ Cannot Sell This Product</strong>
-                        <p class="mb-0 mt-2">This product has 0 units remaining.</p>
-                    </div>
-                </div>
-            `;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        function displayProductError(message) {
-            productDetailsDiv.innerHTML = `
-                <div class="alert alert-danger">
-                    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Error</h5>
-                    <p class="mb-0">${message}</p>
-                </div>
-            `;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        // ============================================
-        // FORM STATE MANAGEMENT
-        // ============================================
-        function enableSaleForm() {
-            if (currentProduct) {
-                addToCartBtn.disabled = false;
-                if (unitPriceInput) unitPriceInput.disabled = false;
-                
-                if (!currentProduct.is_single_item && quantityInput) {
-                    quantityInput.disabled = false;
-                }
-                
-                console.log('✅ Sale form enabled');
-            }
-        }
-
-        // ============================================
-        // CALCULATE TOTAL
-        // ============================================
-        function calculateTotal() {
-            if (!quantityInput || !unitPriceInput || !totalAmountInput) return;
-            
-            const quantity = parseInt(quantityInput.value) || 0;
-            const unitPrice = parseFloat(unitPriceInput.value) || 0;
-            const total = quantity * unitPrice;
-            
-            if (total > 0) {
-                totalAmountInput.value = `KSH ${total.toLocaleString('en-KE', {minimumFractionDigits: 2})}`;
-            } else {
-                totalAmountInput.value = '';
-            }
-        }
-
-        if (quantityInput) quantityInput.addEventListener('input', calculateTotal);
-        if (unitPriceInput) unitPriceInput.addEventListener('input', calculateTotal);
-
-        // ============================================
-        // ADD SALE TO CART
-        // ============================================
-        addToCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('🛒 Add to cart clicked');
-            
-            if (!currentProduct) {
-                showMessage('Please select a valid product first', 'danger');
-                return;
-            }
-            
-            const quantity = parseInt(quantityInput.value);
-            const unitPrice = parseFloat(unitPriceInput.value);
-            
-            if (!quantity || quantity <= 0) {
-                showMessage('Please enter a valid quantity', 'danger');
-                return;
-            }
-            
-            if (!unitPrice || unitPrice <= 0) {
-                showMessage('Please enter a valid price', 'danger');
-                return;
-            }
-            
-            if (!currentProduct.is_single_item && quantity > currentProduct.quantity) {
-                showMessage(`Cannot sell ${quantity} units. Only ${currentProduct.quantity} available.`, 'danger');
-                return;
-            }
-            
-            // Add to cart
-            const saleItem = {
-                product_code: productCodeInput.value.trim(),
-                product_name: currentProduct.name,
-                quantity: quantity,
-                unit_price: unitPrice,
-                total: quantity * unitPrice,
-                buyer_name: document.getElementById('client_name')?.value.trim() || '',
-                buyer_phone: document.getElementById('client_phone')?.value.trim() || '',
-                buyer_id_number: document.getElementById('client_id')?.value.trim() || '',
-                nok_name: document.getElementById('nok_name')?.value.trim() || '',
-                nok_phone: document.getElementById('nok_phone')?.value.trim() || ''
-            };
-            
-            salesCart.push(saleItem);
-            console.log('✅ Item added to cart:', saleItem);
-            console.log('📊 Current cart:', salesCart);
-            
-            updateCartCounter();
-            
-            showMessage(`✅ Added ${currentProduct.name} to cart`, 'success');
-            
-            setTimeout(() => resetFormForNextItem(), 1500);
-        });
-
-        // ============================================
-        // ✅ RECORD ALL SALES AS SINGLE BATCH
-        // ============================================
-        recordAllSalesBtn.addEventListener('click', async function() {
-            console.log('💾 Record all sales clicked');
-            console.log('📋 Current cart:', salesCart);
-            
-            if (salesCart.length === 0) {
-                showMessage('Cart is empty. Add sales first.', 'danger');
-                return;
-            }
-            
-            const confirmMessage = `Submit ${salesCart.length} sale(s) as ONE batch transaction?\n\n` +
-                                 `This will generate:\n` +
-                                 `• ${salesCart.length} individual sale records\n` +
-                                 `• 1 combined ETR receipt\n` +
-                                 `• 1 fiscal receipt for all items`;
-            
-            if (!confirm(confirmMessage)) {
-                console.log('❌ User cancelled batch sale');
-                return;
-            }
-            
+        async function lookupProductDisplay(code) {
             try {
-                recordAllSalesBtn.disabled = true;
-                addToCartBtn.disabled = true;
-                showMessage(`Processing batch sale (${salesCart.length} items)...`, 'info');
+                const response = await fetch(`/sales/product-lookup/?product_code=${encodeURIComponent(code)}`);
+                const data = await response.json();
                 
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                if (data.success) {
+                    document.getElementById('displayName').textContent = data.product.name;
+                    document.getElementById('displayPrice').textContent = `KSh ${parseFloat(data.product.unit_price).toFixed(2)}`;
+                } else {
+                    document.getElementById('displayName').textContent = '---';
+                    document.getElementById('displayPrice').textContent = 'KSh 0.00';
+                }
+            } catch (error) {
+                console.error('Lookup error:', error);
+            }
+        }
+
+        // ============================================
+        // ROW 3: PRODUCT CODE INPUT (For Cart)
+        // ============================================
+        document.getElementById('productCode').addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            const code = this.value.trim().toUpperCase();
+            
+            if (code.length < 2) {
+                currentProduct = null;
+                document.getElementById('saleAmount').value = '';
+                return;
+            }
+            
+            debounceTimer = setTimeout(() => lookupProductForCart(code), 300);
+        });
+
+        async function lookupProductForCart(code) {
+            try {
+                const response = await fetch(`/sales/product-lookup/?product_code=${encodeURIComponent(code)}`);
+                const data = await response.json();
                 
-                console.log('🚀 Sending batch request to /sales/batch-create/');
-                console.log('📦 Payload:', { sales_cart: salesCart });
+                if (data.success) {
+                    currentProduct = data.product;
+                    updateSaleAmount();
+                } else {
+                    currentProduct = null;
+                    showMessage(data.message || 'Product not found', 'danger');
+                    document.getElementById('saleAmount').value = '';
+                }
+            } catch (error) {
+                console.error('Lookup error:', error);
+                showMessage('Error looking up product', 'danger');
+            }
+        }
+
+        // ============================================
+        // QUANTITY & AMOUNT CALCULATION - EDITABLE
+        // ============================================
+        document.getElementById('quantity').addEventListener('input', updateSaleAmount);
+
+        // Allow manual editing of sale amount
+        document.getElementById('saleAmount').addEventListener('input', function() {
+            const manualAmount = parseFloat(this.value);
+            if (manualAmount && currentProduct) {
+                const qty = parseInt(document.getElementById('quantity').value) || 1;
+                currentProduct.manual_unit_price = manualAmount / qty;
+            }
+        });
+
+        function updateSaleAmount() {
+            const qty = parseInt(document.getElementById('quantity').value) || 0;
+            const saleAmountInput = document.getElementById('saleAmount');
+            
+            if (currentProduct && qty > 0) {
+                if (!saleAmountInput.value || !currentProduct.manual_unit_price) {
+                    const amount = currentProduct.unit_price * qty;
+                    saleAmountInput.value = amount.toFixed(2);
+                } else {
+                    const amount = currentProduct.manual_unit_price * qty;
+                    saleAmountInput.value = amount.toFixed(2);
+                }
+            }
+        }
+
+        // ============================================
+        // ADD TO CART - SMART DUPLICATE HANDLING
+        // ============================================
+        document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+
+        // Prevent form submission on Enter
+        document.getElementById('saleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addToCart();
+        });
+
+        function addToCart() {
+            if (isAddingToCart) {
+                console.log('Already adding to cart, please wait...');
+                showMessage('Please wait, adding item...', 'danger');
+                return;
+            }
+
+            const code = document.getElementById('productCode').value.trim().toUpperCase();
+            const qty = parseInt(document.getElementById('quantity').value);
+            const totalAmount = parseFloat(document.getElementById('saleAmount').value);
+            
+            if (!code || !qty || qty <= 0) {
+                showMessage('Please enter valid product code and quantity', 'danger');
+                return;
+            }
+
+            if (!currentProduct) {
+                showMessage('Product not found!', 'danger');
+                return;
+            }
+
+            if (!totalAmount || totalAmount <= 0) {
+                showMessage('Please enter a valid sale amount', 'danger');
+                return;
+            }
+
+            // Calculate unit price from total amount
+            const unitPrice = totalAmount / qty;
+
+            // Set flag to prevent duplicate additions
+            isAddingToCart = true;
+            const addBtn = document.getElementById('addToCartBtn');
+            addBtn.disabled = true;
+            addBtn.textContent = 'Adding...';
+
+            try {
+                // Check if exact same product with same unit price exists
+                const existingItem = cart.find(item => 
+                    item.code === code && 
+                    Math.abs(item.amount - unitPrice) < 0.01
+                );
                 
+                if (existingItem) {
+                    // Same product, same price - ask to combine
+                    if (confirm(`${code} at KSh ${unitPrice.toFixed(2)} is already in cart.\n\nCombine quantities?\nYES = Add ${qty} more units\nNO = Add as separate line`)) {
+                        existingItem.quantity += qty;
+                        existingItem.totalPrice = existingItem.quantity * existingItem.amount;
+                        showMessage(`✅ Combined: ${existingItem.quantity} units at KSh ${unitPrice.toFixed(2)} each`, 'success');
+                    } else {
+                        // Add as new line item
+                        cart.push({
+                            code: code,
+                            name: currentProduct.name,
+                            quantity: qty,
+                            amount: unitPrice,
+                            totalPrice: totalAmount
+                        });
+                        showMessage('✅ Added as separate line item', 'success');
+                    }
+                } else {
+                    // Different price or product not in cart
+                    cart.push({
+                        code: code,
+                        name: currentProduct.name,
+                        quantity: qty,
+                        amount: unitPrice,
+                        totalPrice: totalAmount
+                    });
+                    
+                    // Check if same product exists with different price
+                    const sameProductDifferentPrice = cart.filter(item => item.code === code).length > 1;
+                    if (sameProductDifferentPrice) {
+                        showMessage(`✅ Added ${code} at KSh ${unitPrice.toFixed(2)} (different price)`, 'success');
+                    } else {
+                        showMessage('✅ Added to cart successfully', 'success');
+                    }
+                }
+
+                // Clear inputs
+                document.getElementById('productCode').value = '';
+                document.getElementById('quantity').value = '1';
+                document.getElementById('saleAmount').value = '';
+                currentProduct = null;
+
+                updateCartDisplay();
+
+            } finally {
+                setTimeout(() => {
+                    isAddingToCart = false;
+                    addBtn.disabled = false;
+                    addBtn.textContent = 'Add to Cart';
+                    document.getElementById('productCode').focus();
+                }, 800);
+            }
+        }
+
+        // ============================================
+        // UPDATE CART DISPLAY
+        // ============================================
+        function updateCartDisplay() {
+            const tbody = document.getElementById('cartTableBody');
+            
+            if (cart.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-cart">Cart is empty. Add products to start.</td></tr>';
+                document.getElementById('cartSummary').style.display = 'none';
+                return;
+            }
+
+            tbody.innerHTML = cart.map((item, index) => `
+                <tr>
+                    <td><strong>${item.code}</strong></td>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.quantity}</td>
+                    <td>KSh ${item.amount.toFixed(2)}</td>
+                    <td><strong>KSh ${item.totalPrice.toFixed(2)}</strong></td>
+                    <td class="remove-cell"><span class="remove-icon" onclick="removeItem(${index})">🗑️</span></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('cartSummary').style.display = 'block';
+            updateTotals();
+        }
+
+        function removeItem(index) {
+            if (confirm('Remove this item from cart?')) {
+                cart.splice(index, 1);
+                updateCartDisplay();
+                showMessage('Item removed from cart', 'success');
+            }
+        }
+
+        function updateTotals() {
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            const tax = total * (16 / 116);
+            const subtotal = total - tax;
+
+            document.getElementById('subtotal').textContent = `KSh ${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `KSh ${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `KSh ${total.toFixed(2)}`;
+        }
+
+        // ============================================
+        // PAYMENT METHODS
+        // ============================================
+        const paymentCards = document.querySelectorAll('.payment-card');
+        const paymentInputs = {
+            cash: document.getElementById('cashAmount'),
+            mpesa: document.getElementById('mpesaAmount'),
+            card: document.getElementById('cardAmount'),
+            points: document.getElementById('pointsAmount')
+        };
+
+        // Auto-fill total when clicking payment card
+        paymentCards.forEach(card => {
+            card.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showMessage('Please add items to cart first', 'danger');
+                    return;
+                }
+                
+                const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+                const paymentType = this.getAttribute('data-payment');
+                const input = document.getElementById(`${paymentType}Amount`);
+                input.value = total.toFixed(2);
+                
+                paymentCards.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Checkout button
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            if (cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            showMessage(`Total: KSh ${total.toFixed(2)} - Select payment method below`, 'success');
+            
+            document.querySelector('.row-4').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Payment submission with duplicate prevention
+        document.querySelectorAll('.submit-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const now = Date.now();
+                if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
+                    const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
+                    showMessage(`Please wait ${remainingTime} seconds before submitting again`, 'danger');
+                    return;
+                }
+
+                if (isSubmittingSale) {
+                    showMessage('Sale is being processed, please wait...', 'danger');
+                    return;
+                }
+
+                const paymentType = this.getAttribute('data-payment');
+                const paymentMethodMap = {
+                    'cash': 'Cash',
+                    'mpesa': 'M-Pesa',
+                    'card': 'Card',
+                    'points': 'Points'
+                };
+                
+                const amount = document.getElementById(`${paymentType}Amount`).value;
+                processSale(paymentMethodMap[paymentType], amount);
+            });
+        });
+
+        async function processSale(paymentMethod, amount) {
+            if (isSubmittingSale) {
+                console.log('Sale already being processed, blocked duplicate');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showMessage('Cart is empty!', 'danger');
+                return;
+            }
+
+            const amountPaid = parseFloat(amount);
+            if (!amountPaid || amountPaid <= 0) {
+                showMessage('Please enter a valid amount', 'danger');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+
+            if (amountPaid < total) {
+                showMessage(`Insufficient amount! Total: KSh ${total.toFixed(2)}`, 'danger');
+                return;
+            }
+
+            // Set all flags
+            isSubmittingSale = true;
+            lastSubmissionTime = Date.now();
+            
+            // Disable ALL interactive elements
+            document.querySelectorAll('.submit-btn, .add-btn, .checkout-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+            document.querySelectorAll('input').forEach(input => {
+                input.disabled = true;
+            });
+            
+            // Show processing overlay
+            document.getElementById('processingOverlay').classList.add('active');
+
+            try {
+                // Prepare sales data
+                const salesData = cart.map(item => ({
+                    product_code: item.code,
+                    quantity: item.quantity,
+                    unit_price: item.amount
+                }));
+
+                console.log('Submitting sale:', {
+                    payment_method: paymentMethod,
+                    amount_paid: amountPaid,
+                    items_count: salesData.length
+                });
+
                 const response = await fetch('/sales/batch-create/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
+                        'X-CSRFToken': getCSRFToken()
                     },
                     body: JSON.stringify({
-                        sales_cart: salesCart
+                        sales_cart: salesData,
+                        payment_method: paymentMethod,
+                        amount_paid: amountPaid
                     })
                 });
-                
-                console.log('📡 Response status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('✅ Batch response:', data);
-                
-                if (data.status === 'success') {
-                    const successHTML = `
-                        <div class="alert alert-success">
-                            <h5><i class="bi bi-check-circle-fill"></i> Batch Sale Successful!</h5>
-                            <hr>
-                            <p><strong>Sales Recorded:</strong> ${data.total_sales}</p>
-                            <p><strong>Total Amount:</strong> KSH ${data.total_amount.toLocaleString('en-KE', {minimumFractionDigits: 2})}</p>
-                            <p><strong>Batch ID:</strong> ${data.batch_id}</p>
-                            ${data.etr_receipt_number ? `<p><strong>ETR Receipt:</strong> ${data.etr_receipt_number}</p>` : ''}
-                            ${data.fiscal_receipt_number ? `<p><strong>Fiscal Receipt:</strong> ${data.fiscal_receipt_number}</p>` : ''}
-                            <hr>
-                            <a href="${data.receipt_url}" target="_blank" class="btn btn-primary btn-sm">
-                                <i class="bi bi-receipt"></i> View Combined Receipt
-                            </a>
-                        </div>
-                    `;
-                    
-                    showMessage(successHTML, 'success');
-                    
-                    // Clear cart
-                    salesCart = [];
-                    updateCartCounter();
-                    
-                    console.log('✅ Batch sale completed successfully');
-                    
-                    // Reload page after delay
-                    setTimeout(() => {
-                        console.log('🔄 Reloading page...');
-                        window.location.reload();
-                    }, 4000);
-                    
-                } else {
-                    console.error('❌ Batch sale failed:', data.message);
-                    showMessage(`❌ Batch sale failed: ${data.message}`, 'danger');
-                    recordAllSalesBtn.disabled = false;
-                    addToCartBtn.disabled = false;
-                }
-                
-            } catch (error) {
-                console.error('❌ Batch sale error:', error);
-                showMessage('Error submitting batch sale. Please try again.', 'danger');
-                recordAllSalesBtn.disabled = false;
-                addToCartBtn.disabled = false;
-            }
-        });
 
-        // ============================================
-        // RESET FORM FOR NEXT ITEM
-        // ============================================
-        function resetFormForNextItem() {
-            console.log('🔄 Resetting form for next item');
-            
-            productCodeInput.value = '';
-            if (quantityInput) {
-                quantityInput.value = 1;
-                quantityInput.disabled = false;
+                const data = await response.json();
+
+                // Hide processing overlay
+                document.getElementById('processingOverlay').classList.remove('active');
+
+                if (data.status === 'success') {
+                    // Reset submission flag immediately on success
+                    isSubmittingSale = false;
+                    
+                    const change = amountPaid - total;
+                    let message = `✅ SALE COMPLETED!\n\nPayment Method: ${paymentMethod}\nTotal: KSh ${total.toFixed(2)}\nPaid: KSh ${amountPaid.toFixed(2)}`;
+                    
+                    if (change > 0) {
+                        message += `\nChange: KSh ${change.toFixed(2)}`;
+                    }
+
+                    // Check for batch_id or receipt_url in response
+                    if (data.batch_id) {
+                        const receiptUrl = `/sales/batch-receipt/${data.batch_id}/`;
+                        message += `\n\nReceipt generated successfully!`;
+                        setTimeout(() => window.open(receiptUrl, '_blank'), 500);
+                    } else if (data.receipt_url) {
+                        message += `\n\nReceipt generated successfully!`;
+                        setTimeout(() => window.open(data.receipt_url, '_blank'), 500);
+                    }
+
+                    showMessage(message, 'success');
+
+                    // Clear everything immediately
+                    cart = [];
+                    updateCartDisplay();
+                    Object.values(paymentInputs).forEach(input => input.value = '');
+                    paymentCards.forEach(c => c.classList.remove('active'));
+
+                    // Re-enable inputs for next transaction
+                    setTimeout(() => {
+                        document.querySelectorAll('.submit-btn, .add-btn, .checkout-btn').forEach(btn => {
+                            btn.disabled = false;
+                        });
+                        document.querySelectorAll('input').forEach(input => {
+                            input.disabled = false;
+                        });
+                        document.getElementById('productCode').focus();
+                    }, 1500);
+                } else {
+                    showMessage(`❌ Sale failed: ${data.message}`, 'danger');
+                    
+                    // Re-enable elements on failure
+                    document.querySelectorAll('.submit-btn, .add-btn, .checkout-btn').forEach(btn => {
+                        btn.disabled = false;
+                    });
+                    document.querySelectorAll('input').forEach(input => {
+                        input.disabled = false;
+                    });
+                    
+                    // Reset flags
+                    isSubmittingSale = false;
+                    lastSubmissionTime = 0;
+                }
+            } catch (error) {
+                console.error('Sale error:', error);
+                document.getElementById('processingOverlay').classList.remove('active');
+                showMessage('❌ Error processing sale. Please try again.', 'danger');
+                
+                // Re-enable elements on error
+                document.querySelectorAll('.submit-btn, .add-btn, .checkout-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+                document.querySelectorAll('input').forEach(input => {
+                    input.disabled = false;
+                });
+                
+                // Reset flags
+                isSubmittingSale = false;
+                lastSubmissionTime = 0;
             }
-            if (unitPriceInput) unitPriceInput.value = '';
-            if (totalAmountInput) totalAmountInput.value = '';
-            
-            currentProduct = null;
-            showEmptyState();
-            if (saleMessageDiv) saleMessageDiv.innerHTML = '';
-            productCodeInput.focus();
         }
 
         // ============================================
         // MESSAGE DISPLAY
         // ============================================
-        function showMessage(message, type = 'info') {
-            if (!saleMessageDiv) {
-                console.error('❌ Sale message div not found');
-                return;
-            }
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('messageContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
             
-            const alertClass = `alert alert-${type}`;
-            saleMessageDiv.innerHTML = `<div class="${alertClass}">${message}</div>`;
+            const formattedMessage = message.replace(/\n/g, '<br>');
             
-            console.log(`💬 Message (${type}):`, message);
+            container.innerHTML = `<div class="alert ${alertClass}">${formattedMessage}</div>`;
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
-            if (type === 'success') {
-                setTimeout(() => {
-                    saleMessageDiv.innerHTML = '';
-                }, 10000);
-            }
+            setTimeout(() => {
+                if (type !== 'success' || !isSubmittingSale) {
+                    container.innerHTML = '';
+                }
+            }, 5000);
         }
-        
-        console.log('✅ Batch sale form setup complete');
-    });
-}
 
-
-// Auto-open batch receipt
-if (data.receipt_url) {
-    window.open(data.receipt_url, '_blank');
-}
-
-
-
-// ================================
-//  ETR TRIGGER + FISCAL RECEIPT
-// ================================
-document.querySelectorAll('.action-btn-success').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const url = this.href;
-
-        // Step 1: Trigger ETR
-        fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-
-                const etrNumber = data.data.receiptNumber;
-                const saleId = data.data.saleId;
-
-                // Step 2: Trigger Fiscal Receipt
-                fetch('/sales/fiscal/receipt/', {   // <--- FIXED URL
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ sale_id: saleId })
-                })
-                .then(resp => resp.json())
-                .then(fiscalData => {
-                    if (fiscalData.status === 'success') {
-                        const fiscalReceiptNumber = fiscalData.receipt_number;
-                        alert(
-`ETR sent successfully!
-Receipt No: ${etrNumber}
-Fiscal Receipt No: ${fiscalReceiptNumber}`
-                        );
-                    } else {
-                        alert(
-`ETR sent: ${etrNumber}
-Fiscal receipt failed: ${fiscalData.message}`
-                        );
-                    }
-                })
-                .catch(err => {
-                    alert(
-`ETR sent: ${etrNumber}
-Fiscal receipt error: ${err}`
-                    );
-                });
-
-            } else {
-                alert('ETR failed: ' + (data.error || 'Unknown error'));
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + Enter to add to cart
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                if (!isAddingToCart) {
+                    addToCart();
+                }
             }
-        })
-        .catch(err => console.error('ETR error:', err));
-    });
-});
+            
+            // Escape to clear current product
+            if (e.key === 'Escape') {
+                document.getElementById('productCode').value = '';
+                document.getElementById('quantity').value = '1';
+                document.getElementById('saleAmount').value = '';
+                currentProduct = null;
+                document.getElementById('productCode').focus();
+            }
+        });
 
+        // ============================================
+        // PREVENT PAGE UNLOAD DURING SUBMISSION
+        // ============================================
+        window.addEventListener('beforeunload', function(e) {
+            if (isSubmittingSale) {
+                e.preventDefault();
+                e.returnValue = 'Sale is being processed. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
 
-</script>
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('productCode').focus();
+            console.log('Cashier Dashboard initialized');
+            console.log('Features: Smart duplicate handling, Editable amounts, Keyboard shortcuts');
+        });
+    </script>
+</body>
+</html>
 
-{% endblock %}
+{% endblock %}  
