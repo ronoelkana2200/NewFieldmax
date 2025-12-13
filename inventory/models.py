@@ -128,6 +128,9 @@ class Product(models.Model):
         # Auto-generate unique product_code
         if not self.product_code:
             self.product_code = self._generate_product_code()
+
+        # ✅ SET PRICE (THIS WAS MISSING)
+        self.price = self.selling_price
         
         # Enforce single item quantity = 1
         if self.category.is_single_item:
