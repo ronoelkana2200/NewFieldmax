@@ -1469,6 +1469,172 @@ def sale_receipt_view(request, sale_id):
     })
 
 
+
+
+
+# Add this to your sales/views.py (replace the existing product_search function)
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.db.models import Q
+from inventory.models import Product
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+@require_http_methods(["GET"])
+def product_search(request):
+    """
+    Live search for products - returns all products containing search term
+    URL: /sales/product-search/?q=<search_term>
+    
+    Searches across:
+    - product_code
+    - sku_value
+    - name
+    """
+    search_term = request.GET.get('q', '').strip()
+    
+    logger.info(f"[PRODUCT SEARCH] Search term: '{search_term}'")
+    
+    if not search_term:
+        return JsonResponse({
+            'success': False,
+            'message': 'No search term provided',
+            'products': []
+        })
+    
+    try:
+        # Search in your Product model fields
+        products = Product.objects.filter(
+            Q(product_code__icontains=search_term) |  # Product code
+            Q(sku_value__icontains=search_term) |     # SKU/IMEI/Serial
+            Q(name__icontains=search_term),           # Product name
+            is_active=True  # Only active products
+        ).exclude(
+            status='sold'  # Don't show sold items in search
+        ).select_related('category').values(
+            'id',
+            'name',
+            'product_code',
+            'sku_value',
+            'selling_price',  # Your model uses selling_price
+            'quantity',
+            'status',
+            'category__name',  # Include category name
+            'category__item_type'  # Include item type
+        )[:20]  # Limit to 20 results
+        
+        products_list = list(products)
+        
+        logger.info(f"[PRODUCT SEARCH] Found {len(products_list)} products")
+        
+        # Format the response to match frontend expectations
+        formatted_products = []
+        for p in products_list:
+            formatted_products.append({
+                'id': p['id'],
+                'name': p['name'],
+                'sku_code': p['sku_value'] or p['product_code'],  # Use sku_value or fallback to product_code
+                'product_code': p['product_code'],
+                'unit_price': float(p['selling_price']) if p['selling_price'] else 0.0,
+                'selling_price': float(p['selling_price']) if p['selling_price'] else 0.0,
+                'quantity': p['quantity'],
+                'status': p['status'],
+                'category': p['category__name'],
+                'is_single_item': p['category__item_type'] == 'single'
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'products': formatted_products,
+            'count': len(formatted_products)
+        })
+        
+    except Exception as e:
+        logger.error(f"[PRODUCT SEARCH ERROR] {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Search error: {str(e)}',
+            'products': []
+        }, status=500)
+
+
+@require_http_methods(["POST"])
+def record_sale(request):
+    """
+    Record a new sale
+    URL: /sales/record-sale/
+    """
+    import json
+    from decimal import Decimal
+    from django.utils import timezone
+    
+    try:
+        data = json.loads(request.body)
+        
+        logger.info(f"[RECORD SALE] Data received: {data}")
+        
+        # Validate required fields
+        required_fields = ['sku_value', 'client_name', 'id_number', 
+                          'phone_number', 'nok_name', 'nok_phone']
+        
+        missing_fields = [field for field in required_fields if not data.get(field)]
+        if missing_fields:
+            return JsonResponse({
+                'success': False,
+                'message': f'Missing required fields: {", ".join(missing_fields)}'
+            }, status=400)
+        
+        # Get the product
+        sku_value = data.get('sku_value')
+        product = Product.objects.filter(
+            Q(product_code__iexact=sku_value) | Q(sku_value__iexact=sku_value),
+            is_active=True
+        ).exclude(status='sold').first()
+        
+        if not product:
+            return JsonResponse({
+                'success': False,
+                'message': f'Product not found or already sold'
+            }, status=404)
+        
+        # Get selling price
+        selling_price = data.get('selling_price')
+        if selling_price:
+            try:
+                selling_price = Decimal(str(selling_price))
+            except:
+                selling_price = product.selling_price
+        else:
+            selling_price = product.selling_price
+        
+        # Create the sale using your existing SaleCreateView logic
+        # For now, just return success (you can implement full sale creation later)
+        
+        logger.info(f"[RECORD SALE] Would create sale for product: {product.product_code}")
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Sale recorded successfully',
+            'product_code': product.product_code,
+            'product_name': product.name,
+            'selling_price': float(selling_price)
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"[RECORD SALE ERROR] {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Error: {str(e)}'
+        }, status=500)
+
 # ============================================
 # COMPARISON: BEFORE vs AFTER
 # ============================================

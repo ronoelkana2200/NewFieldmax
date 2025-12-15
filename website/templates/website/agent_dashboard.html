@@ -628,6 +628,89 @@
   }
 }
 
+
+.product-display-card, .client-display-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid #e2e8f0;
+}
+
+.info-item {
+  padding: 0.5rem 0;
+}
+
+.display-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.display-value {
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.input-group .form-control:read-only {
+  background-color: #f8fafc;
+}
+
+.required::after {
+  content: " *";
+  color: #dc3545;
+}
+
+ /* Styling for search results */
+  #skuSearchResults .list-group-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  #skuSearchResults .list-group-item:hover {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+  }
+  
+  #skuSearchResults .list-group-item.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  .product-sku {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #0d6efd;
+  }
+  
+  .product-price {
+    color: #198754;
+    font-weight: 600;
+  }
+  
+  .search-loading {
+    padding: 1rem;
+    text-align: center;
+    color: #6c757d;
+  }
+  
+  .no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #dc3545;
+  }
+
+
+
+
+
+
 </style>
 <div class="dashboard-wrapper">
   
@@ -689,7 +772,11 @@
     </nav>
   </aside>
 
-  <!-- Main Dashboard Content -->
+
+
+
+
+<!-- Main Dashboard Content -->
   <main class="dashboard-content">
     
     <!-- ========================================
@@ -705,50 +792,50 @@
 
       <!-- Statistics Cards Grid -->
       <div class="lookup-grid">
-        <!-- Today's Revenue Card -->
+        <!-- Today's Sales Count Card -->
         <div class="lookup-card">
           <div class="card-header-custom">
             <div class="card-icon success">
               <i class="bi bi-currency-dollar"></i>
             </div>
-            <h3 class="card-title-custom">Today's Sales</h3>
+            <h3 class="card-title-custom">Daily Sales Count</h3>
           </div>
           <div class="display-box has-content">
             <div>
-              <p class="display-value">KSH {{ todays_sales|default:"0.00" }}</p>
-              <p class="display-label">Total revenue today</p>
+              <p class="display-value">{{ todays_sales_count|default:"0" }}</p>
+              <p class="display-label">Transactions today</p>
             </div>
           </div>
         </div>
 
-        <!-- All-Time Sales Card -->
+        <!-- Weekly Sales Count Card -->
         <div class="lookup-card">
           <div class="card-header-custom">
             <div class="card-icon primary">
               <i class="bi bi-graph-up"></i>
             </div>
-            <h3 class="card-title-custom">Monthly Sales</h3>
+            <h3 class="card-title-custom">Weekly Sales Count</h3>
           </div>
           <div class="display-box has-content">
             <div>
-              <p class="display-value">KSH {{ monthly_sales|default:"0.00" }}</p>
-              <p class="display-label">{{ monthly_sales_count|default:"0" }} transactions this month</p>
+              <p class="display-value">{{ weekly_sales_count|default:"0" }}</p>
+              <p class="display-label">Transactions this week</p>
             </div>
           </div>
         </div>
 
-        <!-- All-Time Sales Card -->
+        <!-- Monthly Sales Count Card -->
         <div class="lookup-card">
           <div class="card-header-custom">
             <div class="card-icon primary">
               <i class="bi bi-graph-up"></i>
             </div>
-            <h3 class="card-title-custom">Total Sales</h3>
+            <h3 class="card-title-custom">Monthly Sales Count</h3>
           </div>
           <div class="display-box has-content">
             <div>
-              <p class="display-value">KSH {{ total_sales|default:"0.00" }}</p>
-              <p class="display-label">{{ total_sales_count|default:"0" }} All time transactions</p>
+              <p class="display-value">{{ monthly_sales_count|default:"0" }}</p>
+              <p class="display-label">Transactions this month</p>
             </div>
           </div>
         </div>  
@@ -759,7 +846,7 @@
             <div class="card-icon info">
               <i class="bi bi-box-seam"></i>
             </div>
-            <h3 class="card-title-custom">My Products</h3>
+            <h3 class="card-title-custom">My Products Count</h3>
           </div>
           <div class="display-box has-content">
             <div>
@@ -1032,7 +1119,19 @@
 
 
 
-<!-- Two-Column Record Sale Section -->
+
+
+
+
+
+
+
+
+
+
+    <!-- ==========================================
+         RECORD SALE SECTION
+    ========================================== -->
 <div id="record-sale" class="content-section">
 
   <!-- Header -->
@@ -1060,187 +1159,102 @@
         </div>
         <div class="card-body" style="padding: 2rem;">
           
-          <form id="saleForm">
-            {% csrf_token %}
-
-            <!-- Product Code / SKU -->
-            <div class="mb-4 position-relative">
-              <label for="productCode" class="form-label required">
-                <i class="bi bi-upc-scan"></i> Product Code / SKU
-              </label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input type="text" 
-                       id="productCode" 
-                       name="product_code" 
-                       class="form-control"
-                       placeholder="Scan or enter code" 
-                       required 
-                       autocomplete="off"
-                       autofocus>
-              </div>
-              <small class="form-text text-muted">
-                IMEI, Serial, Barcode, or Product Code
-              </small>
-            </div>
-
-            <!-- Quantity -->
-            <div class="mb-3">
-              <label for="quantity" class="form-label">
-                <i class="bi bi-123"></i> Quantity
-              </label>
-              <input type="number" 
-                     id="quantity" 
-                     name="quantity" 
-                     class="form-control form-control-lg"
-                     min="1" 
-                     value="1" 
-                     placeholder="Enter quantity">
-              <small class="form-text text-muted">
-                Auto-locked to 1 for single items
-              </small>
-            </div>
-
-            <!-- Unit Price -->
-            <div class="mb-3">
-              <label for="saleAmount" class="form-label">
-                <i class="bi bi-currency-exchange"></i> Unit Price (KSH)
-              </label>
-              <div class="input-group input-group-lg">
-                <span class="input-group-text">KSH</span>
-                <input type="number" 
-                       id="saleAmount" 
-                       name="unit_price" 
-                       step="0.01" 
-                       min="0"
-                       class="form-control" 
-                       placeholder="0.00">
-              </div>
-            </div>
-
-            <!-- Total Amount -->
+          <form id="simpleSaleForm">
+            
+            <!-- SKU Value with Live Search -->
             <div class="mb-4">
-              <label for="totalAmount" class="form-label">
-                <i class="bi bi-calculator"></i> Total Sale Amount
+              <label for="skuValue" class="form-label required">
+                <i class="bi bi-upc-scan"></i> SKU Value
               </label>
               <input type="text" 
-                     id="totalAmount" 
-                     name="total_amount" 
-                     class="form-control form-control-lg text-center"
-                     readonly 
-                     style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
-                            font-weight: 700; 
-                            font-size: 1.5rem; 
-                            color: #059669;
-                            border: 2px solid #10b981;">
+                     id="skuValue" 
+                     name="sku_value" 
+                     class="form-control form-control-lg"
+                     placeholder="Start typing SKU / IMEI / Serial Number" 
+                     required 
+                     autocomplete="off"
+                     autofocus>
+              <small class="form-text text-muted">
+                Type to search products in real-time
+              </small>
+              
+              <!-- Live Search Results Dropdown -->
+              <div id="skuSearchResults" class="list-group mt-2" style="display: none; max-height: 300px; overflow-y: auto; position: relative; z-index: 1000;"></div>
             </div>
 
-            <hr class="my-4">
+            <!-- Client Name -->
+            <div class="mb-3">
+              <label for="clientName" class="form-label required">
+                <i class="bi bi-person"></i> Client Name
+              </label>
+              <input type="text" 
+                     id="clientName" 
+                     name="client_name" 
+                     class="form-control form-control-lg"
+                     placeholder="Enter client full name" 
+                     required>
+            </div>
 
-            <!-- Client Details Collapsible -->
+            <!-- ID Number -->
+            <div class="mb-3">
+              <label for="idNumber" class="form-label required">
+                <i class="bi bi-card-text"></i> ID Number
+              </label>
+              <input type="text" 
+                     id="idNumber" 
+                     name="id_number" 
+                     class="form-control form-control-lg"
+                     placeholder="Enter ID number" 
+                     required>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label required">
+                <i class="bi bi-telephone"></i> Phone Number
+              </label>
+              <input type="tel" 
+                     id="phoneNumber" 
+                     name="phone_number" 
+                     class="form-control form-control-lg"
+                     placeholder="0712345678" 
+                     required>
+            </div>
+
+            <!-- NOK Name -->
+            <div class="mb-3">
+              <label for="nokName" class="form-label required">
+                <i class="bi bi-person-badge"></i> Next of Kin Name
+              </label>
+              <input type="text" 
+                     id="nokName" 
+                     name="nok_name" 
+                     class="form-control form-control-lg"
+                     placeholder="Enter NOK name" 
+                     required>
+            </div>
+
+            <!-- NOK Phone Number -->
             <div class="mb-4">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label fw-bold mb-0">
-                  <i class="bi bi-person-vcard"></i> Client Details
-                </label>
-                <span class="badge bg-secondary">Optional</span>
-              </div>
-
-              <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center"
-                      type="button" 
-                      data-bs-toggle="collapse" 
-                      data-bs-target="#clientDetailsDropdown"
-                      aria-expanded="false">
-                  <span><i class="bi bi-person-plus"></i> Fill Client Details</span>
-                  <i class="bi bi-chevron-down"></i>
-              </button>
-
-              <!-- Collapsible Form -->
-              <div class="collapse mt-3" id="clientDetailsDropdown">
-                <div class="card card-body bg-light">
-
-                  <div class="mb-3">
-                    <label for="client_phone" class="form-label">
-                      <i class="bi bi-telephone"></i> Phone
-                    </label>
-                    <input type="text" 
-                           id="client_phone" 
-                           name="buyer_phone" 
-                           class="form-control"
-                           placeholder="0712345678">
-                    <small class="form-text text-muted">
-                      Auto-fills if client exists
-                    </small>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="client_name" class="form-label">
-                      <i class="bi bi-person"></i> Name
-                    </label>
-                    <input type="text" 
-                           id="client_name" 
-                           name="buyer_name" 
-                           class="form-control"
-                           placeholder="Full name">
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="client_id" class="form-label">
-                      <i class="bi bi-card-text"></i> ID Number
-                    </label>
-                    <input type="text" 
-                           id="client_id" 
-                           name="buyer_id_number" 
-                           class="form-control"
-                           placeholder="ID number">
-                  </div>
-
-                  <hr>
-
-                  <h6 class="text-muted mb-3">Next of Kin</h6>
-
-                  <div class="mb-3">
-                    <label for="nok_name" class="form-label">
-                      <i class="bi bi-person-badge"></i> NOK Name
-                    </label>
-                    <input type="text" 
-                           id="nok_name" 
-                           name="nok_name" 
-                           class="form-control"
-                           placeholder="NOK name">
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="nok_phone" class="form-label">
-                      <i class="bi bi-telephone-forward"></i> NOK Phone
-                    </label>
-                    <input type="text" 
-                           id="nok_phone" 
-                           name="nok_phone" 
-                           class="form-control"
-                           placeholder="NOK phone">
-                  </div>
-
-                </div>
-              </div>
+              <label for="nokPhone" class="form-label required">
+                <i class="bi bi-telephone-forward"></i> NOK Phone Number
+              </label>
+              <input type="tel" 
+                     id="nokPhone" 
+                     name="nok_phone" 
+                     class="form-control form-control-lg"
+                     placeholder="0712345678" 
+                     required>
             </div>
-<!-- Action Buttons -->
-<div class="d-grid gap-2 mt-4">
-  <button type="button" 
-          id="addToCartBtn" 
-          class="btn btn-primary btn-lg" 
-          disabled>
-    <i class="bi bi-plus-circle"></i> Add to Cart
-  </button>
-  <button type="button" 
-          id="recordAllSalesBtn" 
-          class="btn btn-success btn-lg" 
-          disabled>
-    <i class="bi bi-check-circle"></i> Record All Sales
-  </button>
-</div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" 
+                      id="submitSaleBtn" 
+                      class="btn btn-success btn-lg">
+                <i class="bi bi-check-circle"></i> Submit Sale
+              </button>
+            </div>
 
           </form>
         </div>
@@ -1248,33 +1262,177 @@
     </div>
 
     <!-- ==========================================
-         COLUMN B: DISPLAY SECTION
+         COLUMN B: DISPLAY & EDIT SECTION
     ========================================== -->
     <div class="col-lg-6">
       <div class="data-card h-100">
         <div class="card-header bg-info text-white">
           <h5 class="mb-0">
-            <i class="bi bi-display"></i> Product Details & Status
+            <i class="bi bi-display"></i> Product & Client Details
           </h5>
         </div>
         <div class="card-body" style="padding: 2rem;">
           
           <!-- Initial State (No Product Selected) -->
-          <div id="emptyState" class="text-center py-5">
+          <div id="emptyDisplayState" class="text-center py-5">
             <i class="bi bi-box-seam" style="font-size: 4rem; color: #cbd5e1;"></i>
             <h5 class="text-muted mt-3">No Product Selected</h5>
             <p class="text-muted">
-              Scan or enter a product code to view details
+              Start typing SKU value to search products
             </p>
           </div>
 
           <!-- Product Details Display -->
-          <div id="productDetails" style="display: none;">
-            <!-- Content will be dynamically inserted here -->
+          <div id="productDisplaySection" style="display: none;">
+            
+            <!-- Product Info Card -->
+            <div class="product-display-card mb-4">
+              <h5 class="mb-3" style="color: #10b981; font-weight: 700;">
+                <i class="bi bi-box"></i> Product Information
+              </h5>
+              
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-tag"></i> Product Name
+                </label>
+                <div class="display-value" id="displayProductName">---</div>
+              </div>
+
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-upc"></i> Full SKU Value
+                </label>
+                <div class="display-value" id="displaySkuValue">---</div>
+              </div>
+
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-currency-exchange"></i> Selling Price (Editable)
+                </label>
+                <div class="input-group">
+                  <span class="input-group-text">KSH</span>
+                  <input type="number" 
+                         id="editSellingPrice" 
+                         class="form-control form-control-lg" 
+                         step="0.01"
+                         placeholder="0.00">
+                  <button class="btn btn-outline-success" 
+                          type="button" 
+                          id="updatePriceBtn">
+                    <i class="bi bi-check"></i> Update
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Client Details Display -->
+            <div class="client-display-card">
+              <h5 class="mb-3" style="color: #0dcaf0; font-weight: 700;">
+                <i class="bi bi-person-vcard"></i> Client Information
+              </h5>
+
+              <!-- Client Name -->
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-person"></i> Client Name
+                </label>
+                <div class="input-group">
+                  <input type="text" 
+                         id="editClientName" 
+                         class="form-control" 
+                         placeholder="Client name"
+                         readonly>
+                  <button class="btn btn-outline-primary btn-sm" 
+                          type="button" 
+                          onclick="enableEdit('editClientName')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ID Number -->
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-card-text"></i> ID Number
+                </label>
+                <div class="input-group">
+                  <input type="text" 
+                         id="editIdNumber" 
+                         class="form-control" 
+                         placeholder="ID number"
+                         readonly>
+                  <button class="btn btn-outline-primary btn-sm" 
+                          type="button" 
+                          onclick="enableEdit('editIdNumber')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Phone Number -->
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-telephone"></i> Phone Number
+                </label>
+                <div class="input-group">
+                  <input type="tel" 
+                         id="editPhoneNumber" 
+                         class="form-control" 
+                         placeholder="Phone number"
+                         readonly>
+                  <button class="btn btn-outline-primary btn-sm" 
+                          type="button" 
+                          onclick="enableEdit('editPhoneNumber')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- NOK Name -->
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-person-badge"></i> NOK Name
+                </label>
+                <div class="input-group">
+                  <input type="text" 
+                         id="editNokName" 
+                         class="form-control" 
+                         placeholder="NOK name"
+                         readonly>
+                  <button class="btn btn-outline-primary btn-sm" 
+                          type="button" 
+                          onclick="enableEdit('editNokName')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- NOK Phone -->
+              <div class="info-item mb-3">
+                <label class="display-label">
+                  <i class="bi bi-telephone-forward"></i> NOK Phone
+                </label>
+                <div class="input-group">
+                  <input type="tel" 
+                         id="editNokPhone" 
+                         class="form-control" 
+                         placeholder="NOK phone"
+                         readonly>
+                  <button class="btn btn-outline-primary btn-sm" 
+                          type="button" 
+                          onclick="enableEdit('editNokPhone')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Sale Messages -->
-          <div id="saleMessage" class="mt-4"></div>
+          <div id="saleStatusMessage" class="mt-4"></div>
 
         </div>
       </div>
@@ -1283,6 +1441,12 @@
   </div><!-- End Row -->
 
 </div>
+
+
+
+
+
+
 
 
 
@@ -1714,656 +1878,403 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// ================================
-// FIXED MULTI-SALE RECORD FUNCTIONALITY
-// ================================
 
-// Prevent multiple initializations
-if (!window.saleFormInitialized) {
-    window.saleFormInitialized = true;
+
+
+
+
+
+
+
+
+
+
+
+
+// ================================
+//  RECORD SALE SECTION - LIVE SEARCH
+// ================================
+document.addEventListener('DOMContentLoaded', function() {
+  const skuInput = document.getElementById('skuValue');
+  const clientNameInput = document.getElementById('clientName');
+  const idNumberInput = document.getElementById('idNumber');
+  const phoneNumberInput = document.getElementById('phoneNumber');
+  const nokNameInput = document.getElementById('nokName');
+  const nokPhoneInput = document.getElementById('nokPhone');
+  
+  const skuSearchResults = document.getElementById('skuSearchResults');
+  const emptyDisplayState = document.getElementById('emptyDisplayState');
+  const productDisplaySection = document.getElementById('productDisplaySection');
+  
+  const displayProductName = document.getElementById('displayProductName');
+  const displaySkuValue = document.getElementById('displaySkuValue');
+  const editSellingPrice = document.getElementById('editSellingPrice');
+  
+  const editClientName = document.getElementById('editClientName');
+  const editIdNumber = document.getElementById('editIdNumber');
+  const editPhoneNumber = document.getElementById('editPhoneNumber');
+  const editNokName = document.getElementById('editNokName');
+  const editNokPhone = document.getElementById('editNokPhone');
+  
+  const saleForm = document.getElementById('simpleSaleForm');
+  const saleStatusMessage = document.getElementById('saleStatusMessage');
+
+  let debounceTimer;
+  let currentProduct = null;
+
+  // ============================================
+  // LIVE SKU SEARCH - TRIGGERS ON EVERY KEYSTROKE
+  // ============================================
+  skuInput.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    const searchTerm = this.value.trim();
     
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Batch Sale Form Initialized');
-        
-        const form = document.getElementById('saleForm');
-        const productCodeInput = document.getElementById('productCode');
-        const quantityInput = document.getElementById('quantity');
-        const unitPriceInput = document.getElementById('saleAmount');
-        const totalAmountInput = document.getElementById('totalAmount');
-        
-        // Column B - Display Elements
-        const emptyState = document.getElementById('emptyState');
-        const productDetailsDiv = document.getElementById('productDetails');
-        const saleMessageDiv = document.getElementById('saleMessage');
-        
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const recordAllSalesBtn = document.getElementById('recordAllSalesBtn');
-        const clientPhoneInput = document.getElementById('client_phone');
-        
-        let currentProduct = null;
-        let debounceTimer = null;
-        let salesCart = [];
+    // Search starts from the first digit entered
+    if (searchTerm.length === 0) {
+      hideSearchResults();
+      showEmptyState();
+      return;
+    }
+    
+    // Debounce the search slightly (200ms) to avoid too many requests
+    debounceTimer = setTimeout(() => searchProducts(searchTerm), 200);
+  });
 
-        // ============================================
-        // CRITICAL FIX: Check if elements exist
-        // ============================================
-        if (!form || !productCodeInput || !addToCartBtn || !recordAllSalesBtn) {
-            console.error('❌ Required form elements not found!');
-            console.log('Form:', form);
-            console.log('Product Code Input:', productCodeInput);
-            console.log('Add to Cart Button:', addToCartBtn);
-            console.log('Record All Sales Button:', recordAllSalesBtn);
-            return;
-        }
+  // ============================================
+  // SEARCH PRODUCTS IN DATABASE
+  // ============================================
+  async function searchProducts(searchTerm) {
+    try {
+      showSearchLoading();
+      
+      // Call Django backend with search term
+      // This endpoint should return ALL products containing the search term
+      const response = await fetch(`/sales/product-search/?q=${encodeURIComponent(searchTerm)}`);
+      const data = await response.json();
+      
+      if (data.success && data.products && data.products.length > 0) {
+        displaySearchResults(data.products);
+      } else {
+        showNoResults(searchTerm);
+      }
+      
+    } catch (error) {
+      console.error('Search error:', error);
+      showSearchError();
+    }
+  }
 
-        console.log('✅ All required elements found');
+  // ============================================
+  // DISPLAY SEARCH RESULTS
+  // ============================================
+  function displaySearchResults(products) {
+    skuSearchResults.innerHTML = '';
+    skuSearchResults.style.display = 'block';
+    
+    products.forEach(product => {
+      const resultItem = document.createElement('a');
+      resultItem.href = '#';
+      resultItem.className = 'list-group-item list-group-item-action';
+      
+      resultItem.innerHTML = `
+        <div class="d-flex w-100 justify-content-between align-items-center">
+          <div>
+            <h6 class="mb-1">${escapeHtml(product.name)}</h6>
+            <small class="product-sku">
+              <i class="bi bi-upc-scan"></i> ${escapeHtml(product.sku_code || product.product_code)}
+            </small>
+          </div>
+          <span class="product-price">
+            KSH ${formatPrice(product.unit_price || product.selling_price)}
+          </span>
+        </div>
+      `;
+      
+      // Click handler to select product
+      resultItem.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectProduct(product);
+      });
+      
+      skuSearchResults.appendChild(resultItem);
+    });
+  }
 
-        // ============================================
-        // SALES CART COUNTER CARD (Inject into DOM)
-        // ============================================
-        function injectCartCounter() {
-            const recordSaleSection = document.getElementById('record-sale');
-            if (!recordSaleSection) {
-                console.error('❌ record-sale section not found');
-                return;
-            }
-            
-            const existingCounter = document.getElementById('salesCartCounter');
-            if (existingCounter) {
-                console.log('ℹ️ Cart counter already exists');
-                return;
-            }
-            
-            const counterHTML = `
-                <div id="salesCartCounter" class="alert alert-info d-flex justify-content-between align-items-center" style="display: none; margin-top: 1rem;">
-                    <div>
-                        <i class="bi bi-cart-check-fill"></i>
-                        <strong>Sales in Cart:</strong>
-                        <span id="cartCount">0</span>
-                    </div>
-                    <div>
-                        <strong>Total Value:</strong>
-                        <span id="cartTotal">KSH 0.00</span>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearSalesCart()">
-                        <i class="bi bi-trash"></i> Clear Cart
-                    </button>
-                </div>
-            `;
-            
-            const contentHeader = recordSaleSection.querySelector('.content-header');
-            if (contentHeader) {
-                contentHeader.insertAdjacentHTML('afterend', counterHTML);
-                console.log('✅ Cart counter injected');
-            } else {
-                console.error('❌ Content header not found in record-sale section');
-            }
-        }
+  // ============================================
+  // SELECT PRODUCT FROM SEARCH RESULTS
+  // ============================================
+  function selectProduct(product) {
+    currentProduct = product;
+    
+    // Update SKU input with selected product's SKU
+    skuInput.value = product.sku_code || product.product_code;
+    
+    // Hide search results
+    hideSearchResults();
+    
+    // Display product details
+    displayProductDetails(product);
+    
+    // Focus on next input (client name)
+    clientNameInput.focus();
+  }
 
-        injectCartCounter();
+  // ============================================
+  // DISPLAY PRODUCT DETAILS IN COLUMN B
+  // ============================================
+  function displayProductDetails(product) {
+    emptyDisplayState.style.display = 'none';
+    productDisplaySection.style.display = 'block';
+    
+    displayProductName.textContent = product.name || '---';
+    displaySkuValue.textContent = product.sku_code || product.product_code || '---';
+    editSellingPrice.value = product.unit_price || product.selling_price || '';
+  }
 
-        // ============================================
-        // UPDATE CART COUNTER
-        // ============================================
-        function updateCartCounter() {
-            const counterDiv = document.getElementById('salesCartCounter');
-            const countSpan = document.getElementById('cartCount');
-            const totalSpan = document.getElementById('cartTotal');
-            
-            if (!counterDiv || !countSpan || !totalSpan) {
-                console.error('❌ Cart counter elements not found');
-                return;
-            }
-            
-            if (salesCart.length === 0) {
-                counterDiv.style.display = 'none';
-                recordAllSalesBtn.disabled = true;
-                recordAllSalesBtn.innerHTML = '<i class="bi bi-check-circle"></i> Record All Sales';
-            } else {
-                counterDiv.style.display = 'flex';
-                countSpan.textContent = salesCart.length;
-                
-                const totalValue = salesCart.reduce((sum, sale) => sum + (sale.quantity * sale.unit_price), 0);
-                totalSpan.textContent = `KSH ${totalValue.toLocaleString('en-KE', {minimumFractionDigits: 2})}`;
-                
-                recordAllSalesBtn.disabled = false;
-                recordAllSalesBtn.innerHTML = `
-                    <i class="bi bi-receipt-cutoff"></i> 
-                    Record Batch (${salesCart.length} items) - One Receipt
-                `;
-                recordAllSalesBtn.title = `Submit ${salesCart.length} sale(s) as one batch with single combined receipt`;
-                
-                console.log(`📊 Cart updated: ${salesCart.length} items, Total: KSH ${totalValue}`);
-            }
-        }
+  // ============================================
+  // SEARCH RESULT STATES
+  // ============================================
+  function showSearchLoading() {
+    skuSearchResults.innerHTML = '<div class="search-loading"><i class="bi bi-hourglass-split"></i> Searching database...</div>';
+    skuSearchResults.style.display = 'block';
+  }
 
-        // ============================================
-        // CLEAR SALES CART (GLOBAL FUNCTION)
-        // ============================================
-        window.clearSalesCart = function() {
-            console.log('🗑️ Clear cart requested');
-            if (salesCart.length === 0) return;
-            
-            if (confirm(`Clear ${salesCart.length} sale(s) from cart?`)) {
-                salesCart = [];
-                updateCartCounter();
-                showMessage('Cart cleared', 'info');
-                console.log('✅ Cart cleared');
-            }
-        };
+  function showNoResults(searchTerm) {
+    skuSearchResults.innerHTML = `
+      <div class="no-results">
+        <i class="bi bi-search"></i> 
+        No products found matching "${escapeHtml(searchTerm)}"
+      </div>
+    `;
+    skuSearchResults.style.display = 'block';
+  }
 
-        // ============================================
-        // PRODUCT CODE LOOKUP WITH DEBOUNCE
-        // ============================================
-        productCodeInput.addEventListener('input', function() {
-            clearTimeout(debounceTimer);
-            const code = this.value.trim();
-            
-            console.log(`🔍 Product code input: "${code}"`);
-            
-            if (code.length < 2) {
-                showEmptyState();
-                return;
-            }
-            
-            showLoadingState();
-            debounceTimer = setTimeout(() => lookupProduct(code), 500);
-        });
+  function showSearchError() {
+    skuSearchResults.innerHTML = `
+      <div class="no-results">
+        <i class="bi bi-exclamation-triangle"></i> 
+        Error searching database
+      </div>
+    `;
+    skuSearchResults.style.display = 'block';
+  }
 
-        // ============================================
-        // SHOW LOADING STATE
-        // ============================================
-        function showLoadingState() {
-            if (!emptyState || !productDetailsDiv) {
-                console.error('❌ Display elements not found');
-                return;
-            }
-            
-            emptyState.style.display = 'none';
-            productDetailsDiv.style.display = 'block';
-            productDetailsDiv.innerHTML = `
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="text-muted mt-3">Searching product...</p>
-                </div>
-            `;
-        }
+  function hideSearchResults() {
+    skuSearchResults.style.display = 'none';
+    skuSearchResults.innerHTML = '';
+  }
 
-        // ============================================
-        // SHOW EMPTY STATE
-        // ============================================
-        function showEmptyState() {
-            if (!emptyState || !productDetailsDiv) return;
-            
-            emptyState.style.display = 'block';
-            productDetailsDiv.style.display = 'none';
-            if (saleMessageDiv) saleMessageDiv.innerHTML = '';
-            currentProduct = null;
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
+  // ============================================
+  // SYNC CLIENT DETAILS TO COLUMN B
+  // ============================================
+  clientNameInput.addEventListener('input', function() {
+    editClientName.value = this.value;
+  });
 
- // ============================================
-// PRODUCT LOOKUP API CALL
-// ============================================
-async function lookupProduct(code) {
-    console.log(`🔎 Looking up product: ${code}`);
+  idNumberInput.addEventListener('input', function() {
+    editIdNumber.value = this.value;
+  });
+
+  phoneNumberInput.addEventListener('input', function() {
+    editPhoneNumber.value = this.value;
+  });
+
+  nokNameInput.addEventListener('input', function() {
+    editNokName.value = this.value;
+  });
+
+  nokPhoneInput.addEventListener('input', function() {
+    editNokPhone.value = this.value;
+  });
+
+  // ============================================
+  // ENABLE EDIT FOR READONLY FIELDS
+  // ============================================
+  window.enableEdit = function(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.removeAttribute('readonly');
+      field.focus();
+      field.classList.add('border-primary');
+    }
+  };
+
+  // ============================================
+  // UPDATE PRICE BUTTON
+  // ============================================
+  document.getElementById('updatePriceBtn').addEventListener('click', function() {
+    const newPrice = editSellingPrice.value;
+    if (newPrice && parseFloat(newPrice) > 0) {
+      showMessage('Price updated successfully!', 'success');
+    } else {
+      showMessage('Please enter a valid price', 'warning');
+    }
+  });
+
+  // ============================================
+  // FORM SUBMISSION
+  // ============================================
+  saleForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if (!currentProduct) {
+      showMessage('Please select a valid product first', 'danger');
+      return;
+    }
+    
+    const saleData = {
+      product_id: currentProduct.id,
+      sku_value: skuInput.value.trim(),
+      product_name: displayProductName.textContent,
+      selling_price: editSellingPrice.value,
+      client_name: editClientName.value,
+      id_number: editIdNumber.value,
+      phone_number: editPhoneNumber.value,
+      nok_name: editNokName.value,
+      nok_phone: editNokPhone.value
+    };
     
     try {
-        const response = await fetch(`/sales/product-lookup/?product_code=${encodeURIComponent(code)}`);
+      showMessage('Processing sale...', 'info');
+      
+      // Submit to Django backend
+      const response = await fetch('/sales/record-sale/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify(saleData)
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        showMessage('✅ Sale recorded successfully!', 'success');
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('📦 Product lookup response:', data);
-        
-        emptyState.style.display = 'none';
-
-        // 🔒 Check if product is sold (backend indicates this)
-        if (!data.success && data.is_sold) {
-            displaySoldProduct(data.product);
-            currentProduct = null;
-            return;
-        }
-        
-        if (!data.success) {
-            displayProductError(data.message || 'Product not found');
-            currentProduct = null;
-            return;
-        }
-        
-        const product = data.product;
-        
-        // Check stock for bulk items
-        if (!product.is_single_item && product.quantity === 0) {
-            displayOutOfStockProduct(product);
-            currentProduct = null;
-            return;
-        }
-        
-        // Available product
-        currentProduct = product;
-        displayAvailableProduct(product);
-        
+        // Reset form after 2 seconds
+        setTimeout(() => {
+          saleForm.reset();
+          showEmptyState();
+          currentProduct = null;
+          skuInput.focus();
+        }, 2000);
+      } else {
+        showMessage('❌ Error: ' + (result.message || 'Failed to record sale'), 'danger');
+      }
+      
     } catch (error) {
-        console.error('❌ Lookup error:', error);
-        displayProductError('Error looking up product. Please try again.');
+      console.error('Submission error:', error);
+      showMessage('❌ Error submitting sale', 'danger');
     }
-}
+  });
 
+  // ============================================
+  // UTILITY FUNCTIONS
+  // ============================================
+  function showEmptyState() {
+    emptyDisplayState.style.display = 'block';
+    productDisplaySection.style.display = 'none';
+  }
 
+  function showMessage(message, type = 'info') {
+    const alertClass = `alert alert-${type}`;
+    saleStatusMessage.innerHTML = `<div class="${alertClass}">${message}</div>`;
+    
+    if (type === 'success') {
+      setTimeout(() => {
+        saleStatusMessage.innerHTML = '';
+      }, 5000);
+    }
+  }
 
-        // ============================================
-        // DISPLAY AVAILABLE PRODUCT
-        // ============================================
-        function displayAvailableProduct(product) {
-            console.log('📋 Displaying product:', product.name);
-            
-            const itemTypeIcon = product.is_single_item ? '📱' : '📦';
-            
-            let statusBadge, statusText;
-            if (product.is_single_item) {
-                statusBadge = '<span class="badge bg-success product-badge"><i class="bi bi-check-circle-fill"></i> AVAILABLE</span>';
-                statusText = '<span class="text-success"><strong>Available</strong></span>';
-            } else {
-                if (product.quantity > 5) {
-                    statusBadge = '<span class="badge bg-success product-badge"><i class="bi bi-check-circle-fill"></i> IN STOCK</span>';
-                    statusText = `<span class="text-success"><strong>${product.quantity} units</strong></span>`;
-                } else if (product.quantity > 0) {
-                    statusBadge = '<span class="badge bg-warning product-badge"><i class="bi bi-exclamation-triangle-fill"></i> LOW STOCK</span>';
-                    statusText = `<span class="text-warning"><strong>${product.quantity} units (Low)</strong></span>`;
-                }
-            }
-            
-            const createdDate = new Date(product.created_at);
-            const ageInDays = Math.floor((new Date() - createdDate) / (1000 * 60 * 60 * 24));
-            
-            let html = `
-                <div class="available-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0">${itemTypeIcon} ${product.name}</h4>
-                        ${statusBadge}
-                    </div>
-                    
-                    <div class="product-info-card mt-3">
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-tag"></i> Product Code</span>
-                            <span class="product-info-value">${product.product_code}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-upc"></i> SKU / Identifier</span>
-                            <span class="product-info-value">${product.sku_code}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-folder"></i> Category</span>
-                            <span class="product-info-value">${product.category}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-box-seam"></i> Stock Status</span>
-                            <span class="product-info-value">${statusText}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-cash"></i> Unit Price</span>
-                            <span class="product-info-value text-primary">
-                                KSH ${parseFloat(product.unit_price).toLocaleString('en-KE', {minimumFractionDigits: 2})}
-                            </span>
-                        </div>
-            `;
-            
-            if (product.is_single_item) {
-                html += `
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-clock-history"></i> Item Age</span>
-                            <span class="product-info-value">${ageInDays} days</span>
-                        </div>
-                    </div>
-                    <div class="fifo-badge mt-3">
-                        <i class="bi bi-check-circle-fill"></i> FIFO: Oldest Available Unit
-                        <span class="ms-2">(${ageInDays} days old)</span>
-                    </div>
-                `;
-            } else {
-                html += `</div>`;
-            }
-            
-            html += `</div>`;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            
-            if (unitPriceInput) unitPriceInput.value = product.unit_price;
-            
-            if (product.is_single_item) {
-                if (quantityInput) {
-                    quantityInput.value = 1;
-                    quantityInput.max = 1;
-                    quantityInput.disabled = true;
-                }
-            } else {
-                if (quantityInput) {
-                    quantityInput.value = 1;
-                    quantityInput.max = product.quantity;
-                    quantityInput.disabled = false;
-                }
-            }
-            
-            calculateTotal();
-            enableSaleForm();
-        }
-
-        // ============================================
-        // DISPLAY SOLD/OUT OF STOCK PRODUCTS
-        // ============================================
-        function displaySoldProduct(product) {
-            let html = `
-                <div class="sold-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0 text-danger"><i class="bi bi-x-circle-fill"></i> Product Already Sold</h4>
-                        <span class="badge bg-danger product-badge">SOLD</span>
-                    </div>
-                    <div class="alert alert-warning mb-3">
-                        <strong>⚠️ Cannot Sell This Product</strong>
-                        <p class="mb-0 mt-2">This single-item product has already been sold.</p>
-                    </div>
-                    <div class="product-info-card">
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-box"></i> Product Name</span>
-                            <span class="product-info-value">${product.name}</span>
-                        </div>
-                        <div class="product-info-item">
-                            <span class="product-info-label"><i class="bi bi-tag"></i> Product Code</span>
-                            <span class="product-info-value">${product.product_code}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        function displayOutOfStockProduct(product) {
-            let html = `
-                <div class="sold-alert">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h4 class="mb-0 text-danger"><i class="bi bi-x-circle-fill"></i> Product Out of Stock</h4>
-                        <span class="badge bg-danger product-badge">OUT OF STOCK</span>
-                    </div>
-                    <div class="alert alert-danger mb-3">
-                        <strong>⚠️ Cannot Sell This Product</strong>
-                        <p class="mb-0 mt-2">This product has 0 units remaining.</p>
-                    </div>
-                </div>
-            `;
-            
-            productDetailsDiv.innerHTML = html;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        function displayProductError(message) {
-            productDetailsDiv.innerHTML = `
-                <div class="alert alert-danger">
-                    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Error</h5>
-                    <p class="mb-0">${message}</p>
-                </div>
-            `;
-            productDetailsDiv.style.display = 'block';
-            addToCartBtn.disabled = true;
-            if (unitPriceInput) unitPriceInput.disabled = true;
-            if (quantityInput) quantityInput.disabled = true;
-        }
-
-        // ============================================
-        // FORM STATE MANAGEMENT
-        // ============================================
-        function enableSaleForm() {
-            if (currentProduct) {
-                addToCartBtn.disabled = false;
-                if (unitPriceInput) unitPriceInput.disabled = false;
-                
-                if (!currentProduct.is_single_item && quantityInput) {
-                    quantityInput.disabled = false;
-                }
-                
-                console.log('✅ Sale form enabled');
-            }
-        }
-
-        // ============================================
-        // CALCULATE TOTAL
-        // ============================================
-        function calculateTotal() {
-            if (!quantityInput || !unitPriceInput || !totalAmountInput) return;
-            
-            const quantity = parseInt(quantityInput.value) || 0;
-            const unitPrice = parseFloat(unitPriceInput.value) || 0;
-            const total = quantity * unitPrice;
-            
-            if (total > 0) {
-                totalAmountInput.value = `KSH ${total.toLocaleString('en-KE', {minimumFractionDigits: 2})}`;
-            } else {
-                totalAmountInput.value = '';
-            }
-        }
-
-        if (quantityInput) quantityInput.addEventListener('input', calculateTotal);
-        if (unitPriceInput) unitPriceInput.addEventListener('input', calculateTotal);
-
-        // ============================================
-        // ADD SALE TO CART
-        // ============================================
-        addToCartBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('🛒 Add to cart clicked');
-            
-            if (!currentProduct) {
-                showMessage('Please select a valid product first', 'danger');
-                return;
-            }
-            
-            const quantity = parseInt(quantityInput.value);
-            const unitPrice = parseFloat(unitPriceInput.value);
-            
-            if (!quantity || quantity <= 0) {
-                showMessage('Please enter a valid quantity', 'danger');
-                return;
-            }
-            
-            if (!unitPrice || unitPrice <= 0) {
-                showMessage('Please enter a valid price', 'danger');
-                return;
-            }
-            
-            if (!currentProduct.is_single_item && quantity > currentProduct.quantity) {
-                showMessage(`Cannot sell ${quantity} units. Only ${currentProduct.quantity} available.`, 'danger');
-                return;
-            }
-            
-            // Add to cart
-            const saleItem = {
-                product_code: productCodeInput.value.trim(),
-                product_name: currentProduct.name,
-                quantity: quantity,
-                unit_price: unitPrice,
-                total: quantity * unitPrice,
-                buyer_name: document.getElementById('client_name')?.value.trim() || '',
-                buyer_phone: document.getElementById('client_phone')?.value.trim() || '',
-                buyer_id_number: document.getElementById('client_id')?.value.trim() || '',
-                nok_name: document.getElementById('nok_name')?.value.trim() || '',
-                nok_phone: document.getElementById('nok_phone')?.value.trim() || ''
-            };
-            
-            salesCart.push(saleItem);
-            console.log('✅ Item added to cart:', saleItem);
-            console.log('📊 Current cart:', salesCart);
-            
-            updateCartCounter();
-            
-            showMessage(`✅ Added ${currentProduct.name} to cart`, 'success');
-            
-            setTimeout(() => resetFormForNextItem(), 1500);
-        });
-
-        // ============================================
-        // ✅ RECORD ALL SALES AS SINGLE BATCH
-        // ============================================
-        recordAllSalesBtn.addEventListener('click', async function() {
-            console.log('💾 Record all sales clicked');
-            console.log('📋 Current cart:', salesCart);
-            
-            if (salesCart.length === 0) {
-                showMessage('Cart is empty. Add sales first.', 'danger');
-                return;
-            }
-            
-            const confirmMessage = `Submit ${salesCart.length} sale(s) as ONE batch transaction?\n\n` +
-                                 `This will generate:\n` +
-                                 `• ${salesCart.length} individual sale records\n` +
-                                 `• 1 combined ETR receipt\n` +
-                                 `• 1 fiscal receipt for all items`;
-            
-            if (!confirm(confirmMessage)) {
-                console.log('❌ User cancelled batch sale');
-                return;
-            }
-            
-            try {
-                recordAllSalesBtn.disabled = true;
-                addToCartBtn.disabled = true;
-                showMessage(`Processing batch sale (${salesCart.length} items)...`, 'info');
-                
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                
-                console.log('🚀 Sending batch request to /sales/batch-create/');
-                console.log('📦 Payload:', { sales_cart: salesCart });
-                
-                const response = await fetch('/sales/batch-create/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken
-                    },
-                    body: JSON.stringify({
-                        sales_cart: salesCart
-                    })
-                });
-                
-                console.log('📡 Response status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('✅ Batch response:', data);
-                
-                if (data.status === 'success') {
-                    const successHTML = `
-                        <div class="alert alert-success">
-                            <h5><i class="bi bi-check-circle-fill"></i> Batch Sale Successful!</h5>
-                            <hr>
-                            <p><strong>Sales Recorded:</strong> ${data.total_sales}</p>
-                            <p><strong>Total Amount:</strong> KSH ${data.total_amount.toLocaleString('en-KE', {minimumFractionDigits: 2})}</p>
-                            <p><strong>Batch ID:</strong> ${data.batch_id}</p>
-                            ${data.etr_receipt_number ? `<p><strong>ETR Receipt:</strong> ${data.etr_receipt_number}</p>` : ''}
-                            ${data.fiscal_receipt_number ? `<p><strong>Fiscal Receipt:</strong> ${data.fiscal_receipt_number}</p>` : ''}
-                            <hr>
-                            <a href="${data.receipt_url}" target="_blank" class="btn btn-primary btn-sm">
-                                <i class="bi bi-receipt"></i> View Combined Receipt
-                            </a>
-                        </div>
-                    `;
-                    
-                    showMessage(successHTML, 'success');
-                    
-                    // Clear cart
-                    salesCart = [];
-                    updateCartCounter();
-                    
-                    console.log('✅ Batch sale completed successfully');
-                    
-                    // Reload page after delay
-                    setTimeout(() => {
-                        console.log('🔄 Reloading page...');
-                        window.location.reload();
-                    }, 4000);
-                    
-                } else {
-                    console.error('❌ Batch sale failed:', data.message);
-                    showMessage(`❌ Batch sale failed: ${data.message}`, 'danger');
-                    recordAllSalesBtn.disabled = false;
-                    addToCartBtn.disabled = false;
-                }
-                
-            } catch (error) {
-                console.error('❌ Batch sale error:', error);
-                showMessage('Error submitting batch sale. Please try again.', 'danger');
-                recordAllSalesBtn.disabled = false;
-                addToCartBtn.disabled = false;
-            }
-        });
-
-        // ============================================
-        // RESET FORM FOR NEXT ITEM
-        // ============================================
-        function resetFormForNextItem() {
-            console.log('🔄 Resetting form for next item');
-            
-            productCodeInput.value = '';
-            if (quantityInput) {
-                quantityInput.value = 1;
-                quantityInput.disabled = false;
-            }
-            if (unitPriceInput) unitPriceInput.value = '';
-            if (totalAmountInput) totalAmountInput.value = '';
-            
-            currentProduct = null;
-            showEmptyState();
-            if (saleMessageDiv) saleMessageDiv.innerHTML = '';
-            productCodeInput.focus();
-        }
-
-        // ============================================
-        // MESSAGE DISPLAY
-        // ============================================
-        function showMessage(message, type = 'info') {
-            if (!saleMessageDiv) {
-                console.error('❌ Sale message div not found');
-                return;
-            }
-            
-            const alertClass = `alert alert-${type}`;
-            saleMessageDiv.innerHTML = `<div class="${alertClass}">${message}</div>`;
-            
-            console.log(`💬 Message (${type}):`, message);
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    saleMessageDiv.innerHTML = '';
-                }, 10000);
-            }
-        }
-        
-        console.log('✅ Batch sale form setup complete');
+  function formatPrice(price) {
+    return parseFloat(price).toLocaleString('en-KE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
-}
+  }
+
+  function escapeHtml(text) {
+    const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+    return String(text).replace(/[&<>"']/g, m => map[m]);
+  }
+
+  function getCsrfToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  // ============================================
+  // KEYBOARD NAVIGATION FOR SEARCH RESULTS
+  // ============================================
+  let selectedResultIndex = -1;
+  
+  skuInput.addEventListener('keydown', function(e) {
+    const results = skuSearchResults.querySelectorAll('.list-group-item');
+    
+    if (results.length === 0) return;
+    
+    // Arrow Down
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedResultIndex = Math.min(selectedResultIndex + 1, results.length - 1);
+      highlightResult(results);
+    }
+    
+    // Arrow Up
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedResultIndex = Math.max(selectedResultIndex - 1, 0);
+      highlightResult(results);
+    }
+    
+    // Enter - Select highlighted result
+    if (e.key === 'Enter' && selectedResultIndex >= 0) {
+      e.preventDefault();
+      results[selectedResultIndex].click();
+    }
+    
+    // Escape - Close results
+    if (e.key === 'Escape') {
+      hideSearchResults();
+      selectedResultIndex = -1;
+    }
+  });
+  
+  function highlightResult(results) {
+    results.forEach((result, index) => {
+      if (index === selectedResultIndex) {
+        result.classList.add('active');
+        result.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else {
+        result.classList.remove('active');
+      }
+    });
+  }
+});
 
 
-// Auto-open batch receipt
-if (data.receipt_url) {
-    window.open(data.receipt_url, '_blank');
-}
+
+
+
 
 
 

@@ -1,3 +1,5 @@
+# sales/urls.py - FIXED VERSION
+
 from django.urls import path
 from . import views
 from .views import (
@@ -17,7 +19,13 @@ from .views import (
 app_name = 'sales'
 
 urlpatterns = [
-    # Product Lookup
+    # ============================================
+    # LIVE SEARCH ENDPOINTS (MOVE TO TOP)
+    # ============================================
+    path('product-search/', views.product_search, name='product_search'),  # ✅ FIXED: No 'sales/' prefix
+    path('record-sale/', views.record_sale, name='record_sale'),          # ✅ FIXED: No 'sales/' prefix
+    
+    # Product Lookup (existing)
     path('product-lookup/', views.ProductLookupView.as_view(), name='product-lookup'),
     path('client-lookup/', views.ClientLookupView.as_view(), name='client-lookup'),
     path('api/get-sellers/', views.get_sellers, name='get-sellers'),
@@ -37,8 +45,6 @@ urlpatterns = [
 
     # Reversal endpoints
     path('sale/<str:sale_id>/', views.SaleDetailView.as_view(), name='sale-detail'),
-
-    # Accept any slug/string as sale_ida
     path("reverse/<str:sale_id>/", SaleReverseView.as_view(), name="reverse-sale"),
 
     # ============================================
