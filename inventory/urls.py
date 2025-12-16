@@ -34,14 +34,24 @@ urlpatterns = [
     path('products/<int:pk>/edit/', views.ProductEditView.as_view(), name='product-edit'),
     path('products/<int:pk>/update/', views.ProductUpdateView.as_view(), name='product-update'),
     path('products/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='product-delete'),
-    path('products/<int:pk>/transfer/', views.ProductTransferView.as_view(), name='product-transfer'),
     
-    # Restock URLs - Search-based restock
+    # ============================================
+    # PRODUCT TRANSFER URLS (FIXED)
+    # ============================================
+    path('transfer/search/', views.product_transfer_search, name='product-transfer-search'),
+    path('transfer/process/', views.product_transfer_process, name='product-transfer-process'),
+    path('transfer/users/', views.get_transfer_users, name='get-transfer-users'),
+    
+    # ============================================
+    # RESTOCK URLS
+    # ============================================
     path('restock/', views.ProductRestockView.as_view(), name='product-restock'),
     path('restock/search/', views.search_product_for_restock, name='restock-search'),
     path('restock/process/', views.process_restock, name='restock-process'),
     
-    # Product Lookup (for POS/Sales)
+    # ============================================
+    # PRODUCT LOOKUP (for POS/Sales)
+    # ============================================
     path('lookup/', views.InventoryProductLookupView.as_view(), name='product-lookup'),
     
     # ============================================

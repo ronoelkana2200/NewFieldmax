@@ -1791,6 +1791,221 @@ body.sidebar-open {
   animation: slideIn 0.3s ease-out;
 }
 
+/* ============================
+   ADVANCED TRANSFER SEARCH STYLES
+   Add these to your CSS file
+   ============================ */
+
+/* Autocomplete Dropdown Scrollbar */
+#transferAutocompleteDropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+#transferAutocompleteDropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#transferAutocompleteDropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+#transferAutocompleteDropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Autocomplete Item Hover Animation */
+.autocomplete-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.autocomplete-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, rgba(52, 152, 219, 0.1) 0%, transparent 100%);
+  transition: width 0.3s ease;
+}
+
+.autocomplete-item:hover::before {
+  width: 100%;
+}
+
+/* Product Card Selectable */
+.product-card-selectable {
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.product-card-selectable::after {
+  content: '→';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-10px);
+  opacity: 0;
+  font-size: 1.5rem;
+  color: #3498db;
+  transition: all 0.3s ease;
+}
+
+.product-card-selectable:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Product Info Card Styles */
+.product-info-card {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.product-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-info-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-info-value {
+  font-size: 1rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Search Input Focus Effect */
+#transferSearchInput:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Loading Indicator Animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#transferSearchingIndicator {
+  animation: spin 1s linear infinite;
+}
+
+/* Empty State Styling */
+#transferEmptyState {
+  padding: 60px 20px;
+  text-align: center;
+  color: #95a5a6;
+}
+
+#transferEmptyState i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+/* Button Hover Effects */
+#transferSubmitBtn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+#transferSubmitBtn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+#transferSubmitBtn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+#transferSubmitBtn:active {
+  transform: scale(0.98);
+}
+
+/* Alert Animation */
+.alert {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-info-card {
+    grid-template-columns: 1fr;
+  }
+  
+  #transferAutocompleteDropdown {
+    max-height: 250px;
+  }
+}
+
+/* Badge Animations */
+.badge {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Highlight Effect */
+strong[style*="background-color"] {
+  padding: 2px 4px;
+  border-radius: 3px;
+  animation: highlight 0.5s ease;
+}
+
+@keyframes highlight {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
 
 </style>
 
@@ -1841,6 +2056,10 @@ body.sidebar-open {
         <a href="#" class="submenu-item" data-section="restock-product">
           <i class="bi bi-plus-circle"></i>
           <span>Restock products</span>
+        </a>
+        <a href="#" class="submenu-item" data-section="transfer-product">
+          <i class="bi bi-plus-circle"></i>
+          <span>Transfer product</span>
         </a>
       </div>
 
@@ -2389,7 +2608,6 @@ body.sidebar-open {
             <th><strong style="color:#ff0000;">% MARGIN</strong></th>
             <th><strong style="color:#ff0000;">OWNER</strong></th>
             <th><strong style="color:#ff0000;">DATE ADDED</strong></th>
-            <th><strong style="color:#ff0000;">ACTIONS</strong></th>
           </tr>
         </thead>
         <tbody>
@@ -2518,48 +2736,6 @@ body.sidebar-open {
             <!-- Date Added -->
             <td><span style="color: #6c757d;">{{ product.created_at|date:"M d, Y" }}</span></td>
 
-            <!-- Actions -->
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn action-btn-info" 
-                        onclick="viewProductDetails('{{ product.id }}')"
-                        title="View Details">
-                  <i class="bi bi-eye"></i>
-                </button>
-
-                <button class="action-btn action-btn-edit" 
-                        onclick="editProduct(this)"
-                        data-id="{{ product.id }}" 
-                        data-code="{{ product.product_code }}" 
-                        data-name="{{ product.name }}"
-                        data-buying-price="{{ product.buying_price }}"
-                        data-selling-price="{{ product.selling_price }}"
-                        data-quantity="{{ product.quantity }}"
-                        title="Edit Product">
-                  <i class="bi bi-pencil"></i>
-                </button>
-
-                <button class="action-btn action-btn-warning"
-                        onclick="transferProduct(this)"
-                        data-id="{{ product.id }}" 
-                        data-code="{{ product.product_code }}" 
-                        data-name="{{ product.name }}"
-                        data-quantity="{{ product.quantity }}"
-                        title="Transfer Product">
-                  <i class="bi bi-arrow-left-right"></i>
-                </button>
-
-                <button class="action-btn action-btn-delete"
-                        onclick="deleteProduct(this)"
-                        data-id="{{ product.id }}" 
-                        data-code="{{ product.product_code }}" 
-                        data-name="{{ product.name }}"
-                        title="Delete Product">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </td>
-
           </tr>
           {% endwith %}
           {% empty %}
@@ -2577,166 +2753,6 @@ body.sidebar-open {
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-<!-- ======================================= -->
-<!-- PRODUCT DETAILS MODAL -->
-<!-- ======================================= -->
-<div id="productDetailsModal" class="modal-overlay" style="display:none;" onclick="closeProductDetails()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header-custom" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white;">
-      <h5 class="modal-title">📦 Product Details</h5>
-      <button type="button" class="close-btn" onclick="closeProductDetails()">&times;</button>
-    </div>
-    <div class="modal-body-custom" id="productDetailsContent">
-      <!-- Content will be populated by JavaScript -->
-    </div>
-    <div class="modal-footer-custom">
-      <button class="btn-cancel" onclick="closeProductDetails()">Close</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- ======================================= -->
-<!-- EDIT PRODUCT MODAL -->
-<!-- ======================================= -->
-<div id="editProductModal" class="modal-overlay" style="display:none;" onclick="closeEditProduct()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header-custom" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
-      <h5 class="modal-title">✏️ Edit Product</h5>
-      <button type="button" class="close-btn" onclick="closeEditProduct()">&times;</button>
-    </div>
-
-    <form id="editProductForm">
-      <div class="modal-body-custom">
-        {% csrf_token %}
-        <input type="hidden" id="editProductId">
-
-        <div class="form-group">
-          <label for="editName" class="form-label">Product Name</label>
-          <input type="text" id="editName" class="form-input" required>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-          <div class="form-group">
-            <label for="editBuyingPrice" class="form-label">Buying Price (KSH)</label>
-            <input type="number" id="editBuyingPrice" class="form-input" step="0.01" required>
-          </div>
-
-          <div class="form-group">
-            <label for="editSellingPrice" class="form-label">Selling Price (KSH)</label>
-            <input type="number" id="editSellingPrice" class="form-input" step="0.01" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="editQuantity" class="form-label">Quantity</label>
-          <input type="number" id="editQuantity" class="form-input" min="0" required>
-        </div>
-
-        <div id="editProfitPreview" style="background: #e0f2fe; padding: 12px; border-radius: 6px; margin-top: 10px;">
-          <strong>💰 Profit Preview:</strong>
-          <div id="editProfitDetails" style="margin-top: 8px; font-size: 14px;"></div>
-        </div>
-      </div>
-
-      <div class="modal-footer-custom">
-        <button type="button" class="btn-cancel" onclick="closeEditProduct()">Cancel</button>
-        <button type="submit" class="btn-save">
-          <i class="bi bi-save"></i> Save Changes
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-<!-- ======================================= -->
-<!-- TRANSFER PRODUCT MODAL -->
-<!-- ======================================= -->
-<div id="transferModal" class="modal-overlay" style="display:none;" onclick="closeTransferModal()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header-custom" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
-      <h5 class="modal-title">🔄 Transfer Product</h5>
-      <button type="button" class="close-btn" onclick="closeTransferModal()">&times;</button>
-    </div>
-
-    <div class="modal-body-custom">
-      <div id="transferProductInfo" style="background: #fef3c7; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #f59e0b;">
-        <!-- Product info will be populated here -->
-      </div>
-
-      <div class="form-group">
-        <label for="userSelect" class="form-label">Select User to Transfer To</label>
-        <select id="userSelect" class="form-select">
-          <option value="">Loading users...</option>
-        </select>
-      </div>
-
-      <div id="quantityContainer" class="form-group" style="display:none;">
-        <label for="transferQuantity" class="form-label">Quantity to Transfer</label>
-        <input type="number" id="transferQuantity" min="1" value="1" class="form-control">
-      </div>
-    </div>
-
-    <div class="modal-footer-custom">
-      <button class="btn-cancel" onclick="closeTransferModal()">Cancel</button>
-      <button id="confirmTransfer" class="btn-save">
-        <i class="bi bi-arrow-left-right"></i> Transfer
-      </button>
-    </div>
-  </div>
-</div>
-
-
-<!-- ======================================= -->
-<!-- DELETE PRODUCT MODAL -->
-<!-- ======================================= -->
-<div id="deleteProductModal" class="modal-overlay" style="display:none;" onclick="closeDeleteModal()">
-  <div class="modal-content delete-modal" onclick="event.stopPropagation()">
-    <div class="modal-header-custom" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white;">
-      <h5 class="modal-title">⚠️ Delete Product</h5>
-      <button type="button" class="close-btn" onclick="closeDeleteModal()">&times;</button>
-    </div>
-
-    <div class="modal-body-custom">
-      <div class="warning-icon" style="text-align: center; font-size: 48px; color: #ef4444; margin-bottom: 15px;">
-        <i class="bi bi-exclamation-triangle-fill"></i>
-      </div>
-
-      <p class="delete-text" style="text-align: center; font-weight: 600; font-size: 16px; margin-bottom: 10px;">
-        Are you sure you want to delete this product?
-      </p>
-
-      <div id="deleteProductInfo" style="background: #fee2e2; padding: 15px; border-radius: 6px; margin: 15px 0; border-left: 4px solid #ef4444;">
-        <!-- Product info will be populated here -->
-      </div>
-
-      <p class="delete-warning-note" style="text-align: center; color: #dc2626; font-weight: 500; font-size: 14px;">
-        ⚠️ This action cannot be undone!
-      </p>
-    </div>
-
-    <div class="modal-footer-custom">
-      <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
-      <button id="confirmDeleteBtn" class="btn-proceed" style="background: #ef4444;">
-        <i class="bi bi-trash"></i> Delete Product
-      </button>
-    </div>
-  </div>
-</div>
-
-
-
-
 
 
 
@@ -2948,6 +2964,9 @@ body.sidebar-open {
 
 
 
+<!-- ============================= -->
+<!--    ADD PRODUCT SECTION     -->
+<!-- ============================= -->
    <!-- Add Product Section -->
 <div id="add-product" class="content-section">
   <div class="content-header">
@@ -3032,6 +3051,12 @@ body.sidebar-open {
     </div>
   </div>
 </div>
+
+
+
+
+
+
 
 
 
@@ -3320,6 +3345,154 @@ body.sidebar-open {
   </div><!-- End Row -->
 
 </div>
+
+
+
+
+
+
+
+
+
+<!-- ============================= -->
+<!--  TRANSFER PRODUCT SECTION   -->
+<!-- ============================= -->
+<div id="transfer-product" class="content-section">
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">
+        <i class="bi bi-arrow-left-right"></i> Transfer Product
+      </h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- LEFT COLUMN: Search & Form -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="bi bi-search"></i> Search Product</h5>
+        </div>
+        <div class="card-body">
+          <!-- Search Input -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Product Code or SKU</label>
+            <div class="input-group">
+              <input 
+                type="text" 
+                class="form-control" 
+                id="transferSearchInput"
+                placeholder="Enter product code, name, or SKU..."
+                autocomplete="off"
+              >
+              <button class="btn btn-primary" type="button" id="transferSearchBtn">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
+            <div id="transferSearchingIndicator" style="display: none; margin-top: 8px;">
+              <span class="spinner-border spinner-border-sm text-primary"></span>
+              <span class="text-muted ms-2">Searching...</span>
+            </div>
+          </div>
+
+          <!-- Transfer Form -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Receiving User</label>
+            <select class="form-select" id="transferUserSelect" disabled>
+              <option value="">Select receiving user</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="transferQuantityField" style="display: none;">
+            <label class="form-label fw-bold">Quantity to Transfer</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              id="transferQuantity"
+              min="1"
+              value="1"
+            >
+            <small class="text-muted">
+              Maximum available: <span id="transferMaxQuantity">0</span> units
+            </small>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-grid gap-2">
+            <button class="btn btn-success btn-lg" id="transferSubmitBtn" disabled>
+              <i class="bi bi-check-circle"></i> Confirm Transfer
+            </button>
+            <button class="btn btn-outline-secondary" id="transferResetBtn">
+              <i class="bi bi-arrow-counterclockwise"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="transferMessage" class="mt-3"></div>
+    </div>
+
+    <!-- RIGHT COLUMN: Live Preview -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0"><i class="bi bi-eye"></i> Live Preview</h5>
+        </div>
+        <div class="card-body">
+          <!-- Product Preview -->
+          <div class="mb-3 p-3 bg-light rounded">
+            <div class="fw-bold text-muted mb-2">📦 PRODUCT</div>
+            <div id="liveProductPreview" class="fs-6">
+              <span class="text-muted">No product selected</span>
+            </div>
+          </div>
+
+          <!-- Owner Transfer Preview -->
+          <div class="mb-3 p-3 bg-light rounded">
+            <div class="fw-bold text-muted mb-2">👤 OWNER TRANSFER</div>
+            <div id="liveOwnerPreview" class="fs-6">
+              <span class="text-muted">No transfer configured</span>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <hr class="my-3">
+
+          <!-- Product Details Area - NOW INSIDE LIVE PREVIEW CARD -->
+          <div id="transferEmptyState">
+            <div class="text-center py-4">
+              <i class="bi bi-box-seam display-4 text-muted"></i>
+              <h6 class="mt-3 text-muted">No Product Selected</h6>
+              <p class="text-muted small mb-0">Search for a product to view details</p>
+            </div>
+          </div>
+
+          <div id="transferLoadingState" style="display: none;">
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <h6 class="mt-3 text-muted">Loading Product Details...</h6>
+            </div>
+          </div>
+
+          <div id="transferProductDetails" style="display: none;">
+            <!-- Product details will be inserted here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
 
 
 
@@ -5496,195 +5669,839 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// =====================================================================================
-// EDIT PRODUCT MODAL
-// =====================================================================================
 
-function openEditModal(id, name, buyPrice, sellPrice, quantity) {
-    document.getElementById("editProductId").value = id;
-    document.getElementById("editName").value = name;
-    document.getElementById("editBuyingPrice").value = buyPrice;
-    document.getElementById("editSellingPrice").value = sellPrice;
-    document.getElementById("editQuantity").value = quantity;
-    document.getElementById("editProductModal").style.display = "flex";
-}
 
-// CANCEL EDIT
-document.getElementById("cancelEdit").onclick = function () {
-    document.getElementById("editProductModal").style.display = "none";
-};
+// ============================
+// ENHANCED TRANSFER PRODUCT JAVASCRIPT - WITH LIVE PREVIEW
+// ============================
 
-// SUBMIT EDIT FORM
-document.getElementById("editProductForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🔧 Enhanced Transfer Product Module Initializing...');
+  
+  // ============================================
+  // ELEMENTS
+  // ============================================
+  const searchInput = document.getElementById('transferSearchInput');
+  const searchBtn = document.getElementById('transferSearchBtn');
+  const searchingIndicator = document.getElementById('transferSearchingIndicator');
+  const autocompleteDropdown = document.createElement('div');
+  const userSelect = document.getElementById('transferUserSelect');
+  const quantityField = document.getElementById('transferQuantityField');
+  const quantityInput = document.getElementById('transferQuantity');
+  const maxQuantitySpan = document.getElementById('transferMaxQuantity');
+  const submitBtn = document.getElementById('transferSubmitBtn');
+  const resetBtn = document.getElementById('transferResetBtn');
+  const messageDiv = document.getElementById('transferMessage');
+  const emptyState = document.getElementById('transferEmptyState');
+  const loadingState = document.getElementById('transferLoadingState');
+  const productDetails = document.getElementById('transferProductDetails');
+  
+  // NEW: Live preview elements
+  const liveProductPreview = document.getElementById('liveProductPreview');
+  const liveOwnerPreview = document.getElementById('liveOwnerPreview');
+  
+  // ============================================
+  // STATE
+  // ============================================
+  let currentProduct = null;
+  let autocompleteTimer = null;
+  let currentRequest = null;
+  let selectedIndex = -1;
+  let autocompleteResults = [];
+  let usersList = [];
+  
+  // ============================================
+  // SETUP AUTOCOMPLETE DROPDOWN
+  // ============================================
+  autocompleteDropdown.id = 'transferAutocompleteDropdown';
+  autocompleteDropdown.className = 'autocomplete-dropdown';
+  autocompleteDropdown.style.cssText = `
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 350px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none;
+    margin-top: -1px;
+  `;
+  
+  const searchContainer = searchInput.parentElement;
+  searchContainer.style.position = 'relative';
+  searchContainer.appendChild(autocompleteDropdown);
 
-    let id = document.getElementById("editProductId").value;
-    const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-    fetch(`/inventory/products/${id}/edit/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken
-        },
-        body: JSON.stringify({
-            name: document.getElementById("editName").value,
-            buying_price: document.getElementById("editBuyingPrice").value,
-            selling_price: document.getElementById("editSellingPrice").value,
-            quantity: document.getElementById("editQuantity").value
-        })
+  // ============================================
+  // LOAD USERS FOR DROPDOWN
+  // ============================================
+  function loadTransferUsers() {
+    console.log('📥 Loading transfer users...');
+    
+    fetch('/inventory/transfer/users/', {
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
     .then(res => res.json())
     .then(data => {
-        if (data.success) {
-            // Update table row dynamically
-            const row = document.getElementById(`product-row-${id}`);
-            row.querySelector(".product-name").innerText = document.getElementById("editName").value;
-            row.querySelector(".product-buying-price").innerText = "KSH " + document.getElementById("editBuyingPrice").value;
-            row.querySelector(".product-selling-price").innerText = "KSH " + document.getElementById("editSellingPrice").value;
-            row.querySelector(".product-quantity").innerText = document.getElementById("editQuantity").value;
-
-            document.getElementById("editProductModal").style.display = "none";
-        } else {
-            alert(data.message || "Update failed");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error updating product");
-    });
-});
-
-
-
-
-
-// ===============================
-// OPEN DELETE MODAL
-// ===============================
-function openDeleteModal(id, name) {
-    productToDelete = id;
-    document.getElementById("deleteProductName").innerText = name;
-    document.getElementById("deleteProductModal").style.display = "flex";
-}
-
-// CANCEL DELETE
-document.getElementById("cancelDelete").onclick = function () {
-    document.getElementById("deleteProductModal").style.display = "none";
-};
-
-// CONFIRM DELETE
-document.getElementById("confirmDeleteBtn").onclick = function () {
-    if (!productToDelete) return;
-
-    const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-    fetch(`/inventory/products/${productToDelete}/delete/`, {
-        method: "POST",
-        headers: { "X-CSRFToken": csrftoken }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            const row = document.getElementById(`product-row-${productToDelete}`);
-            if (row) row.remove();
-            document.getElementById("deleteProductModal").style.display = "none";
-            productToDelete = null;
-        } else {
-            alert(data.message || "Delete failed");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error deleting product");
-    });
-};
-
-
-
-// ===============================
-// OPEN TRANSFER MODAL
-// ===============================
-let productToTransfer = null;
-
-// Open transfer modal
-function openTransferModal(productId) {
-    productToTransfer = productId;
-
-    document.getElementById("transferModal").style.display = "flex";
-    loadUsers();
-}
-
-// Close modal
-document.getElementById("cancelTransfer").onclick = function () {
-    document.getElementById("transferModal").style.display = "none";
-};
-
-
-// Load users into dropdown
-function loadUsers() {
-    const dropdown = document.getElementById("userSelect");
-    dropdown.innerHTML = '<option>Loading...</option>';
-
-    fetch("/users/get-users/")
-        .then(res => res.json())
-        .then(data => {
-            dropdown.innerHTML = "";
-
-            if (data.users.length === 0) {
-                dropdown.innerHTML = '<option>No users available</option>';
-                return;
-            }
-
-            data.users.forEach(user => {
-                const option = document.createElement("option");
-                option.value = user.id;
-                option.textContent = user.username;
-                dropdown.appendChild(option);
-            });
-        })
-        .catch(err => {
-            dropdown.innerHTML = '<option>Failed to load users</option>';
-            console.error("User load error:", err);
+      if (data.success) {
+        usersList = data.users;
+        userSelect.innerHTML = '<option value="">Select receiving user</option>';
+        
+        data.users.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.id;
+          option.textContent = user.full_name;
+          userSelect.appendChild(option);
         });
-}
+        
+        console.log(`✅ Loaded ${data.users.length} users`);
+      } else {
+        console.error('❌ Failed to load users');
+        showMessage('Failed to load users', 'danger');
+      }
+    })
+    .catch(err => {
+      console.error('❌ Error loading users:', err);
+      showMessage('Error loading users', 'danger');
+    });
+  }
 
+  // ============================================
+  // LIVE SEARCH - WITH PREVIEW
+  // ============================================
+  
+  searchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.trim();
+    
+    // Clear existing timer
+    clearTimeout(autocompleteTimer);
+    
+    // Cancel any pending request
+    if (currentRequest) {
+      currentRequest.abort();
+      currentRequest = null;
+    }
+    
+    // Reset selection
+    selectedIndex = -1;
+    
+    // Update live preview
+    if (searchTerm.length >= 2) {
+      updateLiveProductPreview('Searching...', 'info');
+    } else {
+      updateLiveProductPreview('', 'empty');
+    }
+    
+    // Hide dropdown if input is too short
+    if (searchTerm.length < 2) {
+      hideAutocomplete();
+      return;
+    }
+    
+    // Show loading indicator
+    searchingIndicator.style.display = 'inline-block';
+    
+    // Debounce the search (300ms delay)
+    autocompleteTimer = setTimeout(() => {
+      performLiveSearch(searchTerm);
+    }, 300);
+  });
 
-// Confirm transfer
-document.getElementById("confirmTransfer").onclick = function () {
-    const userId = document.getElementById("userSelect").value;
-    const quantity = document.getElementById("transferQuantity").value;
-    const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+  // Keyboard navigation for autocomplete
+  searchInput.addEventListener('keydown', function(e) {
+    if (autocompleteDropdown.style.display === 'none') return;
+    
+    const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+    
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+      updateAutocompleteSelection(items);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateAutocompleteSelection(items);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].click();
+      } else {
+        performFullSearch();
+      }
+    } else if (e.key === 'Escape') {
+      hideAutocomplete();
+    }
+  });
+  
+  // User selection change - update owner preview
+  userSelect.addEventListener('change', function() {
+    updateLiveOwnerPreview();
+  });
+  
+  // Quantity change - update preview
+  quantityInput.addEventListener('input', function() {
+    updateTransferPreview();
+  });
+  
+  // Close autocomplete when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!searchContainer.contains(e.target)) {
+      hideAutocomplete();
+    }
+  });
 
-    if (!userId) {
-        alert("Please select a user");
-        return;
+  // ============================================
+  // LIVE PREVIEW FUNCTIONS
+  // ============================================
+  
+  function updateLiveProductPreview(text, type = 'info') {
+    if (!liveProductPreview) return;
+    
+    let icon = '📦';
+    let className = 'text-muted';
+    
+    if (type === 'success') {
+      icon = '✅';
+      className = 'text-success fw-bold';
+    } else if (type === 'warning') {
+      icon = '⚠️';
+      className = 'text-warning';
+    } else if (type === 'error') {
+      icon = '❌';
+      className = 'text-danger';
+    } else if (type === 'info') {
+      icon = '🔍';
+      className = 'text-info';
+    }
+    
+    liveProductPreview.innerHTML = text ? 
+      `<span class="${className}">${icon} ${text}</span>` : 
+      '<span class="text-muted">No product selected</span>';
+  }
+  
+  function updateLiveOwnerPreview() {
+    if (!liveOwnerPreview) return;
+    
+    const selectedUserId = userSelect.value;
+    const selectedUser = usersList.find(u => u.id == selectedUserId);
+    
+    if (!currentProduct) {
+      liveOwnerPreview.innerHTML = '<span class="text-muted">Select product first</span>';
+      return;
+    }
+    
+    if (!selectedUser) {
+      liveOwnerPreview.innerHTML = '<span class="text-muted">Select new owner</span>';
+      return;
+    }
+    
+    const currentOwner = currentProduct.owner || 'FIELDMAX';
+    
+    liveOwnerPreview.innerHTML = `
+      <div class="transfer-preview">
+        <span class="text-muted">${currentOwner}</span>
+        <i class="bi bi-arrow-right mx-2 text-primary"></i>
+        <span class="text-success fw-bold">${selectedUser.full_name}</span>
+      </div>
+    `;
+    
+    updateTransferPreview();
+  }
+  
+  function updateTransferPreview() {
+    if (!currentProduct || !userSelect.value) return;
+    
+    const quantity = parseInt(quantityInput.value) || 1;
+    const selectedUser = usersList.find(u => u.id == userSelect.value);
+    
+    if (!selectedUser) return;
+    
+    // Calculate remaining quantity after transfer
+    let remaining = currentProduct.is_single_item ? 0 : currentProduct.current_quantity - quantity;
+    
+    // Update the transfer summary
+    const summaryHtml = `
+      <div class="alert alert-light border mt-3">
+        <div class="row text-center">
+          <div class="col-md-4">
+            <div class="fw-bold text-primary">Transferring</div>
+            <div class="fs-5">${quantity} ${currentProduct.is_single_item ? 'item' : 'units'}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="fw-bold text-success">To</div>
+            <div class="fs-5">${selectedUser.full_name}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="fw-bold ${remaining === 0 ? 'text-warning' : 'text-muted'}">Remaining</div>
+            <div class="fs-5">${remaining} units</div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Check if transfer summary div exists, if not create it
+    let summaryDiv = document.getElementById('transferSummary');
+    if (!summaryDiv) {
+      summaryDiv = document.createElement('div');
+      summaryDiv.id = 'transferSummary';
+      productDetails.appendChild(summaryDiv);
+    }
+    
+    summaryDiv.innerHTML = summaryHtml;
+  }
+
+  function performLiveSearch(searchTerm) {
+    const controller = new AbortController();
+    currentRequest = controller;
+    
+    const url = `/inventory/transfer/search/?search=${encodeURIComponent(searchTerm)}&autocomplete=true`;
+    
+    fetch(url, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      signal: controller.signal
+    })
+    .then(res => res.json())
+    .then(data => {
+      currentRequest = null;
+      searchingIndicator.style.display = 'none';
+      
+      if (data.success && data.suggestions) {
+        autocompleteResults = data.suggestions;
+        displayAutocomplete(data.suggestions, searchTerm);
+        
+        // Update live preview with match count
+        updateLiveProductPreview(
+          `${data.suggestions.length} product(s) found`, 
+          'success'
+        );
+      } else {
+        hideAutocomplete();
+        updateLiveProductPreview('No matches found', 'warning');
+      }
+    })
+    .catch(err => {
+      if (err.name === 'AbortError') {
+        console.log('Request cancelled');
+      } else {
+        console.error('Live search error:', err);
+        searchingIndicator.style.display = 'none';
+        updateLiveProductPreview('Search error', 'error');
+      }
+      currentRequest = null;
+    });
+  }
+
+  function displayAutocomplete(suggestions, searchTerm) {
+    if (suggestions.length === 0) {
+      hideAutocomplete();
+      return;
+    }
+    
+    let html = '';
+    
+    suggestions.forEach((product, index) => {
+      const ownerBadge = product.is_mine ? 
+        '<span class="badge bg-success" style="font-size: 0.7rem;">Yours</span>' : 
+        `<span class="badge bg-secondary" style="font-size: 0.7rem;">${product.owner}</span>`;
+      
+      const stockInfo = product.is_single_item ? 
+        '<span class="text-muted" style="font-size: 0.8rem;">Single Item</span>' :
+        `<span class="text-success" style="font-size: 0.8rem;"><strong>${product.current_quantity}</strong> units</span>`;
+      
+      const highlightedName = highlightMatch(product.name, searchTerm);
+      const highlightedCode = highlightMatch(product.product_code, searchTerm);
+      
+      html += `
+        <div class="autocomplete-item" data-product-id="${product.id}" style="
+          padding: 12px 16px;
+          cursor: pointer;
+          border-bottom: 1px solid #f0f0f0;
+          transition: all 0.2s ease;
+        ">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">
+                ${highlightedName}
+              </div>
+              <div style="font-size: 0.85rem; color: #7f8c8d;">
+                Code: ${highlightedCode} | ${product.category}
+              </div>
+            </div>
+            <div style="text-align: right; margin-left: 12px;">
+              ${ownerBadge}
+              <div style="margin-top: 4px;">
+                ${stockInfo}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    autocompleteDropdown.innerHTML = html;
+    autocompleteDropdown.style.display = 'block';
+    
+    // Add click handlers
+    const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+    items.forEach((item, index) => {
+      item.addEventListener('click', function() {
+        const productId = this.dataset.productId;
+        selectProductFromAutocomplete(productId);
+      });
+      
+      // Hover effect
+      item.addEventListener('mouseenter', function() {
+        items.forEach(i => i.style.backgroundColor = '');
+        this.style.backgroundColor = '#f8f9fa';
+        selectedIndex = index;
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = '';
+      });
+    });
+  }
+
+  function highlightMatch(text, searchTerm) {
+    if (!searchTerm || !text) return text;
+    
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<strong style="background-color: #fff3cd; color: #856404;">$1</strong>');
+  }
+
+  function updateAutocompleteSelection(items) {
+    items.forEach((item, index) => {
+      if (index === selectedIndex) {
+        item.style.backgroundColor = '#e3f2fd';
+        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else {
+        item.style.backgroundColor = '';
+      }
+    });
+  }
+
+  function hideAutocomplete() {
+    autocompleteDropdown.style.display = 'none';
+    autocompleteDropdown.innerHTML = '';
+    selectedIndex = -1;
+    autocompleteResults = [];
+  }
+
+  function selectProductFromAutocomplete(productId) {
+    hideAutocomplete();
+    const selected = autocompleteResults.find(p => p.id == productId);
+    if (selected) {
+      searchInput.value = selected.product_code;
+      updateLiveProductPreview(`Selected: ${selected.name}`, 'success');
+    }
+    performFullSearch();
+  }
+
+  // ============================================
+  // FULL SEARCH (ON ENTER OR BUTTON CLICK)
+  // ============================================
+  searchBtn.addEventListener('click', performFullSearch);
+  
+  function performFullSearch() {
+    const searchTerm = searchInput.value.trim();
+    
+    if (!searchTerm) {
+      showMessage('Please enter a product code or SKU', 'danger');
+      updateLiveProductPreview('Enter search term', 'warning');
+      return;
+    }
+    
+    hideAutocomplete();
+    searchingIndicator.style.display = 'inline-block';
+    emptyState.style.display = 'none';
+    loadingState.style.display = 'block';
+    productDetails.style.display = 'none';
+    updateLiveProductPreview('Loading...', 'info');
+
+    const url = `/inventory/transfer/search/?search=${encodeURIComponent(searchTerm)}`;
+
+    fetch(url, {
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (data.multiple) {
+          displayMultipleProducts(data.products);
+          updateLiveProductPreview(`${data.products.length} products found`, 'success');
+        } else if (data.product) {
+          displayProductInfo(data.product);
+          updateLiveProductPreview(`${data.product.name} (${data.product.product_code})`, 'success');
+        }
+      } else {
+        showMessage(data.message, 'danger');
+        showEmptyState();
+        updateLiveProductPreview(data.message, 'error');
+      }
+    })
+    .catch(err => {
+      console.error('Search error:', err);
+      showMessage('Search failed. Please try again.', 'danger');
+      showEmptyState();
+      updateLiveProductPreview('Search failed', 'error');
+    })
+    .finally(() => {
+      searchingIndicator.style.display = 'none';
+      loadingState.style.display = 'none';
+    });
+  }
+
+  // ============================================
+  // DISPLAY MULTIPLE PRODUCTS
+  // ============================================
+  function displayMultipleProducts(products) {
+    let html = `
+      <div class="alert alert-info" style="margin-bottom: 16px;">
+        <i class="bi bi-info-circle"></i>
+        <strong>Multiple Products Found (${products.length})</strong>
+        <p class="mb-0 mt-2">Click on a product to select it for transfer:</p>
+      </div>
+    `;
+
+    products.forEach(p => {
+      const ownerBadge = p.is_mine ? 
+        '<span class="badge bg-success">Your Product</span>' : 
+        `<span class="badge bg-secondary">Owner: ${p.owner}</span>`;
+      
+      const clickable = p.is_mine || (typeof userIsAdmin !== 'undefined' && userIsAdmin);
+      const cardStyle = clickable ? 
+        'cursor: pointer; transition: all 0.2s ease;' : 
+        'opacity: 0.6; cursor: not-allowed;';
+      
+      const cardClass = clickable ? 'product-card-selectable' : '';
+      
+      html += `
+        <div class="card mb-2 ${cardClass}" ${clickable ? `onclick="selectTransferProduct(${p.id})"` : ''} style="${cardStyle}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div style="flex: 1;">
+                <h6 class="mb-2">${p.name}</h6>
+                <div class="text-muted" style="font-size: 0.9rem;">
+                  <strong>Code:</strong> ${p.product_code} | 
+                  <strong>Category:</strong> ${p.category} | 
+                  ${p.is_single_item ? 
+                    '<span class="badge bg-primary">Single Item</span>' : 
+                    `<span class="badge bg-success">${p.current_quantity} units</span>`
+                  }
+                </div>
+              </div>
+              <div style="text-align: right;">
+                ${ownerBadge}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    productDetails.innerHTML = html;
+    productDetails.style.display = 'block';
+    emptyState.style.display = 'none';
+    
+    // Add hover effects
+    document.querySelectorAll('.product-card-selectable').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = '#f8f9fa';
+        this.style.transform = 'translateX(4px)';
+        this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = '';
+        this.style.transform = '';
+        this.style.boxShadow = '';
+      });
+    });
+  }
+
+  // Make function global
+  window.selectTransferProduct = function(productId) {
+    searchInput.value = productId;
+    performFullSearch();
+  };
+
+  // ============================================
+  // DISPLAY PRODUCT INFO
+  // ============================================
+  function displayProductInfo(product) {
+    currentProduct = product;
+
+    let ownerBadge;
+    if (product.is_admin) {
+      ownerBadge = product.is_mine ? 
+        '<span class="badge bg-success">Your Product</span>' : 
+        `<span class="badge bg-info">Owner: ${product.owner}</span>`;
+    } else {
+      ownerBadge = product.is_mine ? 
+        '<span class="badge bg-success">Your Product</span>' : 
+        `<span class="badge bg-warning text-dark">Owner: ${product.owner}</span>`;
     }
 
-    fetch(`/inventory/products/${productToTransfer}/transfer/`, {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrftoken,
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `user_id=${userId}&quantity=${quantity}`
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert("Product transferred successfully!");
-                document.getElementById("transferModal").style.display = "none";
-                location.reload();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(err => {
-            console.error("Transfer error:", err);
-            alert("Error transferring product");
-        });
-};
+    const adminNote = product.is_admin && !product.is_mine ? 
+      `<div class="alert alert-info mt-3">
+        <i class="bi bi-shield-check"></i> 
+        <strong>Admin Mode:</strong> You can transfer this product from ${product.owner} to another user.
+      </div>` : '';
 
+    let html = `
+      <div class="alert ${product.is_single_item ? 'alert-info' : 'alert-success'}">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h5 class="mb-0">
+            ${product.is_single_item ? '📱' : '📦'} ${product.name}
+          </h5>
+          ${ownerBadge}
+        </div>
+        
+        <div class="product-info-card">
+          <div class="product-info-item">
+            <span class="product-info-label">Product Code</span>
+            <span class="product-info-value">${product.product_code}</span>
+          </div>
+          
+          <div class="product-info-item">
+            <span class="product-info-label">SKU</span>
+            <span class="product-info-value">${product.sku_value}</span>
+          </div>
+          
+          <div class="product-info-item">
+            <span class="product-info-label">Category</span>
+            <span class="product-info-value">${product.category}</span>
+          </div>
+          
+          <div class="product-info-item">
+            <span class="product-info-label">Current Owner</span>
+            <span class="product-info-value">
+              <strong>${product.owner}</strong>
+            </span>
+          </div>
+          
+          <div class="product-info-item">
+            <span class="product-info-label">Type</span>
+            <span class="product-info-value">
+              ${product.is_single_item ? 
+                '<span class="badge bg-primary">Single Item</span>' : 
+                '<span class="badge bg-success">Bulk Item</span>'}
+            </span>
+          </div>
+          
+          <div class="product-info-item">
+            <span class="product-info-label">Available Quantity</span>
+            <span class="product-info-value text-success">
+              <strong>${product.current_quantity} ${product.is_single_item ? 'unit' : 'units'}</strong>
+            </span>
+          </div>
+        </div>
+        
+        ${adminNote}
+      </div>
+    `;
+
+    productDetails.innerHTML = html;
+    productDetails.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    // Enable form
+    userSelect.disabled = false;
+    submitBtn.disabled = false;
+
+    // Handle quantity field
+    if (product.is_single_item) {
+      quantityField.style.display = 'none';
+      quantityInput.value = 1;
+    } else {
+      quantityField.style.display = 'block';
+      quantityInput.max = product.current_quantity;
+      maxQuantitySpan.textContent = product.current_quantity;
+      quantityInput.value = 1;
+    }
+
+    // Update live previews
+    updateLiveOwnerPreview();
+    userSelect.focus();
+  }
+
+  // ============================================
+  // SUBMIT TRANSFER
+  // ============================================
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    if (!currentProduct) {
+      showMessage('Please search for a product first', 'danger');
+      return;
+    }
+
+    const userId = userSelect.value;
+    const quantity = parseInt(quantityInput.value);
+
+    if (!userId) {
+      showMessage('Please select a recipient', 'danger');
+      userSelect.focus();
+      return;
+    }
+
+    if (!currentProduct.is_single_item && (!quantity || quantity <= 0)) {
+      showMessage('Please enter a valid quantity', 'danger');
+      quantityInput.focus();
+      return;
+    }
+
+    if (!currentProduct.is_single_item && quantity > currentProduct.current_quantity) {
+      showMessage(`Only ${currentProduct.current_quantity} units available`, 'danger');
+      return;
+    }
+
+    // Confirm transfer
+    const recipientName = userSelect.options[userSelect.selectedIndex].text;
+    const confirmMsg = `Transfer ${quantity} unit(s) of "${currentProduct.name}" to ${recipientName}?`;
+    
+    if (!confirm(confirmMsg)) return;
+
+    // Submit
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+
+    const formData = new FormData();
+    formData.append('product_id', currentProduct.id);
+    formData.append('user_id', userId);
+    formData.append('quantity', quantity);
+
+    fetch('/inventory/transfer/process/', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        showMessage(data.message, 'success');
+        
+        // Update UI based on transfer type
+        if (currentProduct.is_single_item || data.product.remaining_quantity === 0) {
+          showMessage('Product transferred successfully. Redirecting...', 'success');
+          updateLiveProductPreview('Transfer complete! ✅', 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          // Partial transfer - update current product
+          currentProduct.current_quantity = data.product.remaining_quantity;
+          showMessage(data.message + ' You can transfer more or search for another product.', 'success');
+          displayProductInfo(currentProduct);
+          updateLiveProductPreview(`${currentProduct.name} - ${data.product.remaining_quantity} units remaining`, 'success');
+        }
+      } else {
+        showMessage(data.message, 'danger');
+        updateLiveProductPreview('Transfer failed', 'error');
+      }
+    })
+    .catch(err => {
+      console.error('Transfer error:', err);
+      showMessage('Transfer failed. Please try again.', 'danger');
+      updateLiveProductPreview('Transfer failed', 'error');
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Confirm Transfer';
+    });
+  });
+
+  // ============================================
+  // RESET FORM
+  // ============================================
+  resetBtn.addEventListener('click', resetForm);
+
+  function resetForm() {
+    searchInput.value = '';
+    userSelect.value = '';
+    userSelect.disabled = true;
+    quantityInput.value = 1;
+    quantityField.style.display = 'none';
+    submitBtn.disabled = true;
+    currentProduct = null;
+    messageDiv.innerHTML = '';
+    hideAutocomplete();
+    showEmptyState();
+    
+    // Reset live previews
+    updateLiveProductPreview('', 'empty');
+    if (liveOwnerPreview) {
+      liveOwnerPreview.innerHTML = '<span class="text-muted">No transfer configured</span>';
+    }
+    
+    // Remove transfer summary if exists
+    const summaryDiv = document.getElementById('transferSummary');
+    if (summaryDiv) {
+      summaryDiv.remove();
+    }
+    
+    searchInput.focus();
+  }
+
+  // ============================================
+  // UTILITY FUNCTIONS
+  // ============================================
+  function showEmptyState() {
+    emptyState.style.display = 'block';
+    productDetails.style.display = 'none';
+    loadingState.style.display = 'none';
+  }
+
+  function showMessage(msg, type = 'info') {
+    const alertClass = type === 'danger' ? 'alert-danger' : 
+                       type === 'success' ? 'alert-success' : 'alert-info';
+    
+    const icon = type === 'danger' ? 'bi-exclamation-triangle' :
+                 type === 'success' ? 'bi-check-circle' : 'bi-info-circle';
+    
+    messageDiv.innerHTML = `
+      <div class="alert ${alertClass} alert-dismissible fade show">
+        <i class="bi ${icon}"></i>
+        ${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    `;
+    
+    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    
+    // Auto-dismiss success messages after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        const alert = messageDiv.querySelector('.alert');
+        if (alert) {
+          alert.classList.remove('show');
+          setTimeout(() => messageDiv.innerHTML = '', 150);
+        }
+      }, 5000);
+    }
+  }
+
+  // ============================================
+  // INITIALIZE
+  // ============================================
+  loadTransferUsers();
+  searchInput.focus();
+  
+  // Initialize live previews
+  updateLiveProductPreview('Enter product code to search', 'info');
+  if (liveOwnerPreview) {
+    liveOwnerPreview.innerHTML = '<span class="text-muted">No transfer configured</span>';
+  }
+  
+  console.log('✅ Enhanced Transfer Product Module Ready with Live Previews');
+});
 
 
 
@@ -5712,6 +6529,16 @@ function transferProduct(btn) {
     const isSKU = qty === 1;
     openTransferModal(id, isSKU);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 // ================================
@@ -7048,7 +7875,6 @@ document.addEventListener('DOMContentLoaded', function() {
     header.style.cursor = 'pointer';
   });
 });
-
 
 
 

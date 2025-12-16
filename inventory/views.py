@@ -1041,90 +1041,418 @@ class ProductDeleteView(LoginRequiredMixin, View):
                 'status': 'error',
                 'message': f'Error deleting product: {str(e)}'
             }, status=400)
+        
 
 
-class ProductTransferView(LoginRequiredMixin, View):
-    """Transfer product ownership to another user"""
+
+
+
+# ============================================
+# PRODUCT TRANSFER VIEWS (FIXED & SIMPLIFIED)
+# ============================================
+
+@login_required
+@require_http_methods(["GET"])
+def get_transfer_users(request):
+    """Get list of users for transfer dropdown"""
+    try:
+        users = User.objects.filter(is_active=True).exclude(id=request.user.id)
+        user_list = [
+            {
+                'id': user.id,
+                'username': user.username,
+                'full_name': user.get_full_name() or user.username
+            }
+            for user in users
+        ]
+        
+        return JsonResponse({
+            'success': True,
+            'users': user_list
+        })
+    except Exception as e:
+        logger.error(f"Error fetching users: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': 'Error loading users'
+        }, status=500)
+
+
+@login_required
+@require_http_methods(["GET"])
+def product_transfer_search(request):
+    """Search for products to transfer"""
+    search_term = request.GET.get('search', '').strip()
+    autocomplete = request.GET.get('autocomplete') == 'true'
     
-    def post(self, request, pk):
-        try:
-            with transaction.atomic():
-                product = get_object_or_404(Product, pk=pk)
-                user_id = request.POST.get("user_id")
-                qty = int(request.POST.get("quantity", 1))
+    if not search_term:
+        return JsonResponse({
+            'success': False,
+            'message': 'Please enter a product code or SKU'
+        }, status=400)
+    
+    try:
+        # Search products (show all, but we'll validate ownership later)
+        products = Product.objects.filter(
+            Q(product_code__icontains=search_term) |
+            Q(name__icontains=search_term) |
+            Q(sku_value__iexact=search_term),
+            is_active=True
+        ).select_related('category', 'owner')
+        
+        if not products.exists():
+            return JsonResponse({
+                'success': False,
+                'message': f'No products found matching "{search_term}"'
+            }, status=404)
+        
+        # Autocomplete response
+        if autocomplete:
+            suggestions = []
+            for p in products[:10]:
+                owner_name = p.owner.username if p.owner else 'FIELDMAX'
+                is_mine = p.owner == request.user if p.owner else False
                 
-                # Validate user
-                try:
-                    new_owner = User.objects.get(id=user_id)
-                except User.DoesNotExist:
-                    return JsonResponse({
-                        "status": "error",
-                        "message": "Invalid user selected"
-                    })
+                suggestions.append({
+                    'id': p.id,
+                    'name': p.name,
+                    'product_code': p.product_code,
+                    'category': p.category.name,
+                    'current_quantity': p.quantity or 0,
+                    'is_single_item': p.category.is_single_item,
+                    'owner': owner_name,
+                    'is_mine': is_mine
+                })
+            return JsonResponse({
+                'success': True,
+                'suggestions': suggestions
+            })
+        
+        # Multiple products found
+        if products.count() > 1:
+            product_list = []
+            for p in products:
+                owner_name = p.owner.username if p.owner else 'FIELDMAX'
+                is_mine = p.owner == request.user if p.owner else False
                 
-                # Validate quantity
-                product_qty = product.quantity or 0
-                if qty > product_qty:
-                    return JsonResponse({
-                        "status": "error",
-                        "message": f"Not enough quantity available. Only {product_qty} in stock."
-                    })
-                
-                # For single items, transfer the whole product
-                if hasattr(product.category, 'is_single_item') and product.category.is_single_item:
-                    product.owner = new_owner
-                    product.save()
-                    
-                    # Create transfer record
-                    StockEntry.objects.create(
-                        product=product,
-                        quantity=0,  # Transfer doesn't change quantity
-                        entry_type='adjustment',
-                        unit_price=product.buying_price or Decimal('0.00'),
-                        total_amount=Decimal('0.00'),
-                        created_by=request.user,
-                        notes=f"Transferred ownership to {new_owner.username}"
-                    )
-                else:
-                    # For bulk items
-                    product.quantity = product_qty - qty
-                    product.save()
-                    
-                    # Create new product for new owner
-                    transferred_product = Product.objects.create(
-                        name=product.name,
-                        category=product.category,
-                        sku_value=product.sku_value,
-                        quantity=qty,
-                        buying_price=product.buying_price,
-                        selling_price=product.selling_price,
-                        owner=new_owner
-                    )
-                    
-                    # Record the transfer
-                    buying_price = product.buying_price or Decimal('0.00')
-                    StockEntry.objects.create(
-                        product=product,
-                        quantity=-qty,
-                        entry_type='adjustment',
-                        unit_price=buying_price,
-                        total_amount=qty * buying_price,
-                        created_by=request.user,
-                        notes=f"Transferred {qty} units to {new_owner.username}"
-                    )
-                
-                return JsonResponse({
-                    "status": "success",
-                    "message": f"Successfully transferred to {new_owner.username}"
+                product_list.append({
+                    'id': p.id,
+                    'name': p.name,
+                    'product_code': p.product_code,
+                    'sku_value': p.sku_value or 'N/A',
+                    'category': p.category.name,
+                    'current_quantity': p.quantity or 0,
+                    'buying_price': float(p.buying_price or 0),
+                    'selling_price': float(p.selling_price or 0),
+                    'is_single_item': p.category.is_single_item,
+                    'status': p.status,
+                    'owner': owner_name,
+                    'is_mine': is_mine
                 })
             
-        except Exception as e:
-            print("Error transferring product:")
-            print(traceback.format_exc())
             return JsonResponse({
-                "status": "error",
-                "message": f'Error: {str(e)}'
+                'success': True,
+                'multiple': True,
+                'products': product_list
+            })
+        
+        # Single product found
+        product = products.first()
+        
+        # Check ownership (admins can transfer any product)
+        is_mine = product.owner == request.user if product.owner else False
+        is_admin = request.user.is_superuser or request.user.is_staff
+        
+        if not is_mine and not is_admin:
+            return JsonResponse({
+                'success': False,
+                'message': f'"{product.name}" belongs to {product.owner.username if product.owner else "FIELDMAX"}. You can only transfer your own products.'
+            }, status=403)
+        
+        # Check if product can be transferred
+        if product.category.is_single_item and product.status == 'sold':
+            return JsonResponse({
+                'success': False,
+                'message': f'"{product.name}" has already been sold and cannot be transferred'
             }, status=400)
+        
+        if not product.category.is_single_item and product.quantity == 0:
+            return JsonResponse({
+                'success': False,
+                'message': f'"{product.name}" is out of stock'
+            }, status=400)
+        
+        return JsonResponse({
+            'success': True,
+            'multiple': False,
+            'product': {
+                'id': product.id,
+                'name': product.name,
+                'product_code': product.product_code,
+                'sku_value': product.sku_value or 'N/A',
+                'category': product.category.name,
+                'current_quantity': product.quantity or 0,
+                'buying_price': float(product.buying_price or 0),
+                'selling_price': float(product.selling_price or 0),
+                'is_single_item': product.category.is_single_item,
+                'status': product.status,
+                'owner': product.owner.username if product.owner else 'FIELDMAX',
+                'is_mine': is_mine,
+                'is_admin': is_admin
+            }
+        })
+    
+    except Exception as e:
+        logger.error(f"Transfer search error: {str(e)}\n{traceback.format_exc()}")
+        return JsonResponse({
+            'success': False,
+            'message': f'Search error: {str(e)}'
+        }, status=500)
+
+@login_required
+@require_http_methods(["POST"])
+def product_transfer_process(request):
+    """Process product transfer - ownership change only"""
+    try:
+        product_id = request.POST.get('product_id')
+        user_id = request.POST.get('user_id')
+        quantity = request.POST.get('quantity', 1)
+        
+        # Validation
+        if not all([product_id, user_id]):
+            return JsonResponse({
+                'success': False,
+                'message': 'Product and recipient user are required'
+            }, status=400)
+        
+        try:
+            quantity = int(quantity)
+        except ValueError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Invalid quantity'
+            }, status=400)
+        
+        if quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'message': 'Quantity must be greater than 0'
+            }, status=400)
+        
+        # Get product (admins can access any product, regular users only their own)
+        if request.user.is_superuser or request.user.is_staff:
+            product = get_object_or_404(
+                Product.objects.select_related('category', 'owner'),
+                pk=product_id,
+                is_active=True
+            )
+        else:
+            product = get_object_or_404(
+                Product.objects.select_related('category', 'owner'),
+                pk=product_id,
+                is_active=True,
+                owner=request.user
+            )
+        
+        # Get recipient user
+        try:
+            recipient = User.objects.get(id=user_id, is_active=True)
+        except User.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Recipient user not found'
+            }, status=404)
+        
+        # Check if transferring to self
+        if recipient.id == request.user.id and product.owner == request.user:
+            return JsonResponse({
+                'success': False,
+                'message': 'Cannot transfer to yourself'
+            }, status=400)
+        
+        # Process transfer
+        with transaction.atomic():
+            old_owner = product.owner.username if product.owner else "FIELDMAX"
+            
+            # ========================================
+            # SINGLE ITEM TRANSFER
+            # ========================================
+            if product.category.is_single_item:
+                if product.status == 'sold':
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Product has already been sold'
+                    }, status=400)
+                
+                # Simply change owner - NO stock entries needed
+                product.owner = recipient
+                product.save()
+                
+                logger.info(
+                    f"[TRANSFER] Single item {product.product_code} | "
+                    f"{old_owner} → {recipient.username} | "
+                    f"By: {request.user.username}"
+                )
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': f'"{product.name}" successfully transferred to {recipient.username}',
+                    'product': {
+                        'id': product.id,
+                        'name': product.name,
+                        'new_owner': recipient.username,
+                        'previous_owner': old_owner,
+                        'quantity': 1
+                    }
+                })
+            
+            # ========================================
+            # BULK ITEM TRANSFER
+            # ========================================
+            else:
+                current_qty = product.quantity or 0
+                
+                # Validate stock availability
+                if current_qty == 0:
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Product is out of stock'
+                    }, status=400)
+                
+                if quantity > current_qty:
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'Only {current_qty} unit(s) available'
+                    }, status=400)
+                
+                # ===== FULL TRANSFER (all quantity) =====
+                if quantity == current_qty:
+                    # Simply change owner - NO need to create new product
+                    product.owner = recipient
+                    product.save()
+                    
+                    logger.info(
+                        f"[TRANSFER] Full bulk transfer {product.product_code} | "
+                        f"{quantity} units | {old_owner} → {recipient.username} | "
+                        f"By: {request.user.username}"
+                    )
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'message': f'All {quantity} unit(s) of "{product.name}" transferred to {recipient.username}',
+                        'product': {
+                            'id': product.id,
+                            'name': product.name,
+                            'quantity_transferred': quantity,
+                            'remaining_quantity': 0,  # Sender has 0 left
+                            'previous_owner': old_owner,
+                            'new_owner': recipient.username
+                        }
+                    })
+                
+                # ===== PARTIAL TRANSFER (split inventory) =====
+                else:
+                    # Check if recipient already has this product
+                    recipient_product = Product.objects.filter(
+                        name=product.name,
+                        category=product.category,
+                        owner=recipient,
+                        is_active=True
+                    ).first()
+                    
+                    if recipient_product:
+                        # Add to recipient's existing product
+                        recipient_product.quantity += quantity
+                        recipient_product.save()
+                        transferred_product_id = recipient_product.id
+                        
+                        logger.info(
+                            f"[TRANSFER] Added {quantity} units to existing product "
+                            f"{recipient_product.product_code}"
+                        )
+                    else:
+                        # Create new product for recipient
+                        recipient_product = Product.objects.create(
+                            name=product.name,
+                            category=product.category,
+                            sku_value=product.sku_value,
+                            quantity=quantity,
+                            buying_price=product.buying_price,
+                            selling_price=product.selling_price,
+                            owner=recipient,
+                            is_active=True
+                        )
+                        transferred_product_id = recipient_product.id
+                        
+                        logger.info(
+                            f"[TRANSFER] Created new product {recipient_product.product_code} "
+                            f"for {recipient.username} with {quantity} units"
+                        )
+                    
+                    # Reduce sender's quantity
+                    product.quantity -= quantity
+                    product.save()
+                    
+                    # ✅ Create stock entries for audit trail
+                    # These represent actual inventory movements, not ownership changes
+                    buying_price = product.buying_price or Decimal('0.00')
+                    transfer_note = f"Transfer: {old_owner} → {recipient.username}"
+                    
+                    # Sender's stock reduction
+                    StockEntry.objects.create(
+                        product=product,
+                        quantity=-quantity,  # Negative = stock OUT
+                        entry_type='adjustment',
+                        unit_price=buying_price,
+                        total_amount=quantity * buying_price,
+                        created_by=request.user,
+                        notes=f"{transfer_note} (sent)"
+                    )
+                    
+                    # Recipient's stock increase
+                    StockEntry.objects.create(
+                        product=recipient_product,
+                        quantity=quantity,  # Positive = stock IN
+                        entry_type='adjustment',
+                        unit_price=buying_price,
+                        total_amount=quantity * buying_price,
+                        created_by=request.user,
+                        notes=f"{transfer_note} (received)"
+                    )
+                    
+                    logger.info(
+                        f"[TRANSFER] Partial bulk transfer {product.product_code} | "
+                        f"{quantity}/{current_qty} units | {old_owner} → {recipient.username} | "
+                        f"By: {request.user.username}"
+                    )
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'message': f'{quantity} unit(s) of "{product.name}" transferred to {recipient.username}',
+                        'product': {
+                            'original_product_id': product.id,
+                            'transferred_product_id': transferred_product_id,
+                            'quantity_transferred': quantity,
+                            'remaining_quantity': product.quantity,
+                            'previous_owner': old_owner,
+                            'new_owner': recipient.username
+                        }
+                    })
+    
+    except Product.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Product not found or not owned by you'
+        }, status=404)
+    
+    except Exception as e:
+        logger.error(f"Transfer error: {str(e)}\n{traceback.format_exc()}")
+        return JsonResponse({
+            'success': False,
+            'message': f'Transfer failed: {str(e)}'
+        }, status=500)
+
+
 
 
 class InventoryProductLookupView(LoginRequiredMixin, View):
@@ -1338,7 +1666,6 @@ def dashboard_stats(request):
 
 
 
-    from django.shortcuts import render
 from .models import Product, Category
 
 def product_list(request):
@@ -1414,3 +1741,6 @@ def product_list(request):
     }
 
     return render(request, 'website/products.html', context)
+
+
+
