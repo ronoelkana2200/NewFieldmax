@@ -307,6 +307,46 @@
       font-weight: 600;
     }
 
+    /* Cart & Pending Orders Badge Styles */
+    .cart-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .pending-orders-badge {
+      background: linear-gradient(135deg, #ff9500, #ff6b00);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .cart-badge.empty {
+      display: none;
+    }
+
     /* Responsive Design - Tablets */
     @media (max-width: 992px) {
       .mobile-menu-toggle {
@@ -377,6 +417,12 @@
 
       .footer-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cart-badge,
+      .pending-orders-badge {
+        top: -3px;
+        right: -5px;
       }
     }
 
@@ -565,7 +611,7 @@
           <i class="bi bi-house-door"></i>
           <span>Home</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{% url 'home' %}#products" class="nav-link">
           <i class="bi bi-shop"></i>
           <span>Shop</span>
         </a>
@@ -573,11 +619,18 @@
           <i class="bi bi-envelope"></i>
           <span>Contact</span>
         </a>
-        {% if user.is_authenticated and dashboard_url %}
-        <a href="{{ dashboard_url }}" class="nav-link">
-           <i class="bi bi-speedometer2"></i>
-           <span>Dashboard</span>
-        </a>
+        
+        {% if user.is_authenticated %}
+          <!-- STAFF: Show Pending Orders instead of Cart -->
+          <a href="{% url 'pending-orders-list' %}" class="nav-link cart-link">
+            <i class="bi bi-clock-history"></i>
+            <span>Pending Orders</span>
+            <span class="cart-badge pending-orders-badge" id="pendingOrdersBadge">0</span>
+          </a>
+          <a href="{{ dashboard_url }}" class="nav-link">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+          </a>
           <form method="post" action="{% url 'logout' %}" class="nav-form">
             {% csrf_token %}
             <button type="submit" class="nav-link logout-btn">
@@ -586,6 +639,12 @@
             </button>
           </form>
         {% else %}
+          <!-- CUSTOMER: Show Cart -->
+          <a href="{% url 'shopping-cart' %}" class="nav-link cart-link">
+            <i class="bi bi-cart3"></i>
+            <span>Cart</span>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </a>
           <a href="{% url 'login' %}" class="nav-link login-btn">
             <i class="bi bi-person-circle"></i>
             <span>Staff Login</span>
@@ -736,7 +795,6 @@
       icon.classList.toggle('bi-list');
       icon.classList.toggle('bi-x');
       
-      // Prevent body scroll when menu is open
       if (navbarMenu.classList.contains('active')) {
         document.body.style.overflow = 'hidden';
       } else {
@@ -757,12 +815,10 @@
       mobileMenuToggle.addEventListener('click', toggleMenu);
     }
 
-    // Close mobile menu when clicking overlay
     if (menuOverlay) {
       menuOverlay.addEventListener('click', closeMenu);
     }
 
-    // Close mobile menu when clicking a link
     const navLinks = navbarMenu.querySelectorAll('.nav-link, .nav-form button');
     navLinks.forEach(link => {
       link.addEventListener('click', function() {
@@ -772,7 +828,6 @@
       });
     });
 
-    // Handle window resize
     let resizeTimer;
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimer);
@@ -783,12 +838,68 @@
       }, 250);
     });
 
-    // Prevent menu from staying open on orientation change
     window.addEventListener('orientationchange', function() {
       if (window.innerWidth <= 992 && navbarMenu.classList.contains('active')) {
         closeMenu();
       }
     });
+
+    //====================
+    // PENDING ORDERS COUNT (For Staff)
+    //====================
+   // {% if user.is_authenticated %}
+    function updatePendingOrdersCount() {
+      fetch('/api/pending-orders-count/')
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('pendingOrdersBadge');
+          if (badge && data.count !== undefined) {
+            badge.textContent = data.count;
+            if (data.count === 0) {
+              badge.classList.add('empty');
+            } else {
+              badge.classList.remove('empty');
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching pending orders count:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', updatePendingOrdersCount);
+    setInterval(updatePendingOrdersCount, 30000);
+   // {% endif %}
+
+    //====================
+    // CART COUNT (For Customers)
+    //====================
+   // {% if not user.is_authenticated %}
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('fieldmax_cart') || '[]');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      const cartBadge = document.getElementById('cartBadge');
+      if (cartBadge) {
+        cartBadge.textContent = totalItems;
+        if (totalItems === 0) {
+          cartBadge.classList.add('empty');
+        } else {
+          cartBadge.classList.remove('empty');
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'fieldmax_cart') {
+        updateCartCount();
+      }
+    });
+
+    window.addEventListener('cartUpdated', updateCartCount);
+   // {% endif %}
   </script>
 </body>
 </html>

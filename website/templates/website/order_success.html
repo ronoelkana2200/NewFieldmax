@@ -1,0 +1,435 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Order Submitted - Fieldmax{% endblock %}
+
+{% block content %}
+<style>
+    .success-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 5%;
+    }
+
+    .success-container {
+        max-width: 700px;
+        width: 100%;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(30px);
+        border-radius: 30px;
+        padding: 60px 50px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        text-align: center;
+        animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: pulse 2s ease infinite;
+        box-shadow: 0 10px 40px rgba(245, 158, 11, 0.5);
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    .success-icon svg {
+        width: 60px;
+        height: 60px;
+        stroke: #fff;
+        stroke-width: 3;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .success-title {
+        font-size: 42px;
+        font-weight: 900;
+        color: #1a1f2e;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
+    }
+
+    .success-subtitle {
+        font-size: 18px;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border: 2px solid #f59e0b;
+        color: #92400e;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 30px;
+        animation: blink 2s ease infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .status-badge svg {
+        width: 20px;
+        height: 20px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .info-alert {
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        border-left: 4px solid #3b82f6;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .info-alert-title {
+        font-weight: 700;
+        color: #1e3a8a;
+        font-size: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-alert-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-alert-list li {
+        padding: 8px 0;
+        color: #1e40af;
+        font-size: 14px;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+    }
+
+    .info-alert-list li::before {
+        content: "✓";
+        font-weight: 900;
+        color: #3b82f6;
+        flex-shrink: 0;
+    }
+
+    .order-details {
+        background: #f9fafb;
+        border-radius: 20px;
+        padding: 35px;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #6b7280;
+        font-size: 15px;
+    }
+
+    .detail-value {
+        font-weight: 700;
+        color: #1a1f2e;
+        font-size: 16px;
+    }
+
+    .detail-value.highlight {
+        font-size: 28px;
+        color: #d97706;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .order-id-box {
+        background: #fff;
+        border: 3px dashed #f59e0b;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .order-id-label {
+        font-size: 12px;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .order-id-value {
+        font-size: 28px;
+        font-weight: 900;
+        color: #1a1f2e;
+        font-family: monospace;
+        letter-spacing: 2px;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        padding: 16px 32px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background: #fff;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+        background: #f3f4f6;
+        transform: translateY(-3px);
+        color: #667eea;
+    }
+
+    .contact-info {
+        padding-top: 30px;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .contact-title {
+        font-weight: 700;
+        color: #1a1f2e;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .contact-methods {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .contact-method {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #6b7280;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .contact-method:hover {
+        color: #667eea;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .success-container {
+            padding: 40px 30px;
+        }
+
+        .success-title {
+            font-size: 32px;
+        }
+
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-methods {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .detail-row {
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="success-page">
+    <div class="success-container">
+        <!-- Pending Icon with Clock -->
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+            </svg>
+        </div>
+
+        <!-- Success Message -->
+        <h1 class="success-title">Order Submitted! ⏳</h1>
+        <p class="success-subtitle">
+            Your order has been received and is awaiting staff confirmation.
+        </p>
+
+        <!-- Status Badge -->
+        <div class="status-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+            <span>PENDING STAFF REVIEW</span>
+        </div>
+
+        <!-- Important Information Alert -->
+        <div class="info-alert">
+            <div class="info-alert-title">
+                <span>ℹ️</span>
+                <span>What Happens Next?</span>
+            </div>
+            <ul class="info-alert-list">
+                <li>Our staff will review your order within the next <strong>1 hour</strong></li>
+                <li>You'll receive a <strong>confirmation call</strong> at {{ order_info.buyer_phone }}</li>
+                <li>Keep your phone active and ready to answer</li>
+                <li>Once approved, we'll arrange <strong>delivery or pickup</strong> details</li>
+                <li>Save your Order ID below for reference</li>
+            </ul>
+        </div>
+
+        <!-- Order Details -->
+        <div class="order-details">
+            <div class="detail-row">
+                <span class="detail-label">Customer Name:</span>
+                <span class="detail-value">{{ order_info.buyer_name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone Number:</span>
+                <span class="detail-value">{{ order_info.buyer_phone }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Method:</span>
+                <span class="detail-value">{{ order_info.payment_method|upper }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Items Ordered:</span>
+                <span class="detail-value">{{ order_info.item_count }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value highlight">KSh {{ order_info.total_amount|floatformat:2 }}</span>
+            </div>
+
+            <!-- Order ID Box -->
+            <div class="order-id-box">
+                <div class="order-id-label">📋 Your Order ID</div>
+                <div class="order-id-value">{{ order_info.order_id }}</div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                <span>🏠</span>
+                <span>Back to Home</span>
+            </a>
+            <a href="{% url 'home' %}#products" class="btn btn-secondary">
+                <span>🛍️</span>
+                <span>Continue Shopping</span>
+            </a>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <div class="contact-title">Questions About Your Order?</div>
+            <div class="contact-methods">
+                <a href="https://wa.me/254722558544" class="contact-method">
+                    <span>💬</span>
+                    <span>WhatsApp Us</span>
+                </a>
+                <a href="tel:+254722558544" class="contact-method">
+                    <span>📞</span>
+                    <span>Call: 0722 558 544</span>
+                </a>
+                <a href="mailto:fieldmaxshop@gmail.com" class="contact-method">
+                    <span>✉️</span>
+                    <span>Email Support</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

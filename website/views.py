@@ -17,10 +17,1014 @@ from datetime import timedelta
 from django.http import JsonResponse
 import json
 from django.db import transaction
+from sales.models import Sale, SaleItem
+from decimal import Decimal
+import json
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from .models import PendingOrder, PendingOrderItem
+
 
 
 
 logger = logging.getLogger(__name__)
+
+
+def home(request):
+    """
+    Render the home page with featured products
+    Template will fetch data via AJAX
+    """
+    context = {
+        'page_title': 'Home - Fieldmax | Premium Tech at Unbeatable Prices'
+    }
+    return render(request, 'website/home.html', context)
+
+
+
+@require_http_methods(["GET"])
+def products_page(request):
+    """
+    Products listing page
+    """
+    from inventory.models import Product
+    
+    products = Product.objects.filter(
+        is_active=True,
+        status__in=['available', 'lowstock']
+    ).select_related('category').order_by('-created_at')
+    
+    context = {
+        'page_title': 'Shop - Fieldmax',
+        'products': products
+    }
+    
+    return render(request, 'website/products.html', context)
+
+
+
+
+
+
+@require_http_methods(["GET"])
+def api_featured_products(request):
+    """
+    API endpoint to get featured/best-selling products for home page
+    URL: /api/featured-products/
+    
+    Returns up to 8 products with highest sales or newest arrivals
+    """
+    try:
+        # Get products with sales count
+        products = Product.objects.filter(
+            is_active=True,
+            status__in=['available', 'lowstock']  # Only show available products
+        ).select_related('category').annotate(
+            sales_count=Count('sale_items')
+        ).order_by('-sales_count', '-created_at')[:8]
+        
+        product_list = []
+        
+        for product in products:
+            # Determine badge
+            badge = 'HOT' if product.sales_count > 5 else 'NEW'
+            if product.status == 'lowstock':
+                badge = 'SALE'
+            
+            # Get product emoji based on category
+            emoji = '📱'  # Default
+            if product.category:
+                category_name = product.category.name.lower()
+                if 'phone' in category_name or 'mobile' in category_name:
+                    emoji = '📱'
+                elif 'headphone' in category_name or 'earphone' in category_name:
+                    emoji = '🎧'
+                elif 'watch' in category_name:
+                    emoji = '⌚'
+                elif 'accessory' in category_name or 'cable' in category_name:
+                    emoji = '🔌'
+                elif 'screen' in category_name or 'protector' in category_name:
+                    emoji = '🛡️'
+            
+            product_data = {
+                'id': product.id,
+                'name': product.name,
+                'product_code': product.product_code,
+                'price': float(product.selling_price or 0),
+                'category': product.category.name if product.category else 'Uncategorized',
+                'status': product.status,
+                'quantity': product.quantity or 0,
+                'is_single_item': product.category.is_single_item if product.category else False,
+                'badge': badge,
+                'emoji': emoji,
+                'image': None  # We'll handle images separately
+            }
+            
+            product_list.append(product_data)
+        
+        logger.info(f"[API] Returned {len(product_list)} featured products")
+        
+        return JsonResponse({
+            'success': True,
+            'products': product_list,
+            'count': len(product_list)
+        })
+        
+    except Exception as e:
+        logger.error(f"[API ERROR] Featured products: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'products': []
+        }, status=500)
+
+
+@require_http_methods(["GET"])
+def api_home_stats(request):
+    """
+    API endpoint for homepage statistics
+    URL: /api/home-stats/
+    """
+    try:
+        # Total products in stock
+        total_products = Product.objects.filter(
+            is_active=True,
+            quantity__gt=0
+        ).count()
+        
+        # Total customers (unique buyers)
+        total_customers = Sale.objects.filter(
+            buyer_name__isnull=False
+        ).values('buyer_phone').distinct().count()
+        
+        # Calculate satisfaction (mock for now, can be based on returns vs sales)
+        total_sales = Sale.objects.filter(is_reversed=False).count()
+        total_returns = Sale.objects.filter(is_reversed=True).count()
+        
+        if total_sales > 0:
+            satisfaction = int(((total_sales - total_returns) / total_sales) * 100)
+        else:
+            satisfaction = 98  # Default
+        
+        stats = {
+            'total_products': total_products,
+            'total_customers': min(total_customers * 1000, 100000),  # Scale for display
+            'satisfaction': satisfaction,
+            'support': '24/7'
+        }
+        
+        return JsonResponse({
+            'success': True,
+            'stats': stats
+        })
+        
+    except Exception as e:
+        logger.error(f"[API ERROR] Home stats: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'stats': {
+                'total_products': 1000,
+                'total_customers': 50000,
+                'satisfaction': 98,
+                'support': '24/7'
+            }
+        })
+
+
+@require_http_methods(["GET"])
+def api_product_categories(request):
+    """
+    Get all active categories with product counts
+    URL: /api/categories/
+    """
+    try:
+        categories = Category.objects.annotate(
+            product_count=Count('products', filter=Q(products__is_active=True))
+        ).filter(product_count__gt=0)
+        
+        category_list = []
+        for cat in categories:
+            category_list.append({
+                'id': cat.id,
+                'name': cat.name,
+                'code': cat.category_code,
+                'item_type': cat.get_item_type_display(),
+                'product_count': cat.product_count
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'categories': category_list
+        })
+        
+    except Exception as e:
+        logger.error(f"[API ERROR] Categories: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'categories': []
+        }, status=500)
+
+
+@require_http_methods(["POST"])
+def api_quick_search(request):
+    """
+    Quick product search for home page search bar
+    URL: /api/quick-search/
+    """
+    import json
+    
+    try:
+        data = json.loads(request.body)
+        search_term = data.get('search', '').strip()
+        
+        if not search_term or len(search_term) < 2:
+            return JsonResponse({
+                'success': False,
+                'message': 'Search term too short',
+                'products': []
+            })
+        
+        # Search products
+        products = Product.objects.filter(
+            Q(name__icontains=search_term) |
+            Q(product_code__icontains=search_term) |
+            Q(sku_value__icontains=search_term),
+            is_active=True
+        ).select_related('category')[:10]
+        
+        results = []
+        for product in products:
+            results.append({
+                'id': product.id,
+                'name': product.name,
+                'product_code': product.product_code,
+                'price': float(product.selling_price or 0),
+                'category': product.category.name if product.category else 'Other',
+                'status': product.status,
+                'url': f'/products/{product.id}/'  # Update with your product detail URL
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'products': results,
+            'count': len(results)
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid JSON',
+            'products': []
+        }, status=400)
+    except Exception as e:
+        logger.error(f"[API ERROR] Quick search: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'products': []
+        }, status=500)
+
+
+
+
+
+
+
+
+def shopping_cart(request):
+    """Display shopping cart page"""
+    return render(request, 'website/cart.html', {
+        'page_title': 'Shopping Cart - Fieldmax'
+    })
+
+
+@require_http_methods(["POST"])
+def validate_cart(request):
+    """
+    Validate cart items against current database inventory
+    Returns updated prices and availability
+    """
+    try:
+        data = json.loads(request.body)
+        cart_items = data.get('cart', [])
+        
+        validated_items = []
+        total = 0
+        errors = []
+        
+        for item in cart_items:
+            product_id = item.get('id')
+            quantity = item.get('quantity', 1)
+            
+            try:
+                product = Product.objects.get(id=product_id, is_active=True)
+                
+                # Check availability
+                if product.status == 'sold':
+                    errors.append(f"{product.name} has been sold")
+                    continue
+                
+                if product.category.is_single_item and quantity > 1:
+                    errors.append(f"{product.name} is a single item (quantity must be 1)")
+                    quantity = 1
+                
+                if not product.category.is_single_item and product.quantity < quantity:
+                    errors.append(f"Only {product.quantity} units of {product.name} available")
+                    quantity = product.quantity
+                
+                # Validate price hasn't changed
+                current_price = float(product.selling_price or 0)
+                cart_price = float(item.get('price', 0))
+                
+                price_changed = abs(current_price - cart_price) > 0.01
+                
+                validated_item = {
+                    'id': product.id,
+                    'name': product.name,
+                    'product_code': product.product_code,
+                    'price': current_price,
+                    'old_price': cart_price if price_changed else None,
+                    'quantity': quantity,
+                    'max_quantity': product.quantity if not product.category.is_single_item else 1,
+                    'is_single_item': product.category.is_single_item,
+                    'subtotal': current_price * quantity,
+                    'available': True
+                }
+                
+                validated_items.append(validated_item)
+                total += validated_item['subtotal']
+                
+            except Product.DoesNotExist:
+                errors.append(f"Product ID {product_id} not found")
+        
+        return JsonResponse({
+            'success': True,
+            'items': validated_items,
+            'total': total,
+            'errors': errors,
+            'item_count': len(validated_items)
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Cart validation error: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
+
+
+@require_http_methods(["POST"])
+def checkout(request):
+    """
+    Process checkout - create sales for cart items
+    """
+    try:
+        data = json.loads(request.body)
+        cart_items = data.get('cart', [])
+        buyer_name = data.get('buyer_name', '').strip()
+        buyer_phone = data.get('buyer_phone', '').strip()
+        buyer_id = data.get('buyer_id', '').strip()
+        
+        if not cart_items:
+            return JsonResponse({
+                'success': False,
+                'message': 'Cart is empty'
+            }, status=400)
+        
+        if not buyer_name or not buyer_phone:
+            return JsonResponse({
+                'success': False,
+                'message': 'Customer name and phone are required'
+            }, status=400)
+        
+        # Redirect to sales system for actual checkout
+        # Store cart data in session
+        request.session['checkout_cart'] = cart_items
+        request.session['checkout_buyer'] = {
+            'name': buyer_name,
+            'phone': buyer_phone,
+            'id_number': buyer_id
+        }
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Redirecting to checkout...',
+            'redirect_url': '/sales/checkout/'  # Update with your checkout URL
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid request data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Checkout error: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Checkout failed: {str(e)}'
+        }, status=500)
+
+
+
+
+
+
+# ============================================
+# 2. UPDATED VIEW: website/views.py
+# ============================================
+
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from sales.models import Sale, SaleItem
+from inventory.models import Product, StockEntry
+from .models import PendingOrder
+import json
+import logging
+# ============================================
+# FIXED VIEWS.PY - PENDING ORDERS SECTION
+# ============================================
+# Add these to your website/views.py file
+
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from sales.models import Sale, SaleItem
+from inventory.models import Product
+from .models import PendingOrder, PendingOrderItem
+import json
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+# ============================================
+# 1. CUSTOMER SUBMITS ORDER (Creates PendingOrder)
+# ============================================
+
+@csrf_exempt  # Remove this if you're properly handling CSRF tokens
+@require_http_methods(["POST"])
+def create_pending_order(request):
+    """
+    API endpoint for customers to submit orders
+    URL: /api/pending-orders/create/
+    """
+    try:
+        data = json.loads(request.body)
+        
+        # Validate required fields
+        cart_items = data.get('cart', [])
+        buyer_name = data.get('buyer_name', '').strip()
+        buyer_phone = data.get('buyer_phone', '').strip()
+        
+        if not cart_items:
+            return JsonResponse({
+                'success': False,
+                'message': 'Cart is empty'
+            }, status=400)
+        
+        if not buyer_name or not buyer_phone:
+            return JsonResponse({
+                'success': False,
+                'message': 'Buyer name and phone are required'
+            }, status=400)
+        
+        # Calculate totals
+        item_count = sum(item.get('quantity', 1) for item in cart_items)
+        total_amount = sum(
+            float(item.get('price', 0)) * item.get('quantity', 1) 
+            for item in cart_items
+        )
+        
+        # Create PendingOrder
+        with transaction.atomic():
+            order = PendingOrder.objects.create(
+                buyer_name=buyer_name,
+                buyer_phone=buyer_phone,
+                buyer_email=data.get('buyer_email', ''),
+                buyer_id_number=data.get('buyer_id', ''),
+                payment_method=data.get('payment_method', 'cash'),
+                notes=data.get('notes', ''),
+                cart_data=json.dumps(cart_items),
+                total_amount=total_amount,
+                item_count=item_count,
+                status='pending'
+            )
+            
+            # Create individual order items
+            for item in cart_items:
+                PendingOrderItem.objects.create(
+                    order=order,
+                    product_name=item.get('name', 'Unknown'),
+                    quantity=item.get('quantity', 1),
+                    unit_price=item.get('price', 0)
+                )
+        
+        logger.info(
+            f"[PENDING ORDER CREATED] {order.order_id} | "
+            f"Buyer: {buyer_name} | Items: {item_count} | "
+            f"Total: KSh {total_amount}"
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Order submitted successfully and is pending approval.',
+            'order_id': order.order_id,
+            'redirect_url': '/orders/pending/'
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"[PENDING ORDER ERROR] {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Failed to create order: {str(e)}'
+        }, status=500)
+
+
+# ============================================
+# 2. CHECKOUT PAGE
+# ============================================
+
+@require_http_methods(["GET"])
+def checkout_page(request):
+    """
+    Render checkout page
+    URL: /checkout/
+    """
+    return render(request, 'website/checkout.html', {
+        'page_title': 'Checkout - Fieldmax'
+    })
+
+
+
+
+# ============================================
+# 3. STAFF VIEW: LIST PENDING ORDERS
+# ============================================
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import render
+from .models import PendingOrder
+
+@login_required
+@require_http_methods(["GET"])
+def pending_orders_list(request):
+    """
+    Staff view to see all pending orders
+    URL: /staff/pending-orders/
+    """
+    # Get all pending orders and prefetch related items
+    pending_orders = PendingOrder.objects.filter(
+        status__iexact='pending'  # case-insensitive just in case
+    ).prefetch_related('items').order_by('-created_at')
+
+    context = {
+        'page_title': 'Pending Orders - Fieldmax',
+        'pending_orders': pending_orders,
+        'pending_count': pending_orders.count()
+    }
+
+    return render(request, 'website/pending_orders.html', context)
+
+
+
+
+
+# ============================================
+# 4. API: GET PENDING ORDERS COUNT (for badge)
+# ============================================
+
+@login_required
+@require_http_methods(["GET"])
+def pending_orders_count(request):
+    """
+    API endpoint to get count of pending orders (for staff badge)
+    URL: /api/pending-orders/count/
+    """
+    try:
+        count = PendingOrder.objects.filter(status='pending').count()
+        return JsonResponse({
+            'success': True,
+            'count': count
+        })
+    except Exception as e:
+        logger.error(f"[PENDING COUNT ERROR] {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'count': 0,
+            'error': str(e)
+        })
+
+
+# ============================================
+# 5. STAFF ACTION: APPROVE ORDER
+# ============================================
+
+@login_required
+@require_http_methods(["POST"])
+def approve_order(request, order_id):
+    """
+    Staff approves order → Creates actual Sale
+    URL: /staff/approve-order/<order_id>/
+    """
+    try:
+        # Get pending order
+        pending_order = PendingOrder.objects.get(
+            order_id=order_id,
+            status='pending'
+        )
+        
+        with transaction.atomic():
+            # Lock the pending order
+            pending_order = PendingOrder.objects.select_for_update().get(
+                pk=pending_order.pk
+            )
+            
+            # Parse cart items
+            cart_items = pending_order.cart_items
+            
+            # Create the Sale
+            sale = Sale.objects.create(
+                seller=request.user,
+                buyer_name=pending_order.buyer_name,
+                buyer_phone=pending_order.buyer_phone,
+                buyer_id_number=pending_order.buyer_id_number,
+                payment_method=pending_order.payment_method,
+            )
+            
+            # Add items to sale
+            created_items = []
+            errors = []
+            
+            for item in cart_items:
+                try:
+                    # Get product from database with lock
+                    product = Product.objects.select_for_update().get(
+                        id=item['id'],
+                        is_active=True
+                    )
+                    
+                    quantity = item['quantity']
+                    
+                    # Validate availability
+                    if product.status == 'sold' and product.category.is_single_item:
+                        errors.append(f"{product.name} is no longer available")
+                        continue
+                    
+                    if not product.category.is_single_item and product.quantity < quantity:
+                        errors.append(f"Only {product.quantity} units of {product.name} available")
+                        continue
+                    
+                    # Create SaleItem
+                    sale_item = SaleItem.objects.create(
+                        sale=sale,
+                        product=product,
+                        product_code=product.product_code,
+                        product_name=product.name,
+                        sku_value=product.sku_value,
+                        quantity=quantity,
+                        unit_price=product.selling_price,
+                    )
+                    
+                    # Process sale (deduct stock)
+                    sale_item.process_sale()
+                    created_items.append(sale_item)
+                    
+                except Product.DoesNotExist:
+                    errors.append(f"Product ID {item['id']} not found")
+                    continue
+                except Exception as e:
+                    logger.error(f"[APPROVAL ITEM ERROR] {str(e)}", exc_info=True)
+                    errors.append(f"Error: {str(e)}")
+                    continue
+            
+            if not created_items:
+                raise Exception("No items could be processed: " + "; ".join(errors))
+            
+            # Update pending order
+            sale.refresh_from_db()
+            pending_order.status = 'completed'
+            pending_order.sale_id = sale.sale_id
+            pending_order.reviewed_by = request.user
+            pending_order.reviewed_at = timezone.now()
+            pending_order.save()
+            
+            logger.info(
+                f"[ORDER APPROVED] {pending_order.order_id} → Sale {sale.sale_id} | "
+                f"Staff: {request.user.username} | "
+                f"Items: {len(created_items)}/{len(cart_items)}"
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Order approved! Sale {sale.sale_id} created with {len(created_items)} items.',
+                'sale_id': sale.sale_id,
+                'items_processed': len(created_items),
+                'total_items': len(cart_items),
+                'errors': errors if errors else None
+            })
+            
+    except PendingOrder.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Order not found or already processed'
+        }, status=404)
+    except Exception as e:
+        logger.error(f"[ORDER APPROVAL ERROR] {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Failed to approve order: {str(e)}'
+        }, status=500)
+
+
+# ============================================
+# 6. STAFF ACTION: REJECT ORDER
+# ============================================
+
+@login_required
+@require_http_methods(["POST"])
+def reject_order(request, order_id):
+    """
+    Staff rejects order
+    URL: /staff/reject-order/<order_id>/
+    """
+    try:
+        data = json.loads(request.body)
+        reason = data.get('reason', 'No reason provided')
+        
+        pending_order = PendingOrder.objects.get(
+            order_id=order_id,
+            status='pending'
+        )
+        
+        pending_order.status = 'rejected'
+        pending_order.rejection_reason = reason
+        pending_order.reviewed_by = request.user
+        pending_order.reviewed_at = timezone.now()
+        pending_order.save()
+        
+        logger.info(
+            f"[ORDER REJECTED] {pending_order.order_id} | "
+            f"Staff: {request.user.username} | "
+            f"Reason: {reason}"
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Order rejected successfully'
+        })
+        
+    except PendingOrder.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Order not found'
+        }, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid request data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"[ORDER REJECTION ERROR] {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Failed to reject order: {str(e)}'
+        }, status=500)
+
+
+
+
+
+@require_http_methods(["POST"])
+def process_order(request):
+    """
+    ✅ FIXED: Process order with new Sale/SaleItem structure
+    - Creates ONE Sale record per order
+    - Creates multiple SaleItem records for each product
+    - Each SaleItem processes its own stock deduction
+    """
+    try:
+        data = json.loads(request.body)
+        
+        # Validate required fields
+        cart_items = data.get('cart', [])
+        buyer_name = data.get('buyer_name', '').strip()
+        buyer_phone = data.get('buyer_phone', '').strip()
+        buyer_email = data.get('buyer_email', '').strip()
+        buyer_id = data.get('buyer_id', '').strip()
+        payment_method = data.get('payment_method', 'cash')
+        notes = data.get('notes', '').strip()
+        
+        if not cart_items:
+            return JsonResponse({
+                'success': False,
+                'message': 'Cart is empty'
+            }, status=400)
+        
+        if not buyer_name or not buyer_phone:
+            return JsonResponse({
+                'success': False,
+                'message': 'Buyer name and phone are required'
+            }, status=400)
+        
+        # Use atomic transaction to ensure data consistency
+        with transaction.atomic():
+            
+            # ============================================
+            # STEP 1: CREATE THE SALE (ONE PER ORDER)
+            # ============================================
+            seller = request.user if request.user.is_authenticated else User.objects.filter(is_superuser=True).first()
+            
+            sale = Sale.objects.create(
+                seller=seller,
+                buyer_name=buyer_name,
+                buyer_phone=buyer_phone,
+                buyer_id_number=buyer_id,
+                payment_method=payment_method,
+                # Totals will be calculated after adding items
+            )
+            
+            logger.info(f"[WEB ORDER] Created Sale {sale.sale_id} for {buyer_name}")
+            
+            # ============================================
+            # STEP 2: ADD ITEMS TO THE SALE
+            # ============================================
+            created_items = []
+            errors = []
+            
+            for item in cart_items:
+                try:
+                    # Get product from database with lock
+                    product = Product.objects.select_for_update().get(
+                        id=item['id'],
+                        is_active=True
+                    )
+                    
+                    quantity = item['quantity']
+                    
+                    # Validate product availability
+                    if product.status == 'sold' and product.category.is_single_item:
+                        errors.append(f"{product.name} is no longer available (already sold)")
+                        continue
+                    
+                    if not product.category.is_single_item and product.quantity < quantity:
+                        errors.append(f"Only {product.quantity} units of {product.name} available")
+                        continue
+                    
+                    # ============================================
+                    # CREATE SALE ITEM
+                    # ============================================
+                    sale_item = SaleItem.objects.create(
+                        sale=sale,
+                        product=product,
+                        product_code=product.product_code,
+                        product_name=product.name,
+                        sku_value=product.sku_value,
+                        quantity=quantity,
+                        unit_price=product.selling_price,
+                        # total_price calculated automatically in SaleItem.save()
+                    )
+                    
+                    # ============================================
+                    # PROCESS THE SALE (DEDUCT STOCK)
+                    # ============================================
+                    sale_item.process_sale()
+                    
+                    created_items.append(sale_item)
+                    
+                    logger.info(
+                        f"[WEB ORDER ITEM] Sale: {sale.sale_id} | "
+                        f"Product: {product.product_code} | "
+                        f"Qty: {quantity} | "
+                        f"Price: KSh {sale_item.total_price}"
+                    )
+                    
+                except Product.DoesNotExist:
+                    errors.append(f"Product ID {item['id']} not found")
+                    continue
+                except Exception as e:
+                    logger.error(f"Error processing item {item['id']}: {str(e)}", exc_info=True)
+                    errors.append(f"Error processing {item.get('name', 'item')}: {str(e)}")
+                    continue
+            
+            # ============================================
+            # STEP 3: VALIDATE RESULTS
+            # ============================================
+            if not created_items:
+                raise Exception("No items could be processed. " + "; ".join(errors))
+            
+            # Sale totals are automatically recalculated by SaleItem.save()
+            sale.refresh_from_db()
+            
+            # ============================================
+            # STEP 4: PREPARE RESPONSE
+            # ============================================
+            success_count = len(created_items)
+            total_count = len(cart_items)
+            
+            response_data = {
+                'success': True,
+                'message': f'Order placed successfully! {success_count} of {total_count} items processed.',
+                'order_count': success_count,
+                'sale_id': sale.sale_id,
+                'total_amount': float(sale.total_amount),
+                'items': [
+                    {
+                        'product_name': item.product_name,
+                        'quantity': item.quantity,
+                        'amount': float(item.total_price)
+                    }
+                    for item in created_items
+                ],
+                'redirect_url': '/order-success/',
+                'errors': errors if errors else None
+            }
+            
+            # Store order info in session for success page
+            request.session['last_order'] = {
+                'sale_id': sale.sale_id,
+                'buyer_name': buyer_name,
+                'buyer_phone': buyer_phone,
+                'total_amount': float(sale.total_amount),
+                'item_count': success_count,
+                'payment_method': payment_method,
+                'items': [
+                    {
+                        'name': item.product_name,
+                        'quantity': item.quantity,
+                        'total': float(item.total_price)
+                    }
+                    for item in created_items
+                ]
+            }
+            
+            logger.info(
+                f"[WEB ORDER COMPLETE] Sale: {sale.sale_id} | "
+                f"Items: {success_count} | "
+                f"Total: KSh {sale.total_amount} | "
+                f"Buyer: {buyer_name}"
+            )
+            
+            return JsonResponse(response_data)
+            
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid JSON data'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Order processing error: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': f'Failed to process order: {str(e)}'
+        }, status=500)
+
+
+@require_http_methods(["GET"])
+def order_success(request):
+    """
+    Order success page
+    """
+    # Get order info from session
+    order_info = request.session.get('last_order', None)
+    
+    if not order_info:
+        # Redirect to home if no order info
+        return redirect('home')
+    
+    # Clear the session data
+    if 'last_order' in request.session:
+        del request.session['last_order']
+    
+    context = {
+        'page_title': 'Order Successful - Fieldmax',
+        'order_info': order_info
+    }
+    
+    return render(request, 'website/order_success.html', context)
+
+
+
+
+
+
+
 
 
 
@@ -41,11 +1045,6 @@ class RoleBasedLoginView(LoginView):
             return '/cashier-dashboard/'
         return '/'
 
-
-
-
-def home(request):
-    return render(request, 'website/home.html')
 
 
 

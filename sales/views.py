@@ -1634,6 +1634,13 @@ def record_sale(request):
             'success': False,
             'message': f'Error: {str(e)}'
         }, status=500)
+    
+
+
+
+
+
+    
 
 # ============================================
 # COMPARISON: BEFORE vs AFTER
