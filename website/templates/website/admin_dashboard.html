@@ -2461,24 +2461,24 @@ strong[style*="background-color"] {
 
             <!-- Total Price -->
             <td>
-              {% if sale.is_reversed %}
-                <span class="btn btn-secondary disabled">ETR Returned</span>
+            {% if sale.is_reversed %}
+              <span class="btn btn-secondary disabled">ETR Returned</span>
 
+            {% else %}
+              {% if sale.batch_id %}
+                <a href="{% url 'sales:batch-receipt' sale.batch_id %}"
+                    class="btn btn-primary"
+                    style="display: inline-block;">
+                  View Receipt ({{ sale.batch_total_sales }} items)
+                </a>
               {% else %}
-                {% if sale.batch_id %}
-                  <a href="{% url 'sales:batch-receipt' sale.batch_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                    View Receipt ({{ sale.batch_total_sales }} items)
-                  </a>
-                {% else %}
-                  <a href="{% url 'sales:sale-etr' sale.sale_id %}"
-                     class="btn btn-primary"
-                     style="display: inline-block;">
-                   View Receipt
-                  </a>
-                {% endif %}
-                {% endif %}
+                <a href="{% url 'sales:sale-etr' sale.sale_id %}"
+                    class="btn btn-primary"
+                    style="display: inline-block;">
+                  View Receipt
+                </a>
+              {% endif %}
+              {% endif %}
             </td>
           </tr>
           {% empty %}
@@ -3643,24 +3643,24 @@ strong[style*="background-color"] {
 
              <!-- Actions -->
             <td>
-                <div class="action-buttons">
-                    {% if not sale.is_reversed %}
+            <div class="action-buttons">
+                  {% if not sale.is_reversed %}
                     
-                    <!-- Reverse Sale Link -->
-                    <a href="#" 
-                           class="reverse-sale-btn btn btn-warning btn-sm"
-                           data-sale-id="{{ sale.sale_id }}">
-                         Reverse Sale
-                    </a>
+              <!-- Reverse Sale Link -->
+                <a href="#" 
+                    class="reverse-sale-btn btn btn-warning btn-sm"
+                      data-sale-id="{{ sale.sale_id }}">
+                    Reverse Sale
+                </a>
 
-                    <!-- Optional: View Receipt -->
-                    <a href="{% url 'sales:sale-etr' sale.sale_id %}" target="_blank" class="btn btn-primary">
-                        <i class="bi bi-receipt"></i> View Receipt
-                    </a>
-                    {% else %}
-                    <span class="text-muted">Reversed</span>
-                    {% endif %}
-                </div>
+                  <!-- Optional: View Receipt -->
+                <a href="{% url 'sales:sale-etr' sale.sale_id %}" target="_blank" class="btn btn-primary">
+                  <i class="bi bi-receipt"></i> View Receipt
+                </a>
+                  {% else %}
+                  <span class="text-muted">Reversed</span>
+                  {% endif %}
+             </div>
             </td>
           </tr>
           {% empty %}

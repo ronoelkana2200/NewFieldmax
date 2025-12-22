@@ -397,6 +397,23 @@ class ProductAdmin(admin.ModelAdmin):
 # ============================================
 # STOCK ENTRY ADMIN
 # ============================================
+def reverse_stock_entry(modeladmin, request, queryset):
+    for entry in queryset:
+        # Only process 'sale' entries
+        if entry.entry_type == 'sale':
+            # Create a new StockEntry with negative quantity to reverse the sale
+            StockEntry.objects.create(
+                product=entry.product,
+                entry_type='sale_reversal',  # or use 'adjustment' if preferred
+                quantity=-entry.quantity,
+                unit_price=entry.unit_price,
+                total_amount=-float(Decimal(entry.total_amount)),
+                reference_id=f"Reversal of {entry.reference_id}",
+                created_by=request.user,
+                notes='Reversal of sale'
+            )
+reverse_stock_entry.short_description = "Reverse selected sales"
+
 
 @admin.register(StockEntry)
 class StockEntryAdmin(admin.ModelAdmin):
@@ -444,14 +461,14 @@ class StockEntryAdmin(admin.ModelAdmin):
     )
     date_hierarchy = 'created_at'
     list_per_page = 100
-    actions = [export_to_csv]
+    actions = [export_to_csv, reverse_stock_entry]
 
     def has_add_permission(self, request):
-        return False
+        return True
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
     def has_delete_permission(self, request, obj=None):
-        return False
+        return True
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

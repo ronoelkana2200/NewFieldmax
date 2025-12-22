@@ -1,4 +1,4 @@
-# sales/admin.py - FIXED DELETE PERMISSIONS
+# sales/admin.py - FULL DELETE PERMISSIONS FOR ALL TABLES
 
 from django.contrib import admin, messages
 from django.utils.html import format_html
@@ -42,13 +42,16 @@ class SaleItemInline(admin.TabularInline):
         return True
     
     def has_delete_permission(self, request, obj=None):
+        """Allow superusers to delete, restrict staff from deleting processed sale items"""
+        if request.user.is_superuser:
+            return True
         if obj and obj.etr_status == 'processed':
             return False
         return super().has_delete_permission(request, obj)
 
 
 # ============================================
-# MAIN SALE ADMIN - FIXED DELETE PERMISSIONS
+# MAIN SALE ADMIN - FULL DELETE PERMISSIONS
 # ============================================
 
 @admin.register(Sale)
@@ -150,7 +153,7 @@ class SaleAdmin(admin.ModelAdmin):
     actions = ['generate_etr_receipts_action', 'safe_delete_sales_action']
     
     # ============================================
-    # FIXED: DELETE PERMISSIONS FOR SUPERUSERS
+    # DELETE PERMISSIONS - ALLOW SUPERUSER
     # ============================================
     
     def has_delete_permission(self, request, obj=None):
@@ -174,21 +177,28 @@ class SaleAdmin(admin.ModelAdmin):
         """
         if request.user.is_superuser:
             with transaction.atomic():
-                # Delete related objects first
-                obj.items.all().delete()
+                sale_id = obj.sale_id
                 
+                # Delete related objects first
+                items_deleted = obj.items.all().delete()
+                
+                fiscal_deleted = 0
                 if hasattr(obj, 'fiscal_receipt'):
                     obj.fiscal_receipt.delete()
+                    fiscal_deleted = 1
                 
+                reversal_deleted = 0
                 if hasattr(obj, 'reversal'):
                     obj.reversal.delete()
+                    reversal_deleted = 1
                 
                 # Now delete the sale
                 obj.delete()
                 
             self.message_user(
                 request,
-                f"Sale {obj.sale_id} deleted successfully.",
+                f"Sale {sale_id} deleted successfully. "
+                f"(Items: {items_deleted[0]}, Fiscal: {fiscal_deleted}, Reversals: {reversal_deleted})",
                 messages.SUCCESS
             )
         else:
@@ -201,17 +211,24 @@ class SaleAdmin(admin.ModelAdmin):
         """
         if request.user.is_superuser:
             deleted_count = 0
+            total_items = 0
+            total_fiscal = 0
+            total_reversals = 0
             
             with transaction.atomic():
                 for sale in queryset:
                     # Delete related objects
+                    items_count = sale.items.count()
                     sale.items.all().delete()
+                    total_items += items_count
                     
                     if hasattr(sale, 'fiscal_receipt'):
                         sale.fiscal_receipt.delete()
+                        total_fiscal += 1
                     
                     if hasattr(sale, 'reversal'):
                         sale.reversal.delete()
+                        total_reversals += 1
                     
                     # Delete the sale
                     sale.delete()
@@ -219,7 +236,9 @@ class SaleAdmin(admin.ModelAdmin):
             
             self.message_user(
                 request,
-                f"Successfully deleted {deleted_count} sale(s).",
+                f"Successfully deleted {deleted_count} sale(s), "
+                f"{total_items} item(s), {total_fiscal} fiscal receipt(s), "
+                f"and {total_reversals} reversal(s).",
                 messages.SUCCESS
             )
         else:
@@ -325,17 +344,24 @@ class SaleAdmin(admin.ModelAdmin):
             return
         
         deleted_count = 0
+        total_items = 0
+        total_fiscal = 0
+        total_reversals = 0
         
         with transaction.atomic():
             for sale in queryset:
                 # Delete related objects
+                items_count = sale.items.count()
                 sale.items.all().delete()
+                total_items += items_count
                 
                 if hasattr(sale, 'fiscal_receipt'):
                     sale.fiscal_receipt.delete()
+                    total_fiscal += 1
                 
                 if hasattr(sale, 'reversal'):
                     sale.reversal.delete()
+                    total_reversals += 1
                 
                 # Delete the sale
                 sale.delete()
@@ -343,18 +369,21 @@ class SaleAdmin(admin.ModelAdmin):
         
         self.message_user(
             request,
-            f"Successfully deleted {deleted_count} sale(s).",
+            f"Successfully deleted {deleted_count} sale(s), "
+            f"{total_items} item(s), {total_fiscal} fiscal receipt(s), "
+            f"and {total_reversals} reversal(s).",
             messages.SUCCESS
         )
 
 
 # ============================================
-# SALE ITEM ADMIN
+# SALE ITEM ADMIN - ALLOW DELETE
 # ============================================
 
 @admin.register(SaleItem)
 class SaleItemAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'sale_link',
         'product_name',
         'sku_value',
@@ -389,11 +418,71 @@ class SaleItemAdmin(admin.ModelAdmin):
         'product_age_days',
     ]
     
+    # Register delete action
+    actions = ['delete_selected_items']
+    
     def has_add_permission(self, request):
         return False
     
     def has_delete_permission(self, request, obj=None):
+        """Allow superusers to delete sale items"""
         return request.user.is_superuser
+    
+    def delete_model(self, request, obj):
+        """Override to provide feedback on deletion"""
+        sale_id = obj.sale.sale_id
+        product_name = obj.product_name
+        
+        with transaction.atomic():
+            obj.delete()
+        
+        self.message_user(
+            request,
+            f"Sale Item deleted: {product_name} from Sale #{sale_id}",
+            messages.SUCCESS
+        )
+    
+    def delete_queryset(self, request, queryset):
+        """Handle bulk deletion"""
+        if request.user.is_superuser:
+            count = queryset.count()
+            
+            with transaction.atomic():
+                queryset.delete()
+            
+            self.message_user(
+                request,
+                f"Successfully deleted {count} sale item(s).",
+                messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request,
+                "Only superusers can delete sale items.",
+                messages.ERROR
+            )
+    
+    @admin.action(description="Delete selected sale items")
+    def delete_selected_items(self, request, queryset):
+        """Custom delete action"""
+        if not request.user.is_superuser:
+            self.message_user(
+                request,
+                "Only superusers can delete sale items.",
+                messages.ERROR
+            )
+            return
+        
+        count = queryset.count()
+        
+        with transaction.atomic():
+            queryset.delete()
+        
+        self.message_user(
+            request,
+            f"Successfully deleted {count} sale item(s).",
+            messages.SUCCESS
+        )
     
     def sale_link(self, obj):
         url = reverse('admin:sales_sale_change', args=[obj.sale.sale_id])
@@ -413,12 +502,13 @@ class SaleItemAdmin(admin.ModelAdmin):
 
 
 # ============================================
-# SALE REVERSAL ADMIN
+# SALE REVERSAL ADMIN - ALLOW DELETE
 # ============================================
 
 @admin.register(SaleReversal)
 class SaleReversalAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'sale_link',
         'reversed_at',
         'reversed_by',
@@ -429,11 +519,70 @@ class SaleReversalAdmin(admin.ModelAdmin):
     search_fields = ['sale__sale_id', 'reason']
     readonly_fields = ['sale', 'reversed_at', 'reversed_by', 'reason']
     
+    # Register delete action
+    actions = ['delete_selected_reversals']
+    
     def has_add_permission(self, request):
         return False
     
     def has_delete_permission(self, request, obj=None):
+        """Allow superusers to delete sale reversals"""
         return request.user.is_superuser
+    
+    def delete_model(self, request, obj):
+        """Override to provide feedback on deletion"""
+        sale_id = obj.sale.sale_id
+        
+        with transaction.atomic():
+            obj.delete()
+        
+        self.message_user(
+            request,
+            f"Sale Reversal deleted for Sale #{sale_id}",
+            messages.SUCCESS
+        )
+    
+    def delete_queryset(self, request, queryset):
+        """Handle bulk deletion"""
+        if request.user.is_superuser:
+            count = queryset.count()
+            
+            with transaction.atomic():
+                queryset.delete()
+            
+            self.message_user(
+                request,
+                f"Successfully deleted {count} sale reversal(s).",
+                messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request,
+                "Only superusers can delete sale reversals.",
+                messages.ERROR
+            )
+    
+    @admin.action(description="Delete selected reversals")
+    def delete_selected_reversals(self, request, queryset):
+        """Custom delete action"""
+        if not request.user.is_superuser:
+            self.message_user(
+                request,
+                "Only superusers can delete sale reversals.",
+                messages.ERROR
+            )
+            return
+        
+        count = queryset.count()
+        
+        with transaction.atomic():
+            queryset.delete()
+        
+        self.message_user(
+            request,
+            f"Successfully deleted {count} sale reversal(s).",
+            messages.SUCCESS
+        )
     
     def sale_link(self, obj):
         url = reverse('admin:sales_sale_change', args=[obj.sale.sale_id])
@@ -448,23 +597,141 @@ class SaleReversalAdmin(admin.ModelAdmin):
 
 
 # ============================================
-# FISCAL RECEIPT ADMIN
+# FISCAL RECEIPT ADMIN - ALLOW DELETE
 # ============================================
 
 @admin.register(FiscalReceipt)
 class FiscalReceiptAdmin(admin.ModelAdmin):
-    list_display = ['receipt_number', 'sale_link', 'issued_at']
+    list_display = [
+        'id',
+        'receipt_number',
+        'sale_link',
+        'issued_at',
+        'verification_url_display',
+    ]
+    
     list_filter = ['issued_at']
     search_fields = ['receipt_number', 'sale__sale_id']
-    readonly_fields = ['sale', 'receipt_number', 'issued_at', 'qr_code', 'verification_url']
+    readonly_fields = [
+        'sale',
+        'receipt_number',
+        'issued_at',
+        'qr_code',
+        'verification_url',
+    ]
+    
+    # Register delete action
+    actions = ['delete_selected_receipts']
     
     def has_add_permission(self, request):
         return False
     
     def has_delete_permission(self, request, obj=None):
+        """Allow superusers to delete fiscal receipts"""
         return request.user.is_superuser
+    
+    def delete_model(self, request, obj):
+        """Override to provide feedback on deletion"""
+        receipt_number = obj.receipt_number
+        sale_id = obj.sale.sale_id
+        
+        with transaction.atomic():
+            obj.delete()
+        
+        self.message_user(
+            request,
+            f"Fiscal Receipt {receipt_number} deleted (Sale #{sale_id})",
+            messages.SUCCESS
+        )
+    
+    def delete_queryset(self, request, queryset):
+        """Handle bulk deletion"""
+        if request.user.is_superuser:
+            count = queryset.count()
+            
+            with transaction.atomic():
+                queryset.delete()
+            
+            self.message_user(
+                request,
+                f"Successfully deleted {count} fiscal receipt(s).",
+                messages.SUCCESS
+            )
+        else:
+            self.message_user(
+                request,
+                "Only superusers can delete fiscal receipts.",
+                messages.ERROR
+            )
+    
+    @admin.action(description="Delete selected fiscal receipts")
+    def delete_selected_receipts(self, request, queryset):
+        """Custom delete action"""
+        if not request.user.is_superuser:
+            self.message_user(
+                request,
+                "Only superusers can delete fiscal receipts.",
+                messages.ERROR
+            )
+            return
+        
+        count = queryset.count()
+        
+        with transaction.atomic():
+            queryset.delete()
+        
+        self.message_user(
+            request,
+            f"Successfully deleted {count} fiscal receipt(s).",
+            messages.SUCCESS
+        )
     
     def sale_link(self, obj):
         url = reverse('admin:sales_sale_change', args=[obj.sale.sale_id])
         return format_html('<a href="{}">Sale #{}</a>', url, obj.sale.sale_id)
     sale_link.short_description = 'Sale'
+    
+    def verification_url_display(self, obj):
+        if obj.verification_url:
+            return format_html(
+                '<a href="{}" target="_blank">Verify</a>',
+                obj.verification_url
+            )
+        return '—'
+    verification_url_display.short_description = 'Verification'
+
+
+# ============================================
+# ADMIN CUSTOMIZATION SUMMARY
+# ============================================
+
+"""
+DELETE PERMISSIONS ENABLED FOR ALL TABLES:
+
+✅ Sales (admin.sales_sale)
+   - Superusers can delete
+   - Staff cannot delete processed sales
+   - Cascade deletes: Items, Fiscal Receipts, Reversals
+
+✅ Sale Items (admin.sales_saleitem)
+   - Superusers can delete
+   - Staff cannot delete
+   - Individual and bulk deletion supported
+
+✅ Sale Reversals (admin.sales_salereversal)
+   - Superusers can delete
+   - Staff cannot delete
+   - Individual and bulk deletion supported
+
+✅ Fiscal Receipts (admin.sales_fiscalreceipt)
+   - Superusers can delete
+   - Staff cannot delete
+   - Individual and bulk deletion supported
+
+FEATURES:
+- Transaction-safe deletions
+- Detailed success messages
+- Bulk delete actions
+- Proper cascade handling
+- Permission checks
+"""
