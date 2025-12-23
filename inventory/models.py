@@ -144,7 +144,12 @@ class Product(models.Model):
         decimal_places=2,
         help_text="Retail price"
     )
-    
+    image = models.ImageField(
+       upload_to='products/%Y/%m/',
+       blank=True,
+       null=True,
+       help_text="Product image (optional)"
+    )
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')
     

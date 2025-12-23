@@ -139,7 +139,6 @@ class CategoryAdmin(admin.ModelAdmin):
             (Decimal(p.buying_price or 0) * Decimal(p.quantity or 0))
             for p in obj.products.filter(is_active=True)
         )
-        # Format the number first, then pass as string to format_html
         formatted_value = '${:,.2f}'.format(float(total))
         return format_html('<strong>{}</strong>', formatted_value)
     total_inventory_value.short_description = 'Inventory Value'
@@ -172,6 +171,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
+        'image_thumbnail',  # ✅ NEW: Image thumbnail in list view
         'product_code',
         'name',
         'category_link',
@@ -201,6 +201,7 @@ class ProductAdmin(admin.ModelAdmin):
         'status',
         'created_at',
         'updated_at',
+        'image_preview',  # ✅ NEW: Large image preview in detail view
         'inventory_summary',
         'profit_margin',
         'profit_percentage',
@@ -213,6 +214,8 @@ class ProductAdmin(admin.ModelAdmin):
                 'name',
                 'category',
                 'sku_value',
+                'image',  # ✅ NEW: Image upload field
+                'image_preview',  # ✅ NEW: Show current image
             )
         }),
         ('Inventory', {
@@ -257,6 +260,26 @@ class ProductAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.select_related('category', 'owner')
 
+    # ✅ NEW: Thumbnail for list view
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" />',
+                obj.image.url
+            )
+        return format_html('<span style="color: #999;">No image</span>')
+    image_thumbnail.short_description = 'Image'
+
+    # ✅ NEW: Large preview for detail view
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-width: 300px; max-height: 300px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />',
+                obj.image.url
+            )
+        return format_html('<span style="color: #999;">No image uploaded</span>')
+    image_preview.short_description = 'Current Image'
+
     def category_link(self, obj):
         if obj.category:
             url = reverse('admin:inventory_category_change', args=[obj.category.id])
@@ -272,7 +295,6 @@ class ProductAdmin(admin.ModelAdmin):
     sku_value_short.admin_order_field = 'sku_value'
 
     def quantity_display(self, obj):
-        # Defensive checks for None
         qty = obj.quantity or 0
         if getattr(obj.category, 'is_single_item', False):
             color = '#28a745' if qty > 0 else '#dc3545'
@@ -335,7 +357,6 @@ class ProductAdmin(admin.ModelAdmin):
     owner_link.admin_order_field = 'owner__username'
 
     def inventory_summary(self, obj):
-        # Aggregate stock entries
         stock_entries = obj.stock_entries.all()
         total_entries = stock_entries.count()
         purchases = stock_entries.filter(entry_type='purchase').aggregate(total=Sum('quantity'))['total'] or 0
@@ -399,12 +420,10 @@ class ProductAdmin(admin.ModelAdmin):
 # ============================================
 def reverse_stock_entry(modeladmin, request, queryset):
     for entry in queryset:
-        # Only process 'sale' entries
         if entry.entry_type == 'sale':
-            # Create a new StockEntry with negative quantity to reverse the sale
             StockEntry.objects.create(
                 product=entry.product,
-                entry_type='sale_reversal',  # or use 'adjustment' if preferred
+                entry_type='sale_reversal',
                 quantity=-entry.quantity,
                 unit_price=entry.unit_price,
                 total_amount=-float(Decimal(entry.total_amount)),
