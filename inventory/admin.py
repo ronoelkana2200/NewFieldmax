@@ -5,7 +5,8 @@ from django.db.models import Sum
 from decimal import Decimal
 from django.http import HttpResponse
 import csv
-
+import cloudinary
+from cloudinary import CloudinaryImage
 from .models import Category, Product, StockEntry
 
 # ============================================
@@ -260,25 +261,65 @@ class ProductAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.select_related('category', 'owner')
 
-    # ✅ NEW: Thumbnail for list view
-    def image_thumbnail(self, obj):
-        if obj.image:
-            return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" />',
-                obj.image.url
-            )
-        return format_html('<span style="color: #999;">No image</span>')
-    image_thumbnail.short_description = 'Image'
 
-    # ✅ NEW: Large preview for detail view
-    def image_preview(self, obj):
+
+    
+    # ✅ FIXED: Cloudinary thumbnail for list view
+    def image_thumbnail(self, obj):
+        """Display small thumbnail in product list using Cloudinary"""
         if obj.image:
-            return format_html(
-                '<img src="{}" style="max-width: 300px; max-height: 300px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" />',
-                obj.image.url
-            )
-        return format_html('<span style="color: #999;">No image uploaded</span>')
-    image_preview.short_description = 'Current Image'
+            try:
+                # Use Cloudinary to generate optimized thumbnail URL
+                cloudinary_url = CloudinaryImage(obj.image.name).build_url(
+                    width=80,
+                    height=80,
+                    crop='fill',
+                    quality='auto',
+                    fetch_format='auto'
+                )
+                return format_html(
+                    '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" />',
+                    cloudinary_url
+                )
+            except Exception as e:
+                return format_html(
+                    '<span style="color: #dc3545;">❌ Error loading image</span>'
+                )
+        return format_html(
+            '<span style="color: #6c757d; font-size: 2rem;">📷</span>'
+        )
+    image_thumbnail.short_description = 'Image'
+    
+    # ✅ FIXED: Cloudinary large preview for detail view
+    def image_preview(self, obj):
+        """Display large preview in product detail using Cloudinary"""
+        if obj.image:
+            try:
+                # Use Cloudinary to generate optimized preview URL
+                cloudinary_url = CloudinaryImage(obj.image.name).build_url(
+                    width=400,
+                    height=400,
+                    crop='limit',
+                    quality='auto',
+                    fetch_format='auto'
+                )
+                return format_html(
+                    '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />',
+                    cloudinary_url
+                )
+            except Exception as e:
+                return format_html(
+                    '<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px;">'
+                    '<strong>⚠️ Error loading image:</strong><br>{}</div>',
+                    str(e)
+                )
+        return format_html(
+            '<div style="padding: 40px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; text-align: center;">'
+            '<span style="font-size: 3rem; color: #adb5bd;">📷</span><br>'
+            '<span style="color: #6c757d;">No image uploaded</span></div>'
+        )
+    image_preview.short_description = 'Image Preview'
+
 
     def category_link(self, obj):
         if obj.category:
