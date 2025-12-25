@@ -5,6 +5,13 @@
 {% block title %}Shop - Fieldmax{% endblock %}
 
 {% block content %}
+{% comment %}
+  Pass 'debug' context variable from your view:
+  from django.conf import settings
+  def your_view(request):
+      return render(request, 'your_template.html', {'categories': categories, 'debug': settings.DEBUG})
+{% endcomment %}
+
 <style>
   .shop-hero {
     background: linear-gradient(135deg, #0dcaf0 0%, #0ab4d6 100%);
@@ -413,11 +420,17 @@
                 <!-- Product Image -->
                 <div class="product-image-wrapper">
                   {% if product.image %}
-                    <img src="{% cloudinary_url product.image.name width=400 height=300 crop='fill' quality='auto' fetch_format='auto' %}" 
-                         alt="{{ product.name }}" 
-                         class="product-image"
-                         loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class=\'no-image-placeholder\'><i class=\'bi bi-image\'></i></div>'" />
+                    {% if debug %}
+                      <!-- Development: show local media URL -->
+                      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image"
+                           loading="lazy"
+                           onerror="this.parentElement.innerHTML='<div class=\'no-image-placeholder\'><i class=\'bi bi-image\'></i></div>'" />
+                    {% else %}
+                      <!-- Production: show Cloudinary URL -->
+                      <img src="{% cloudinary_url product.image.name width=400 height=300 crop='fill' %}" alt="{{ product.name }}" class="product-image"
+                           loading="lazy"
+                           onerror="this.parentElement.innerHTML='<div class=\'no-image-placeholder\'><i class=\'bi bi-image\'></i></div>'" />
+                    {% endif %}
                   {% else %}
                     <div class="no-image-placeholder">
                       <i class="bi bi-image"></i>
@@ -460,7 +473,7 @@
                                 data-product-name="{{ product.name }}"
                                 data-product-price="{{ product.selling_price }}"
                                 data-product-code="{{ product.product_code }}"
-                                data-product-image="{% if product.image %}{% cloudinary_url product.image.name width=400 height=300 crop='fill' quality='auto' %}{% endif %}"
+                                data-product-image="{% if product.image %}{% if debug %}{{ product.image.url }}{% else %}{% cloudinary_url product.image.name width=400 height=300 crop='fill' %}{% endif %}{% endif %}"
                                 onclick="addToCart(this)">
                           <i class="bi bi-cart-plus"></i>
                           <span>
@@ -539,10 +552,9 @@
   });
 
   {% if not user.is_authenticated %}
-  // Add to Cart functionality - Fixed to avoid Django template interpolation errors
+  // Add to Cart functionality
   function addToCart(button) {
     try {
-      // Get data from button attributes
       const productId = button.getAttribute('data-product-id');
       const productName = button.getAttribute('data-product-name');
       const price = button.getAttribute('data-product-price');

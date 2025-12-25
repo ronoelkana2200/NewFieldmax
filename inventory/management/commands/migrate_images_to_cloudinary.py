@@ -54,12 +54,54 @@ class Command(BaseCommand):
                     continue
 
                 # Get local file path
-                local_path = product.image.path
+                try:
+                    local_path = product.image.path
+                except Exception:
+                    # Path might not have extension, try to find the file
+                    base_path = os.path.join(settings.MEDIA_ROOT, product.image.name)
+                    
+                    # Try common extensions
+                    possible_paths = [
+                        base_path + '.jpg',
+                        base_path + '.jpeg',
+                        base_path + '.png',
+                        base_path + '.webp',
+                        base_path + '.gif',
+                    ]
+                    
+                    local_path = None
+                    for possible_path in possible_paths:
+                        if os.path.exists(possible_path):
+                            local_path = possible_path
+                            break
+                    
+                    if not local_path:
+                        self.stdout.write(self.style.ERROR(f"  ❌ Could not find file for: {product.image.name}"))
+                        error_count += 1
+                        continue
                 
                 if not os.path.exists(local_path):
-                    self.stdout.write(self.style.ERROR(f"  ❌ Local file not found: {local_path}"))
-                    error_count += 1
-                    continue
+                    # Try to find file with extension
+                    base_path = os.path.join(settings.MEDIA_ROOT, product.image.name)
+                    possible_paths = [
+                        base_path + '.jpg',
+                        base_path + '.jpeg', 
+                        base_path + '.png',
+                        base_path + '.webp',
+                        base_path + '.gif',
+                    ]
+                    
+                    found = False
+                    for possible_path in possible_paths:
+                        if os.path.exists(possible_path):
+                            local_path = possible_path
+                            found = True
+                            break
+                    
+                    if not found:
+                        self.stdout.write(self.style.ERROR(f"  ❌ Local file not found: {local_path}"))
+                        error_count += 1
+                        continue
 
                 self.stdout.write(f"  📂 Local path: {local_path}")
 
