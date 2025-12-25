@@ -403,7 +403,17 @@
                 <!-- Product Image -->
                 <div class="product-image-wrapper">
                   {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" />
+                    {% if product.image.url %}
+                      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" 
+                           onerror="console.error('Image failed to load:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                      <div class="no-image-placeholder" style="display: none;">
+                        <i class="bi bi-image"></i>
+                      </div>
+                    {% else %}
+                      <div class="no-image-placeholder">
+                        <i class="bi bi-image"></i>
+                      </div>
+                    {% endif %}
                   {% else %}
                     <div class="no-image-placeholder">
                       <i class="bi bi-image"></i>
@@ -441,7 +451,7 @@
                     {% if not user.is_authenticated %}
                       {% if product.status == 'available' %}
                         <button class="add-to-cart-btn" 
-                                onclick="addToCart('{{ product.id }}', '{{ product.name }}', '{{ product.selling_price }}', '{{ product.product_code }}', '{% if product.image %}{{ product.image.url }}{% endif %}')">
+                                onclick="addToCart('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.selling_price }}', '{{ product.product_code }}', '{% if product.image and product.image.url %}{{ product.image.url }}{% endif %}')">
                           <i class="bi bi-cart-plus"></i>
                           Add to Cart
                         </button>
