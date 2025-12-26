@@ -5,7 +5,6 @@ from django.db.models import Sum
 from decimal import Decimal
 from django.http import HttpResponse
 import csv
-import cloudinary
 from cloudinary import CloudinaryImage
 from .models import Category, Product, StockEntry
 
@@ -172,7 +171,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
-        'image_thumbnail',  # ✅ NEW: Image thumbnail in list view
+        'image_thumbnail',
         'product_code',
         'name',
         'category_link',
@@ -202,7 +201,7 @@ class ProductAdmin(admin.ModelAdmin):
         'status',
         'created_at',
         'updated_at',
-        'image_preview',  # ✅ NEW: Large image preview in detail view
+        'image_preview',
         'inventory_summary',
         'profit_margin',
         'profit_percentage',
@@ -215,8 +214,8 @@ class ProductAdmin(admin.ModelAdmin):
                 'name',
                 'category',
                 'sku_value',
-                'image',  # ✅ NEW: Image upload field
-                'image_preview',  # ✅ NEW: Show current image
+                'image',
+                'image_preview',
             )
         }),
         ('Inventory', {
@@ -261,108 +260,111 @@ class ProductAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.select_related('category', 'owner')
 
-
-
-    
-# ============================================
-# REPLACE THESE METHODS IN YOUR admin.py
-# ============================================
+    # ============================================
+    # ✅ FIXED IMAGE DISPLAY METHODS
+    # ============================================
 
     def image_thumbnail(self, obj):
         """Display small thumbnail in product list"""
         if obj.image:
             try:
-                # Get the image URL - works for both local and Cloudinary
-                img_url = obj.image.url
-            
-                # If it's a Cloudinary URL, add transformations
-                if 'cloudinary.com' in img_url or 'res.cloudinary.com' in img_url:
-                    # Already a Cloudinary URL, just use it
-                    display_url = img_url
-                else:
-                    # Local URL - try to build Cloudinary URL
-                    import cloudinary
-                    from cloudinary import CloudinaryImage
+                # Get the public_id from the image field (Cloudinary storage)
+                public_id = obj.image.name
                 
-                    # Get the image path/name
-                    image_name = str(obj.image.name) if hasattr(obj.image, 'name') else str(obj.image)
+                # Build Cloudinary URL with transformations
+                img_url = CloudinaryImage(public_id).build_url(
+                    width=80,
+                    height=80,
+                    crop='fill',
+                    quality='auto',
+                    fetch_format='auto'
+                )
                 
-                    # Build Cloudinary URL with transformations
-                    display_url = CloudinaryImage(image_name).build_url(
-                        width=80,
-                        height=80,
-                        crop='fill',
-                        quality='auto',
-                        fetch_format='auto'
-                    )
-            
                 return format_html(
-                    '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" />',
-                    display_url
+                    '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" '
+                    'loading="lazy" alt="Product thumbnail" />',
+                    img_url
                 )
             except Exception as e:
-                # Fallback: just show the URL as-is
+                # Fallback to direct URL if transformation fails
                 try:
                     return format_html(
-                        '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" />',
-                         obj.image.url
+                        '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" '
+                        'loading="lazy" alt="Product thumbnail" />',
+                        obj.image.url
                     )
                 except:
-                    return format_html('<span style="color: #dc3545;">❌ Error</span>')
-        return format_html('<span style="color: #6c757d; font-size: 2rem;">📷</span>')
+                    return format_html(
+                        '<span style="color: #dc3545; font-size: 0.875rem;">❌ Error</span>'
+                    )
+        
+        return format_html(
+            '<span style="color: #6c757d; font-size: 2rem;" title="No image">📷</span>'
+        )
+    
     image_thumbnail.short_description = 'Image'
 
     def image_preview(self, obj):
         """Display large preview in product detail"""
         if obj.image:
             try:
-                # Get the image URL - works for both local and Cloudinary
-                img_url = obj.image.url
-            
-                # If it's a Cloudinary URL, add transformations
-                if 'cloudinary.com' in img_url or 'res.cloudinary.com' in img_url:
-                # Already a Cloudinary URL, just use it
-                    display_url = img_url
-                else:
-                # Local URL - try to build Cloudinary URL
-                    import cloudinary
-                    from cloudinary import CloudinaryImage
+                # Get the public_id from the image field (Cloudinary storage)
+                public_id = obj.image.name
                 
-                # Get the image path/name
-                    image_name = str(obj.image.name) if hasattr(obj.image, 'name') else str(obj.image)
+                # Build Cloudinary URL with transformations for large preview
+                img_url = CloudinaryImage(public_id).build_url(
+                    width=400,
+                    height=400,
+                    crop='limit',
+                    quality='auto',
+                    fetch_format='auto'
+                )
                 
-                # Build Cloudinary URL with transformations
-                    display_url = CloudinaryImage(image_name).build_url(
-                        width=400,
-                        height=400,
-                        crop='limit',
-                        quality='auto',
-                        fetch_format='auto'
-                    )
-            
                 return format_html(
-                    '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />',
-                    display_url
+                    '<div style="text-align: center;">'
+                    '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; '
+                    'box-shadow: 0 2px 8px rgba(0,0,0,0.1);" loading="lazy" alt="Product preview" />'
+                    '<div style="margin-top: 0.5rem; font-size: 0.75rem; color: #6c757d;">'
+                    '✅ Hosted on Cloudinary'
+                    '</div>'
+                    '</div>',
+                    img_url
                 )
             except Exception as e:
-            # Fallback: just show the URL as-is
+                # Fallback to direct URL
                 try:
                     return format_html(
-                        '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />',
+                        '<div style="text-align: center;">'
+                        '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; '
+                        'box-shadow: 0 2px 8px rgba(0,0,0,0.1);" loading="lazy" alt="Product preview" />'
+                        '<div style="margin-top: 0.5rem; font-size: 0.75rem; color: #f59e0b;">'
+                        '⚠️ Displayed without transformations'
+                        '</div>'
+                        '</div>',
                         obj.image.url
                     )
                 except:
                     return format_html(
-                        '<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px;">'
-                        '<strong>⚠️ Error loading image</strong></div>'
+                        '<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; '
+                        'border-radius: 8px; text-align: center;">'
+                        '<strong style="color: #856404;">⚠️ Error loading image</strong><br>'
+                        '<small style="color: #856404;">Image may be corrupted or unavailable</small>'
+                        '</div>'
                     )
+        
         return format_html(
-            '<div style="padding: 40px; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px; text-align: center;">'
+            '<div style="padding: 40px; background: #f8f9fa; border: 2px dashed #dee2e6; '
+            'border-radius: 8px; text-align: center;">'
             '<span style="font-size: 3rem; color: #adb5bd;">📷</span><br>'
-            '<span style="color: #6c757d;">No image uploaded</span></div>'
-        )  
+            '<span style="color: #6c757d; font-size: 0.875rem;">No image uploaded</span>'
+            '</div>'
+        )
+    
     image_preview.short_description = 'Image Preview'
 
+    # ============================================
+    # OTHER DISPLAY METHODS
+    # ============================================
 
     def category_link(self, obj):
         if obj.category:
@@ -502,12 +504,13 @@ class ProductAdmin(admin.ModelAdmin):
 # ============================================
 # STOCK ENTRY ADMIN
 # ============================================
+
 def reverse_stock_entry(modeladmin, request, queryset):
     for entry in queryset:
         if entry.entry_type == 'sale':
             StockEntry.objects.create(
                 product=entry.product,
-                entry_type='sale_reversal',
+                entry_type='reversal',
                 quantity=-entry.quantity,
                 unit_price=entry.unit_price,
                 total_amount=-float(Decimal(entry.total_amount)),
@@ -568,8 +571,10 @@ class StockEntryAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return True
+    
     def has_change_permission(self, request, obj=None):
         return True
+    
     def has_delete_permission(self, request, obj=None):
         return True
 
@@ -590,6 +595,7 @@ class StockEntryAdmin(admin.ModelAdmin):
             'purchase': '#28a745',
             'sale': '#dc3545',
             'return': '#17a2b8',
+            'reversal': '#17a2b8',
             'adjustment': '#ffc107',
         }
         color = colors.get(obj.entry_type, '#6c757d')

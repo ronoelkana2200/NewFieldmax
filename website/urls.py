@@ -36,12 +36,13 @@ urlpatterns = [
     path('cart/', shopping_cart, name='shopping-cart'),
     path('api/validate-cart/', validate_cart, name='validate-cart'),
     path('checkout/', views.checkout_page, name='checkout'),
-    path('order-success/', views.order_success, name='order-success'),
+    path('api/cart/add/', views.api_add_to_cart, name='api-add-to-cart'),
 
     # ============================================
     # PENDING ORDERS SYSTEM
     # ============================================
     # Customer submits order
+    path('order-success/', views.order_success, name='order-success'),
     path('api/pending-orders/create/', views.create_pending_order, name='create-pending-order'),
     path('api/pending-orders-count/', pending_orders_count, name='pending_orders_count'),
     

@@ -21,17 +21,14 @@ from sales.models import Sale, SaleItem
 from django.views.decorators.csrf import csrf_exempt
 from .models import PendingOrder, PendingOrderItem
 from django.views.generic import ListView
-
+from django.conf import settings  
+from django.views.decorators.http import require_POST
 
 
 
 
 
 logger = logging.getLogger(__name__)
-
-
-
-
 
 
 
@@ -1147,27 +1144,74 @@ def process_order(request):
 @require_http_methods(["GET"])
 def order_success(request):
     """
-    Order success page
+    Order success page - renders template that loads data from browser sessionStorage
+    The JavaScript in the template handles loading order details from sessionStorage
     """
-    # Get order info from session
-    order_info = request.session.get('last_order', None)
-    
-    if not order_info:
-        # Redirect to home if no order info
-        return redirect('home')
-    
-    # Clear the session data
-    if 'last_order' in request.session:
-        del request.session['last_order']
-    
-    context = {
+    # Just render the template - let JavaScript handle the data
+    return render(request, 'website/order_success.html', {
         'page_title': 'Order Successful - Fieldmax',
-        'order_info': order_info
-    }
+    })
+
+
+
+
+
+
+
+
+# ============================================
+# SHOP VIEW
+# ============================================
+
+@csrf_exempt
+@require_POST
+def api_add_to_cart(request):
+    try:
+        # Parse incoming JSON data
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        quantity = int(data.get('quantity', 1))
+        
+        # Validate product
+        product = Product.objects.filter(id=product_id, is_active=True).first()
+        if not product:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        
+        # Initialize or retrieve cart from session
+        cart = request.session.get('cart', {})
+        
+        # Check if product already in cart
+        product_key = str(product_id)
+        if product_key in cart:
+            # Update quantity
+            cart[product_key]['quantity'] += quantity
+            # Optional: prevent exceeding stock
+            max_quantity = product.quantity if not product.category.is_single_item else 1
+            if cart[product_key]['quantity'] > max_quantity:
+                cart[product_key]['quantity'] = max_quantity
+        else:
+            # Add new item
+            max_quantity = product.quantity if not product.category.is_single_item else 1
+            if quantity > max_quantity:
+                quantity = max_quantity
+            
+            cart[product_key] = {
+                'name': product.name,
+                'product_code': product.product_code,
+                'price': float(product.selling_price),
+                'quantity': quantity,
+            }
+        
+        # Save updated cart into session
+        request.session['cart'] = cart
+        request.session.modified = True  # Mark session as modified to save changes
+        
+        return JsonResponse({'status': 'success', 'message': 'Product added to cart'})
     
-    return render(request, 'website/order_success.html', context)
-
-
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
 
@@ -1201,6 +1245,7 @@ def shop_view(request):
     
     context = {
         'categories': categories_with_products,
+        'debug': settings.DEBUG,  # ✅ ADD THIS LINE - Critical for image handling
     }
     
     return render(request, 'website/shop.html', context)
@@ -1232,7 +1277,11 @@ class ShopListView(ListView):
                 filtered_categories.append(category)
         return filtered_categories
     
-
+    def get_context_data(self, **kwargs):
+        """Add debug flag to context"""
+        context = super().get_context_data(**kwargs)
+        context['debug'] = settings.DEBUG  # ✅ ADD THIS for class-based view too
+        return context
 
 
 

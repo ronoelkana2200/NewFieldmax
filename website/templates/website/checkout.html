@@ -485,7 +485,7 @@
         <div class="checkout-grid">
             <!-- Left: Checkout Form -->
             <div class="checkout-form">
-                <form id="checkoutForm">
+                <form id="checkoutForm" onsubmit="event.preventDefault(); submitOrder();">
                     <!-- Customer Information -->
                     <div class="form-section">
                         <h3 class="section-title">
@@ -732,65 +732,80 @@
     }
 
     // Submit order
-    async function submitOrder() {
-        if (!validateForm()) {
-            showAlert('Please fix the errors in the form', 'error');
-            return;
-        }
+async function submitOrder() {
+    if (!validateForm()) {
+        showAlert('Please fix the errors in the form', 'error');
+        return;
+    }
 
-        if (cart.length === 0) {
-            showAlert('Your cart is empty', 'error');
-            return;
-        }
+    if (cart.length === 0) {
+        showAlert('Your cart is empty', 'error');
+        return;
+    }
 
-        // Show loading
-        document.getElementById('loadingOverlay').classList.add('show');
-        document.getElementById('placeOrderBtn').disabled = true;
+    // Show loading
+    document.getElementById('loadingOverlay').classList.add('show');
+    document.getElementById('placeOrderBtn').disabled = true;
 
-        // Collect form data
-        const orderData = {
-            cart: cart,
-            buyer_name: document.getElementById('buyerName').value.trim(),
-            buyer_phone: document.getElementById('buyerPhone').value.trim(),
-            buyer_email: document.getElementById('buyerEmail').value.trim(),
-            buyer_id: document.getElementById('buyerId').value.trim(),
-            payment_method: document.querySelector('input[name="payment"]:checked').value,
-            notes: document.getElementById('orderNotes').value.trim(),
-            total_amount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-        };
+    // Collect form data
+    const orderData = {
+        cart: cart,
+        buyer_name: document.getElementById('buyerName').value.trim(),
+        buyer_phone: document.getElementById('buyerPhone').value.trim(),
+        buyer_email: document.getElementById('buyerEmail').value.trim(),
+        buyer_id: document.getElementById('buyerId').value.trim(),
+        payment_method: document.querySelector('input[name="payment"]:checked').value,
+        notes: document.getElementById('orderNotes').value.trim(),
+        total_amount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    };
 
-        try {
-            const response = await fetch('/api/pending-orders/create/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                },
-                body: JSON.stringify(orderData)
-            });
+    try {
+        const response = await fetch('/api/pending-orders/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(orderData)
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (data.success) {
-               localStorage.removeItem('fieldmax_cart');
-               window.dispatchEvent(new Event('cartUpdated'));
-
-               showAlert('Order submitted successfully and is pending approval.', 'success');
-
-               setTimeout(() => {
-                   window.location.href = '/orders/pending/';
-               }, 1500);
+        if (data.success) {
+            // Clear cart from localStorage
+            localStorage.removeItem('fieldmax_cart');
             
-            } else {
-                showAlert(data.message || 'Failed to process order', 'error');
-            }
-        } catch (error) {
-            console.error('Order error:', error);
-            showAlert('Failed to process order. Please try again.', 'error');
-        } finally {
-            document.getElementById('loadingOverlay').classList.remove('show');
-            document.getElementById('placeOrderBtn').disabled = false;
+            // Update cart count in navbar
+            window.dispatchEvent(new Event('cartUpdated'));
+
+            // Store order info in sessionStorage for the success page
+            sessionStorage.setItem('order_info', JSON.stringify({
+                order_id: data.order_id,
+                buyer_name: orderData.buyer_name,
+                buyer_phone: orderData.buyer_phone,
+                payment_method: orderData.payment_method,
+                total_amount: orderData.total_amount,
+                item_count: cart.reduce((sum, item) => sum + item.quantity, 0)
+            }));
+
+            // Show success message
+            showAlert('Order submitted successfully! Redirecting...', 'success');
+
+            // Redirect to order success page after 1 second
+            setTimeout(() => {
+                window.location.href = '/order-success/';
+            }, 1000);
+            
+        } else {
+            showAlert(data.message || 'Failed to process order', 'error');
         }
+    } catch (error) {
+        console.error('Order error:', error);
+        showAlert('Failed to process order. Please try again.', 'error');
+    } finally {
+        document.getElementById('loadingOverlay').classList.remove('show');
+        document.getElementById('placeOrderBtn').disabled = false;
+    }
     }
 
     // Show alert

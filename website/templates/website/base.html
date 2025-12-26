@@ -611,10 +611,15 @@
           <i class="bi bi-house-door"></i>
           <span>Home</span>
         </a>
+        
+        <!-- ✅ MODIFIED: Hide Shop button when user is authenticated (staff) -->
+        {% if not user.is_authenticated %}
         <a href="{% url 'shop' %}" class="nav-link">
           <i class="bi bi-shop"></i>
           <span>Shop</span>
         </a>
+        {% endif %}
+        
         <a href="#" class="nav-link">
           <i class="bi bi-envelope"></i>
           <span>Contact</span>
@@ -782,123 +787,127 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Custom JS -->
-  <script>
-    // Mobile menu toggle
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
+<script>
+  // Mobile menu toggle
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const navbarMenu = document.getElementById('navbarMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
 
-    function toggleMenu() {
-      navbarMenu.classList.toggle('active');
-      menuOverlay.classList.toggle('active');
-      const icon = mobileMenuToggle.querySelector('i');
-      icon.classList.toggle('bi-list');
-      icon.classList.toggle('bi-x');
-      
-      if (navbarMenu.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
-      }
-    }
-
-    function closeMenu() {
-      navbarMenu.classList.remove('active');
-      menuOverlay.classList.remove('active');
-      const icon = mobileMenuToggle.querySelector('i');
-      icon.classList.remove('bi-x');
-      icon.classList.add('bi-list');
+  function toggleMenu() {
+    navbarMenu.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    const icon = mobileMenuToggle.querySelector('i');
+    icon.classList.toggle('bi-list');
+    icon.classList.toggle('bi-x');
+    
+    if (navbarMenu.classList.contains('active')) {
+      document.body.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = '';
     }
+  }
 
-    if (mobileMenuToggle) {
-      mobileMenuToggle.addEventListener('click', toggleMenu);
-    }
+  function closeMenu() {
+    navbarMenu.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    const icon = mobileMenuToggle.querySelector('i');
+    icon.classList.remove('bi-x');
+    icon.classList.add('bi-list');
+    document.body.style.overflow = '';
+  }
 
-    if (menuOverlay) {
-      menuOverlay.addEventListener('click', closeMenu);
-    }
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMenu);
+  }
 
-    const navLinks = navbarMenu.querySelectorAll('.nav-link, .nav-form button');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        if (window.innerWidth <= 992) {
-          closeMenu();
-        }
-      });
-    });
+  if (menuOverlay) {
+    menuOverlay.addEventListener('click', closeMenu);
+  }
 
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        if (window.innerWidth > 992) {
-          closeMenu();
-        }
-      }, 250);
-    });
-
-    window.addEventListener('orientationchange', function() {
-      if (window.innerWidth <= 992 && navbarMenu.classList.contains('active')) {
+  const navLinks = navbarMenu.querySelectorAll('.nav-link, .nav-form button');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 992) {
         closeMenu();
       }
     });
+  });
 
-//====================
-// PENDING ORDERS COUNT (For Staff)
-//====================
-{% if user.is_authenticated %}
-function updatePendingOrdersCount() {
-  fetch('/api/pending-orders-count/')
-    .then(response => response.json())
-    .then(data => {
-      const badge = document.getElementById('pendingOrdersBadge');
-      if (badge && data.count !== undefined) {
-        badge.textContent = data.count;
-        if (data.count === 0) {
-          badge.classList.add('empty');
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      if (window.innerWidth > 992) {
+        closeMenu();
+      }
+    }, 250);
+  });
+
+  window.addEventListener('orientationchange', function() {
+    if (window.innerWidth <= 992 && navbarMenu.classList.contains('active')) {
+      closeMenu();
+    }
+  });
+
+  // Check if user is authenticated (staff)
+  const isAuthenticated = "{{ user.is_authenticated }}" === "True";
+
+  if (isAuthenticated) {
+    // STAFF: Update pending orders count
+    function updatePendingOrdersCount() {
+      fetch('/api/pending-orders-count/')
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('pendingOrdersBadge');
+          if (badge && data.count !== undefined) {
+            badge.textContent = data.count;
+            if (data.count === 0) {
+              badge.classList.add('empty');
+            } else {
+              badge.classList.remove('empty');
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching pending orders count:', error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', updatePendingOrdersCount);
+    setInterval(updatePendingOrdersCount, 30000); // Update every 30 seconds
+  } else {
+    // CUSTOMER: Update cart count
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('fieldmax_cart') || '[]');
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      const cartBadge = document.getElementById('cartBadge');
+      if (cartBadge) {
+        cartBadge.textContent = totalItems;
+        if (totalItems === 0) {
+          cartBadge.classList.add('empty');
         } else {
-          badge.classList.remove('empty');
+          cartBadge.classList.remove('empty');
         }
       }
-    })
-    .catch(error => {
-      console.error('Error fetching pending orders count:', error);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', updatePendingOrdersCount);
-setInterval(updatePendingOrdersCount, 30000);
-{% else %}
-
-//====================
-// CART COUNT (For Customers)
-//====================
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('fieldmax_cart') || '[]');
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  
-  const cartBadge = document.getElementById('cartBadge');
-  if (cartBadge) {
-    cartBadge.textContent = totalItems;
-    if (totalItems === 0) {
-      cartBadge.classList.add('empty');
-    } else {
-      cartBadge.classList.remove('empty');
     }
+
+    // Update on page load
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+
+    // Listen for storage changes (when cart is updated in another tab)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'fieldmax_cart') {
+        updateCartCount();
+      }
+    });
+
+    // Listen for custom cart update event (when cart is updated in same tab)
+    window.addEventListener('cartUpdated', updateCartCount);
+
+    // Make updateCartCount available globally for shop page
+    window.updateCartCount = updateCartCount;
   }
-}
-
-document.addEventListener('DOMContentLoaded', updateCartCount);
-
-window.addEventListener('storage', function(e) {
-  if (e.key === 'fieldmax_cart') {
-    updateCartCount();
-  }
-});
-
-window.addEventListener('cartUpdated', updateCartCount);
-{% endif %}
-  </script>
+</script>
 </body>
 </html>

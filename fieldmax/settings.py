@@ -1,5 +1,6 @@
 """
-Django settings for fieldmax project - FIXED CLOUDINARY CONFIGURATION
+Django settings for fieldmax project - PRODUCTION READY
+Optimized for Render deployment with Cloudinary media storage
 """
 from dotenv import load_dotenv
 load_dotenv()
@@ -59,7 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     
-    # ✅ FIXED: Cloudinary MUST be before staticfiles
+    # ✅ Cloudinary MUST be before staticfiles
     'cloudinary_storage',
     'cloudinary',
     
@@ -202,7 +203,7 @@ STATICFILES_FINDERS = [
 
 
 # ============================================
-# ✅ FIXED: CLOUDINARY CONFIGURATION
+# ✅ CLOUDINARY CONFIGURATION (PRODUCTION READY)
 # ============================================
 import cloudinary
 import cloudinary.uploader
@@ -212,7 +213,8 @@ import cloudinary.api
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'SECURE': True,  # Always use HTTPS
 }
 
 # Configure cloudinary module directly
@@ -220,17 +222,18 @@ cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
     api_secret=os.getenv('CLOUDINARY_API_SECRET'),
-    secure=True  # Use HTTPS
+    secure=True
 )
 
-# ✅ ALWAYS use Cloudinary for media storage (production & development)
+# ✅ Use Cloudinary for all media files (user uploads)
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+
 # ============================================
-# MEDIA FILES (User Uploads)
+# MEDIA FILES (User Uploads via Cloudinary)
 # ============================================
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 
 # Maximum upload size (100MB)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
@@ -506,28 +509,49 @@ def validate_settings():
             errors.append(f"Cannot create logs directory: {e}")
     
     # Check Cloudinary credentials
-    if not all([
+    cloudinary_vars = [
         os.getenv('CLOUDINARY_CLOUD_NAME'),
         os.getenv('CLOUDINARY_API_KEY'),
         os.getenv('CLOUDINARY_API_SECRET')
-    ]):
-        warnings.append("⚠️  Cloudinary credentials not set! Media uploads will fail.")
-        warnings.append("   Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET")
+    ]
+    
+    if not all(cloudinary_vars):
+        warnings.append("⚠️  Cloudinary credentials not fully configured!")
+        warnings.append("   Missing: " + ", ".join([
+            name for name, val in [
+                ('CLOUDINARY_CLOUD_NAME', cloudinary_vars[0]),
+                ('CLOUDINARY_API_KEY', cloudinary_vars[1]),
+                ('CLOUDINARY_API_SECRET', cloudinary_vars[2])
+            ] if not val
+        ]))
+        warnings.append("   Media uploads will fail. Set these in Render environment variables.")
     else:
         print("✅ Cloudinary configured successfully")
+        print(f"   Cloud Name: {os.getenv('CLOUDINARY_CLOUD_NAME')}")
+    
+    # Check database connection
+    if not all([
+        os.getenv("DB_NAME"),
+        os.getenv("DB_USER"),
+        os.getenv("DB_PASSWORD"),
+        os.getenv("DB_HOST")
+    ]):
+        errors.append("❌ Database credentials incomplete!")
     
     if errors:
-        print("\n❌ SETTINGS VALIDATION ERRORS:")
+        print("\n" + "="*70)
+        print("❌ CRITICAL SETTINGS ERRORS:")
         for error in errors:
-            print(f"   - {error}")
-        print()
+            print(f"   {error}")
+        print("="*70 + "\n")
     
     if warnings:
-        print("\n⚠️  SETTINGS WARNINGS:")
+        print("\n" + "="*70)
+        print("⚠️  SETTINGS WARNINGS:")
         for warning in warnings:
             print(f"   {warning}")
-        print()
+        print("="*70 + "\n")
 
-# Run validation
-if 'runserver' in sys.argv or 'migrate' in sys.argv:
+# Run validation on startup
+if 'runserver' in sys.argv or 'migrate' in sys.argv or 'collectstatic' in sys.argv:
     validate_settings()
