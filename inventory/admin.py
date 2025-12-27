@@ -171,7 +171,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = [
-        'image_thumbnail',
+        'show_image',
         'product_code',
         'name',
         'category_link',
@@ -201,7 +201,7 @@ class ProductAdmin(admin.ModelAdmin):
         'status',
         'created_at',
         'updated_at',
-        'image_preview',
+        'live_image_preview',
         'inventory_summary',
         'profit_margin',
         'profit_percentage',
@@ -214,9 +214,14 @@ class ProductAdmin(admin.ModelAdmin):
                 'name',
                 'category',
                 'sku_value',
-                'image',
-                'image_preview',
             )
+        }),
+        ('Product Image', {
+            'fields': (
+                'image',
+                'live_image_preview',
+            ),
+            'description': 'Upload an image to see it instantly below'
         }),
         ('Inventory', {
             'fields': (
@@ -256,111 +261,185 @@ class ProductAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     list_per_page = 50
 
+    # ============================================
+    # ✅ ADD JAVASCRIPT FOR LIVE IMAGE PREVIEW
+    # ============================================
+    
+    class Media:
+        js = ('admin/js/vendor/jquery/jquery.js', 'admin/js/jquery.init.js')
+        css = {
+            'all': ('admin/css/base.css',)
+        }
+
+    def show_image(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
+        return "-"
+    show_image.short_description = 'Image'
+    
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('category', 'owner')
 
     # ============================================
-    # ✅ FIXED IMAGE DISPLAY METHODS
+    # ✅ LIVE IMAGE PREVIEW WITH JAVASCRIPT
     # ============================================
 
-    def image_thumbnail(self, obj):
-        """Display small thumbnail in product list"""
-        if obj.image:
-            try:
-                # Get the public_id from the image field (Cloudinary storage)
-                public_id = obj.image.name
-                
-                # Build Cloudinary URL with transformations
-                img_url = CloudinaryImage(public_id).build_url(
-                    width=80,
-                    height=80,
-                    crop='fill',
-                    quality='auto',
-                    fetch_format='auto'
-                )
-                
-                return format_html(
-                    '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" '
-                    'loading="lazy" alt="Product thumbnail" />',
-                    img_url
-                )
-            except Exception as e:
-                # Fallback to direct URL if transformation fails
-                try:
-                    return format_html(
-                        '<img src="{}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;" '
-                        'loading="lazy" alt="Product thumbnail" />',
-                        obj.image.url
-                    )
-                except:
-                    return format_html(
-                        '<span style="color: #dc3545; font-size: 0.875rem;">❌ Error</span>'
-                    )
+    def live_image_preview(self, obj):
+        """Live preview that updates when image is uploaded"""
         
-        return format_html(
-            '<span style="color: #6c757d; font-size: 2rem;" title="No image">📷</span>'
-        )
-    
-    image_thumbnail.short_description = 'Image'
-
-    def image_preview(self, obj):
-        """Display large preview in product detail"""
-        if obj.image:
+        # Get current image if exists
+        current_image_html = ''
+        if obj and obj.image:
             try:
-                # Get the public_id from the image field (Cloudinary storage)
                 public_id = obj.image.name
-                
-                # Build Cloudinary URL with transformations for large preview
                 img_url = CloudinaryImage(public_id).build_url(
-                    width=400,
-                    height=400,
+                    width=50,
+                    height=50,
                     crop='limit',
                     quality='auto',
                     fetch_format='auto'
                 )
+                current_image_html = f'''
+                <img src="{img_url}" 
+                     style="max-width: 50px; max-height: 50px; border-radius: 8px; 
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);" 
+                     loading="lazy" 
+                     alt="Product preview" />
+                <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #28a745;">
+                    ✅ Image loaded from Cloudinary
+                </div>
+                '''
+            except:
+                current_image_html = '''
+                <div style="padding: 10px; background: #fff3cd; border: 1px solid #ffc107; 
+                            border-radius: 8px; text-align: center;">
+                    <strong style="color: #856404;">⚠️ Error loading current image</strong>
+                </div>
+                '''
+        else:
+            current_image_html = '''
+            <div style="padding: 20px; background: #f8f9fa; border: 2px dashed #dee2e6; 
+                        border-radius: 8px; text-align: center;">
+                <span style="font-size: 3rem; color: #adb5bd;">📷</span><br>
+                <span style="color: #6c757d; font-size: 0.875rem;">No image yet - upload one above</span>
+            </div>
+            '''
+
+        return format_html('''
+            <div style="text-align: center;">
+                <div id="image-preview-container" style="min-height: 200px;">
+                    {current_image}
+                </div>
+                
+                <script>
+                (function() {{
+                    // Wait for page to load
+                    if (document.readyState === 'loading') {{
+                        document.addEventListener('DOMContentLoaded', initImagePreview);
+                    }} else {{
+                        initImagePreview();
+                    }}
+                    
+                    function initImagePreview() {{
+                        const imageInput = document.querySelector('input[name="image"]');
+                        const clearCheckbox = document.querySelector('input[name="image-clear"]');
+                        const previewContainer = document.getElementById('image-preview-container');
+                        
+                        if (!imageInput || !previewContainer) return;
+                        
+                        // Handle file selection
+                        imageInput.addEventListener('change', function(e) {{
+                            const file = e.target.files[0];
+                            
+                            if (file && file.type.startsWith('image/')) {{
+                                const reader = new FileReader();
+                                
+                                reader.onload = function(event) {{
+                                    previewContainer.innerHTML = `
+                                        <div style="position: relative;">
+                                            <img src="${{event.target.result}}" 
+                                                 style="max-width: 400px; max-height: 400px; 
+                                                        border-radius: 8px; 
+                                                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);" 
+                                                 alt="Preview" />
+                                            <div style="margin-top: 0.5rem; padding: 8px; 
+                                                        background: #d1ecf1; border: 1px solid #bee5eb; 
+                                                        border-radius: 4px; font-size: 0.875rem; 
+                                                        color: #0c5460;">
+                                                <strong>📤 Ready to upload to Cloudinary</strong><br>
+                                                <small>Image will be uploaded when you save</small>
+                                            </div>
+                                        </div>
+                                    `;
+                                }};
+                                
+                                reader.readAsDataURL(file);
+                            }}
+                        }});
+                        
+                        // Handle clear checkbox
+                        if (clearCheckbox) {{
+                            clearCheckbox.addEventListener('change', function(e) {{
+                                if (e.target.checked) {{
+                                    previewContainer.innerHTML = `
+                                        <div style="padding: 40px; background: #f8d7da; 
+                                                    border: 2px dashed #f5c6cb; 
+                                                    border-radius: 8px; text-align: center;">
+                                            <span style="font-size: 3rem; color: #721c24;">🗑️</span><br>
+                                            <strong style="color: #721c24;">Image will be removed</strong><br>
+                                            <small style="color: #721c24;">Uncheck to keep current image</small>
+                                        </div>
+                                    `;
+                                }} else {{
+                                    // Restore original preview
+                                    location.reload();
+                                }}
+                            }});
+                        }}
+                    }}
+                }})();
+                </script>
+            </div>
+        ''', current_image=current_image_html)
+    
+    live_image_preview.short_description = '📸 Live Image Preview'
+
+    # ============================================
+    # LIST VIEW IMAGE THUMBNAIL
+    # ============================================
+
+    def image_thumbnail(self, obj):
+        """Display image that fits in the row"""
+        if obj.image:
+            try:
+                public_id = obj.image.name
+                img_url = CloudinaryImage(public_id).build_url(
+                    width=50,
+                    height=50,
+                    crop='fit',
+                    quality='auto',
+                    fetch_format='auto'
+                )
                 
                 return format_html(
-                    '<div style="text-align: center;">'
-                    '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; '
-                    'box-shadow: 0 2px 8px rgba(0,0,0,0.1);" loading="lazy" alt="Product preview" />'
-                    '<div style="margin-top: 0.5rem; font-size: 0.75rem; color: #6c757d;">'
-                    '✅ Hosted on Cloudinary'
-                    '</div>'
-                    '</div>',
+                    '<img src="{}" style="max-width: 200px; height: auto; max-height: 60px; '
+                    'object-fit: contain; display: block;" loading="lazy" alt="Product" />',
                     img_url
                 )
-            except Exception as e:
-                # Fallback to direct URL
+            except:
                 try:
                     return format_html(
-                        '<div style="text-align: center;">'
-                        '<img src="{}" style="max-width: 400px; max-height: 400px; border-radius: 8px; '
-                        'box-shadow: 0 2px 8px rgba(0,0,0,0.1);" loading="lazy" alt="Product preview" />'
-                        '<div style="margin-top: 0.5rem; font-size: 0.75rem; color: #f59e0b;">'
-                        '⚠️ Displayed without transformations'
-                        '</div>'
-                        '</div>',
+                        '<img src="{}" style="max-width: 200px; height: auto; max-height: 60px; '
+                        'object-fit: contain; display: block;" loading="lazy" alt="Product" />',
                         obj.image.url
                     )
                 except:
-                    return format_html(
-                        '<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; '
-                        'border-radius: 8px; text-align: center;">'
-                        '<strong style="color: #856404;">⚠️ Error loading image</strong><br>'
-                        '<small style="color: #856404;">Image may be corrupted or unavailable</small>'
-                        '</div>'
-                    )
+                    return format_html('<span style="color: #dc3545;">❌</span>')
         
-        return format_html(
-            '<div style="padding: 40px; background: #f8f9fa; border: 2px dashed #dee2e6; '
-            'border-radius: 8px; text-align: center;">'
-            '<span style="font-size: 3rem; color: #adb5bd;">📷</span><br>'
-            '<span style="color: #6c757d; font-size: 0.875rem;">No image uploaded</span>'
-            '</div>'
-        )
+        return format_html('<span style="color: #6c757d; font-size: 1.5rem;">📷</span>')
     
-    image_preview.short_description = 'Image Preview'
+    image_thumbnail.short_description = 'Image'
 
     # ============================================
     # OTHER DISPLAY METHODS
@@ -499,6 +578,8 @@ class ProductAdmin(admin.ModelAdmin):
             'Yes' if getattr(obj, 'can_restock', False) else 'No'
         )
     inventory_summary.short_description = 'Inventory Summary'
+
+
 
 
 # ============================================

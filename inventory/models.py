@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Max
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from cloudinary.models import CloudinaryField
 from decimal import Decimal
 import logging
 
@@ -116,6 +117,7 @@ class Product(models.Model):
     product_code = models.CharField(max_length=20, unique=True, blank=True, db_index=True)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2) 
+    image = CloudinaryField('image', blank=True, null=True)
 
     # SKU (IMEI/Serial/Barcode)
     sku_value = models.CharField(
@@ -143,12 +145,6 @@ class Product(models.Model):
         max_digits=12, 
         decimal_places=2,
         help_text="Retail price"
-    )
-    image = models.ImageField(
-       upload_to='products/%Y/%m/',
-       blank=True,
-       null=True,
-       help_text="Product image (optional)"
     )
     # Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')

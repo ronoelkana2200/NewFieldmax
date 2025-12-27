@@ -995,7 +995,7 @@
                 <!-- Product Image -->
                 <div class="product-image-wrapper">
                   {% if product.image %}
-                    <img src="{% cloudinary_url product.image.name width=600 height=450 crop='fill' quality='auto' fetch_format='auto' %}"
+                    <img src="{% cloudinary_url product.image width=600 height=450 crop='fill' quality='auto' fetch_format='auto' %}"
                          alt="{{ product.name }}" class="product-image" loading="lazy"
                          onerror="this.parentElement.innerHTML='<div class=\'no-image-placeholder\'><i class=\'bi bi-image\'></i><span>Image Failed to Load</span></div>'"/>
                     <div class="image-overlay"></div>
@@ -1066,7 +1066,7 @@
                                   data-product-name="{{ product.name }}"
                                   data-product-price="{{ product.selling_price }}"
                                   data-product-code="{{ product.product_code }}"
-                                  data-product-image="{% if product.image %}{% cloudinary_url product.image.name width=400 height=300 crop='fill' quality='auto' %}{% endif %}"
+                                  data-product-image="{% if product.image %}{% cloudinary_url product.image width=400 height=300 crop='fill' quality='auto' %}{% endif %}"
                                   data-max-quantity="{{ product.quantity }}"
                                   onclick="addToCart(this)">
                             <i class="bi bi-cart-plus"></i> Add to Cart
