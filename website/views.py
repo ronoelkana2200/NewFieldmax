@@ -72,16 +72,12 @@ def home(request):
             Q(status='available') | Q(status='lowstock')
         ).order_by('-times_ordered')[:12]
         
-        print(f"✓ Found {best_sellers.count()} best sellers")
-        
     except Exception as e:
-        print(f"✗ Error loading best sellers: {e}")
         
         # Fallback: Show newest available products
         best_sellers = Product.objects.filter(
             Q(status='available') | Q(status='lowstock')
         ).order_by('-created_at')[:12]
-        print(f"→ Using fallback: {best_sellers.count()} newest products")
     
     # If less than 12 products, fill with newest
     try:
@@ -103,12 +99,10 @@ def home(request):
             
             from itertools import chain
             best_sellers = list(chain(best_sellers, newest_products))
-            print(f"→ Added {remaining_count} newest products to reach 12 total")
         else:
             best_sellers = list(best_sellers) if not isinstance(best_sellers, list) else best_sellers
             
     except Exception as e:
-        print(f"✗ Error filling products: {e}")
         best_sellers = Product.objects.filter(
             Q(status='available') | Q(status='lowstock')
         ).order_by('-created_at')[:12]
