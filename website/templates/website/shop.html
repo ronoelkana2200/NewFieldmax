@@ -879,6 +879,230 @@
     font-size: 0.9rem;
     color: var(--gray-600);
   }
+
+
+/* ========================================
+   CATEGORY FILTER BANNER STYLES
+   ======================================== */
+.category-filter-banner {
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-filter-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.filter-banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.filter-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.filter-info > i {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.filter-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.filter-category {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
+  padding: 0.5rem 1.25rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.filter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.filter-badge i {
+  font-size: 1.25rem;
+}
+
+.btn-show-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #ffffff;
+  color: #667eea;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-show-all::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-show-all:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.btn-show-all:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  color: #5568d3;
+}
+
+.btn-show-all i {
+  font-size: 1.4rem;
+  transition: transform 0.3s ease;
+}
+
+.btn-show-all:hover i {
+  transform: rotate(180deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .category-filter-banner {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-banner-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  .filter-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .filter-info > i {
+    font-size: 1.5rem;
+  }
+
+  .filter-label {
+    font-size: 1rem;
+  }
+
+  .filter-category {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .filter-badge {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-show-all {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .category-filter-banner {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .filter-category {
+    font-size: 1.25rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filter-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+
+
 </style>
 
 <!-- Hero Section -->
@@ -957,9 +1181,30 @@
     </div>
   </div>
 </div>
-
 <!-- Categories & Products -->
 <div class="container-fluid px-4 mb-5">
+  
+  <!-- ✅ CATEGORY FILTER BANNER (MOVED OUTSIDE LOOP) -->
+  {% if selected_category %}
+  <div class="category-filter-banner">
+    <div class="filter-banner-content">
+      <div class="filter-info">
+        <i class="bi bi-funnel-fill"></i>
+        <span class="filter-label">Currently Viewing:</span>
+        <span class="filter-category">{{ selected_category.name }}</span>
+        <span class="filter-badge">
+          <i class="bi bi-{% if selected_category.is_single_item %}phone{% else %}box-seam{% endif %}"></i>
+          {{ selected_category.get_item_type_display }}
+        </span>
+      </div>
+      <a href="{% url 'shop' %}" class="btn-show-all">
+        <i class="bi bi-grid-3x3-gap"></i>
+        <span>Show All Categories</span>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
   {% if categories %}
     {% for category in categories %}
       <div class="category-section" data-category="{{ category.name }}">
@@ -982,6 +1227,7 @@
             <div class="meta-item"><i class="bi bi-diagram-3"></i> <span>Code: <strong>{{ category.category_code }}</strong></span></div>
           </div>
         </div>
+        
         {% if category.filtered_products.exists %}
           <div class="products-grid grid-view">
             {% for product in category.filtered_products %}
@@ -1102,6 +1348,7 @@
     </div>
   {% endif %}
 </div>
+
 
 <!-- Scroll to Top Button -->
 <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">

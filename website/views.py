@@ -36,15 +36,14 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================
-# HOME PAGE
+# HOME VIEW -
 # ============================================
 
 def home(request):
     """
-    Render the home page with featured products
-    Template will fetch data via AJAX
+    Home page with top 12 most frequently sold products
     """
-    # Determine dashboard URL based on user role
+    # Dashboard URL logic
     dashboard_url = '#'
     if request.user.is_authenticated:
         if hasattr(request.user, 'profile') and request.user.profile:
@@ -60,15 +59,67 @@ def home(request):
         elif request.user.is_superuser:
             dashboard_url = '/admin-dashboard/'
     
+    # Get top 12 best-selling items
+    best_sellers = []
+    
+    try:
+        # Method 1: Just count all sales (no status filter if Sale doesn't have status field)
+        best_sellers = Product.objects.filter(
+            sale_items__isnull=False  # Has at least one sale
+        ).annotate(
+            times_ordered=Count('sale_items__id', distinct=True)
+        ).filter(
+            Q(status='available') | Q(status='lowstock')
+        ).order_by('-times_ordered')[:12]
+        
+        print(f"✓ Found {best_sellers.count()} best sellers")
+        
+    except Exception as e:
+        print(f"✗ Error loading best sellers: {e}")
+        
+        # Fallback: Show newest available products
+        best_sellers = Product.objects.filter(
+            Q(status='available') | Q(status='lowstock')
+        ).order_by('-created_at')[:12]
+        print(f"→ Using fallback: {best_sellers.count()} newest products")
+    
+    # If less than 12 products, fill with newest
+    try:
+        count = best_sellers.count() if hasattr(best_sellers, 'count') else len(best_sellers)
+        
+        if count < 12:
+            if hasattr(best_sellers, 'values_list'):
+                best_seller_ids = list(best_sellers.values_list('id', flat=True))
+            else:
+                best_seller_ids = [p.id for p in best_sellers]
+            
+            remaining_count = 12 - count
+            
+            newest_products = Product.objects.filter(
+                Q(status='available') | Q(status='lowstock')
+            ).exclude(
+                id__in=best_seller_ids
+            ).order_by('-created_at')[:remaining_count]
+            
+            from itertools import chain
+            best_sellers = list(chain(best_sellers, newest_products))
+            print(f"→ Added {remaining_count} newest products to reach 12 total")
+        else:
+            best_sellers = list(best_sellers) if not isinstance(best_sellers, list) else best_sellers
+            
+    except Exception as e:
+        print(f"✗ Error filling products: {e}")
+        best_sellers = Product.objects.filter(
+            Q(status='available') | Q(status='lowstock')
+        ).order_by('-created_at')[:12]
+    
     context = {
         'page_title': 'Home - Fieldmax | Premium Tech at Unbeatable Prices',
-        'dashboard_url': dashboard_url
+        'dashboard_url': dashboard_url,
+        'featured_products': best_sellers,
     }
+    
     return render(request, 'website/home.html', context)
-
-
-
-
 
 
 
@@ -1218,21 +1269,37 @@ def api_add_to_cart(request):
 
 
 
-
 # ============================================
-# SHOP VIEW
+# SHOP VIEW - UPDATED WITH CATEGORY FILTERING
 # ============================================
 
 def shop_view(request):
     """
     Display all products organized by category
     Shows: Product image, name, price, status, and add to cart button
+    Supports filtering by category via URL parameter: ?category=<id>
     """
-    # Get all categories with their active products
-    categories = Category.objects.prefetch_related(
-        'products'
-    ).all()
+    # Get category filter from URL parameter
+    category_id = request.GET.get('category')
+    selected_category = None
     
+    # Get all categories
+    all_categories = Category.objects.all()
+    
+    # Determine which categories to display
+    if category_id:
+        try:
+            # Filter to show only the selected category
+            selected_category = Category.objects.get(id=category_id)
+            categories = [selected_category]
+        except Category.DoesNotExist:
+            # If invalid category ID, show all categories
+            categories = all_categories
+    else:
+        # No filter - show all categories
+        categories = all_categories
+    
+    # Prepare categories with their active products
     categories_with_products = []
     for category in categories:
         # Filter to include only active products
@@ -1245,28 +1312,43 @@ def shop_view(request):
     
     context = {
         'categories': categories_with_products,
-        'debug': settings.DEBUG,  # ✅ ADD THIS LINE - Critical for image handling
+        'all_categories': all_categories,  # For category dropdown navigation
+        'selected_category': selected_category,  # To highlight active category
+        'debug': settings.DEBUG,
     }
     
     return render(request, 'website/shop.html', context)
 
 
-# Alternative: Class-based view
+# ============================================
+# ALTERNATIVE: CLASS-BASED VIEW WITH FILTERING
+# ============================================
+
 from django.views.generic import ListView
 
 class ShopListView(ListView):
     """
-    Class-based view for shop page
+    Class-based view for shop page with category filtering
+    URL: /shop/ or /shop/?category=<id>
     """
     model = Category
-    template_name = 'shop/shop.html'
+    template_name = 'website/shop.html'
     context_object_name = 'categories'
     
     def get_queryset(self):
-        """Get all categories with their active products"""
-        categories = Category.objects.prefetch_related(
-            'products'
-        ).all()
+        """Get categories with their active products, optionally filtered"""
+        # Get category filter from URL
+        category_id = self.request.GET.get('category')
+        
+        # Determine which categories to show
+        if category_id:
+            try:
+                selected_category = Category.objects.get(id=category_id)
+                categories = [selected_category]
+            except Category.DoesNotExist:
+                categories = Category.objects.all()
+        else:
+            categories = Category.objects.all()
         
         # Filter products for each category
         filtered_categories = []
@@ -1275,14 +1357,28 @@ class ShopListView(ListView):
             category.filtered_products = active_products
             if active_products.exists():
                 filtered_categories.append(category)
+        
         return filtered_categories
     
     def get_context_data(self, **kwargs):
-        """Add debug flag to context"""
+        """Add additional context"""
         context = super().get_context_data(**kwargs)
-        context['debug'] = settings.DEBUG  # ✅ ADD THIS for class-based view too
+        
+        # Get selected category
+        category_id = self.request.GET.get('category')
+        if category_id:
+            try:
+                context['selected_category'] = Category.objects.get(id=category_id)
+            except Category.DoesNotExist:
+                context['selected_category'] = None
+        else:
+            context['selected_category'] = None
+        
+        # Add all categories for dropdown
+        context['all_categories'] = Category.objects.all()
+        context['debug'] = settings.DEBUG
+        
         return context
-
 
 
 

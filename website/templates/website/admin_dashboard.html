@@ -2964,9 +2964,10 @@ strong[style*="background-color"] {
 
 
 
-<!-- ============================= -->
-<!--    ADD PRODUCT SECTION     -->
-<!-- ============================= -->
+
+<!-- ======================================= -->
+<!-- ADD PRODUCT TEMPLATE -->
+<!-- ======================================= -->
    <!-- Add Product Section -->
 <div id="add-product" class="content-section">
   <div class="content-header">
@@ -2984,7 +2985,7 @@ strong[style*="background-color"] {
       <!-- Error Message -->
       <div id="message-div"></div>
 
-      <form id="addProductForm" method="POST" action="{% url 'inventory:product-create' %}">
+      <form id="addProductForm" method="POST" action="{% url 'inventory:product-create' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="row g-3">
@@ -3011,6 +3012,13 @@ strong[style*="background-color"] {
             <input type="text" name="name" id="product-name" class="form-control" placeholder="Enter product name" required>
           </div>
 
+          <!-- Product Image -->
+          <div class="col-12">
+            <label for="product-image" class="form-label">Product Image</label>
+            <input type="file" name="image" id="product-image" class="form-control" accept="image/*">
+            <small class="form-text text-muted">Supported formats: JPG, PNG, GIF (Max 5MB)</small>
+          </div>
+
           <!-- Buying Price -->
           <div class="col-md-6">
             <label for="buying-price" class="form-label required">Buying Price (KSH)</label>
@@ -3023,10 +3031,17 @@ strong[style*="background-color"] {
             <input type="number" step="0.01" name="selling_price" id="selling-price" class="form-control" placeholder="0.00" required>
           </div>
 
-          <!-- SKU Field (single items) -->
+          <!-- SKU Field (single items - IMEI/Serial) -->
           <div class="col-12" id="sku-field" style="display:none;">
             <label class="form-label" id="sku-label"></label>
             <input type="text" name="sku_value" id="sku-input" class="form-control">
+          </div>
+
+          <!-- Barcode Field (bulk items only) -->
+          <div class="col-12" id="barcode-field" style="display:none;">
+            <label for="barcode-input" class="form-label">Barcode</label>
+            <input type="text" name="barcode" id="barcode-input" class="form-control" placeholder="Enter or scan barcode">
+            <small class="form-text text-muted">Optional: You can scan the barcode directly into this field</small>
           </div>
 
           <!-- Quantity Field (bulk items) -->
@@ -5131,8 +5146,9 @@ function showToast(message, type = 'success') {
 
 
 // ====================================
-// ADD PRODUCT – FIXED VERSION
+// ADD PRODUCT  SECTION
 // ====================================
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const categorySelect = document.getElementById('category-select');
@@ -5231,21 +5247,50 @@ document.addEventListener('DOMContentLoaded', function () {
         const isBulk = selected.dataset.isBulk === "true";
         const skuType = selected.dataset.skuType || "SKU";
 
+        const barcodeField = document.getElementById('barcode-field');
+        const barcodeInput = document.getElementById('barcode-input');
+
         if (isSingle) {
+            // Single items: show SKU field (IMEI/Serial)
             skuField.style.display = 'block';
             skuLabel.textContent = `${skuType} *`;
             skuInput.required = true;
+            skuInput.disabled = false; // Enable SKU input
+        
+            // Hide and disable barcode field
+            barcodeField.style.display = 'none';
+            barcodeInput.required = false;
+            barcodeInput.disabled = true; // Disable so it won't submit
+            barcodeInput.value = ''; // Clear value
+        
             quantityField.style.display = 'none';
             quantityInput.value = 1;
             quantityInput.required = false;
+        
         } else if (isBulk) {
+            // Bulk items: show barcode and quantity fields
             skuField.style.display = 'none';
             skuInput.required = false;
+            skuInput.disabled = true; // Disable so it won't submit
+            skuInput.value = ''; // Clear value
+        
+            barcodeField.style.display = 'block';
+            barcodeInput.required = false;
+            barcodeInput.disabled = false; // Enable barcode input
+        
             quantityField.style.display = 'block';
             quantityInput.required = true;
+        
         } else {
+            // No category selected: hide all
             skuField.style.display = 'none';
             skuInput.required = false;
+            skuInput.disabled = true;
+        
+            barcodeField.style.display = 'none';
+            barcodeInput.required = false;
+            barcodeInput.disabled = true;
+        
             quantityField.style.display = 'none';
             quantityInput.required = false;
         }
@@ -5343,6 +5388,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
 
 
 

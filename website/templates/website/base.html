@@ -58,7 +58,7 @@
     .navbar-brand-section {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 1rem;
       text-decoration: none;
       flex-shrink: 0;
     }
@@ -78,6 +78,121 @@
       letter-spacing: 0.5px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       white-space: nowrap;
+    }
+
+    .categories-dropdown-wrapper {
+      position: relative;
+      margin-left: 1rem;
+    }
+
+    .categories-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .categories-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .categories-toggle i {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .categories-toggle.active i.bi-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .categories-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      background: #ffffff;
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      min-width: 220px;
+      max-height: 400px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1002;
+    }
+
+    .categories-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .categories-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid #000000;
+      font-weight: 600;
+      color: #1a1f2e;
+      font-size: 0.9rem;
+      background: #f8f9fa;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: #1a1f2e;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .category-item:last-child {
+      border-bottom: none;
+    }
+
+    .category-item:hover {
+      background: #f8f9fa;
+      color: #000000;
+      padding-left: 1.25rem;
+    }
+
+    .category-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #000000, #000000);
+      color: #ffffff;
+      border-radius: 0.375rem;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .category-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    .category-name {
+      font-weight: 500;
+      font-size: 0.9rem;
     }
 
     .mobile-menu-toggle {
@@ -134,6 +249,11 @@
       font-size: 1.1rem;
     }
 
+    /* Staff Login Dropdown Styles */
+    .login-dropdown-wrapper {
+      position: relative;
+    }
+
     .login-btn {
       background: #ffffff;
       color: #0dcaf0;
@@ -146,6 +266,122 @@
       color: #0dcaf0;
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn.active {
+      background: #e6f7fb;
+    }
+
+    .login-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      background: #ffffff;
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      min-width: 300px;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1002;
+    }
+
+    .login-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .login-dropdown-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #0dcaf0;
+    }
+
+    .login-dropdown-header i {
+      font-size: 1.5rem;
+      color: #0dcaf0;
+    }
+
+    .login-dropdown-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a1f2e;
+      margin: 0;
+    }
+
+    .login-form-group {
+      margin-bottom: 1rem;
+    }
+
+    .login-form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #4b5563;
+      margin-bottom: 0.375rem;
+    }
+
+    .login-form-input {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      font-size: 0.95rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.375rem;
+      transition: all 0.2s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .login-form-input:focus {
+      outline: none;
+      border-color: #0dcaf0;
+      box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.1);
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #0dcaf0 0%, #0ab4d6 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .login-submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
+    }
+
+    .login-submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 0.625rem;
+      border-radius: 0.375rem;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .login-error.show {
+      display: block;
     }
 
     .logout-btn {
@@ -388,9 +624,13 @@
         transform: translateX(5px);
       }
 
+      .login-dropdown-wrapper {
+        width: 100%;
+      }
+
       .login-btn {
-        justify-content: center;
-        margin-top: 1rem;
+        justify-content: flex-start;
+        width: 100%;
         background: #0dcaf0;
         color: #ffffff;
       }
@@ -398,6 +638,15 @@
       .login-btn:hover {
         background: #0ab4d6;
         color: #ffffff;
+      }
+
+      .login-dropdown {
+        position: static;
+        box-shadow: none;
+        min-width: 100%;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border: 2px solid #e5e7eb;
       }
 
       .logout-btn {
@@ -423,6 +672,14 @@
       .pending-orders-badge {
         top: -3px;
         right: -5px;
+      }
+
+      .categories-dropdown {
+        position: fixed;
+        top: auto;
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
       }
     }
 
@@ -477,6 +734,11 @@
         letter-spacing: 0.3px;
       }
 
+      .categories-toggle {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+      }
+
       .navbar-content {
         padding: 0.75rem 0.875rem;
         gap: 0.5rem;
@@ -529,60 +791,6 @@
         padding-right: 1rem !important;
       }
     }
-
-    /* Extra Small Devices */
-    @media (max-width: 380px) {
-      .brand-text {
-        font-size: 1rem;
-      }
-
-      .brand-logo {
-        width: 36px;
-        height: 36px;
-      }
-
-      .navbar-content {
-        padding: 0.625rem 0.75rem;
-      }
-
-      .navbar-menu {
-        width: 260px;
-      }
-
-      .footer-brand {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    /* Landscape Orientation for Mobile */
-    @media (max-height: 500px) and (orientation: landscape) {
-      .navbar-menu {
-        padding: 1rem 1.5rem;
-      }
-
-      .nav-link {
-        padding: 0.5rem 1rem;
-      }
-    }
-
-    /* Touch Device Improvements */
-    @media (hover: none) and (pointer: coarse) {
-      .nav-link,
-      .footer-link,
-      .mobile-menu-toggle {
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-      }
-
-      .nav-link {
-        min-height: 44px;
-      }
-
-      .mobile-menu-toggle {
-        min-width: 44px;
-        min-height: 44px;
-      }
-    }
   </style>
 </head>
 
@@ -600,6 +808,35 @@
         <span class="brand-text">FIELDMAX SHOP</span>
       </a>
 
+      <!-- Categories Dropdown (Next to Brand Name) -->
+      <div class="categories-dropdown-wrapper">
+        <a href="#" class="categories-toggle" id="categoriesToggle">
+          <i class="bi bi-grid-3x3-gap"></i>
+          <span>ALL CATEGORIES</span>
+          <i class="bi bi-chevron-down"></i>
+        </a>
+        <div class="categories-dropdown" id="categoriesDropdown">
+          <div class="categories-dropdown-header">
+            <i class="bi bi-tag"></i> Browse Categories
+          </div>
+          {% for category in categories %}
+          <a href="{% url 'shop' %}?category={{ category.id }}" class="category-item">
+            <div class="category-icon">
+              <i class="bi bi-{% if category.item_type == 'single' %}phone{% else %}box-seam{% endif %}"></i>
+            </div>
+            <div class="category-details">
+              <div class="category-name">{{ category.name }}</div>
+            </div>
+          </a>
+          {% empty %}
+          <div class="category-item" style="color: #6b7280; justify-content: center;">
+            <i class="bi bi-inbox"></i>
+            <span>No categories available</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
       <!-- Mobile Menu Toggle -->
       <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
         <i class="bi bi-list"></i>
@@ -612,7 +849,7 @@
           <span>Home</span>
         </a>
         
-        <!-- ✅ MODIFIED: Hide Shop button when user is authenticated (staff) -->
+        <!-- Hide Shop button when user is authenticated (staff) -->
         {% if not user.is_authenticated %}
         <a href="{% url 'shop' %}" class="nav-link">
           <i class="bi bi-shop"></i>
@@ -650,14 +887,66 @@
             <span>Cart</span>
             <span class="cart-badge" id="cartBadge">0</span>
           </a>
-          <a href="{% url 'login' %}" class="nav-link login-btn">
-            <i class="bi bi-person-circle"></i>
-            <span>Staff Login</span>
-          </a>
+          
+          <!-- Staff Login Dropdown -->
+          <div class="login-dropdown-wrapper">
+            <button class="nav-link login-btn" id="loginToggle">
+              <i class="bi bi-person-circle"></i>
+            </button>
+            <div class="login-dropdown" id="loginDropdown">
+              <div class="login-dropdown-header">
+                <i class="bi bi-shield-lock"></i>
+                <h3 class="login-dropdown-title">STAFF LOGIN</h3>
+              </div>
+              
+              <div class="login-error" id="loginError">
+                Invalid username or password
+              </div>
+              
+              <form method="post" action="{% url 'login' %}" id="staffLoginForm">
+                {% csrf_token %}
+                <div class="login-form-group">
+                  <label for="username" class="login-form-label">Username</label>
+                  <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="login-form-input" 
+                    placeholder="Enter your username"
+                    required
+                  >
+                </div>
+                
+                <div class="login-form-group" style="position: relative;">
+                  <label for="password" class="login-form-label">Password</label>
+                  <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="login-form-input" 
+                    placeholder="Enter your password"
+                    required
+                    style="padding-right: 2.5rem;" 
+                  >
+                  <i class="bi bi-eye-fill toggle-password" style="position: absolute; top: 75%; right: 10px; transform: translateY(-50%); cursor: pointer; font-size: 1.2rem; color: #6b7280;">
+                </i>
+                </div>
+                
+                <button type="submit" class="login-submit-btn">
+                  <i class="bi bi-box-arrow-in-right"></i>
+                  <span>Login</span>
+                </button>
+              </form>
+            </div>
+          </div>
         {% endif %}
       </div>
     </div>
   </nav>
+
+
+
+  
 
   <!-- Main Content -->
   <main class="main-content">
@@ -783,12 +1072,17 @@
     </div>
   </footer>
 
+
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Custom JS -->
 <script>
-  // Mobile menu toggle
+
+// ========================================
+// MOBILE MENU FUNCTIONALITY
+// ========================================
   const mobileMenuToggle = document.getElementById('mobileMenuToggle');
   const navbarMenu = document.getElementById('navbarMenu');
   const menuOverlay = document.getElementById('menuOverlay');
@@ -908,6 +1202,81 @@
     // Make updateCartCount available globally for shop page
     window.updateCartCount = updateCartCount;
   }
+
+  // ========================================
+  // CATEGORIES DROPDOWN FUNCTIONALITY
+  // ========================================
+  const categoriesToggle = document.getElementById('categoriesToggle');
+  const categoriesDropdown = document.getElementById('categoriesDropdown');
+
+  if (categoriesToggle && categoriesDropdown) {
+    // Toggle dropdown on click
+    categoriesToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      categoriesDropdown.classList.toggle('show');
+      categoriesToggle.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!categoriesToggle.contains(e.target) && !categoriesDropdown.contains(e.target)) {
+        categoriesDropdown.classList.remove('show');
+        categoriesToggle.classList.remove('active');
+      }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    categoriesDropdown.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // Close dropdown when clicking a category link
+    const categoryLinks = categoriesDropdown.querySelectorAll('.category-item');
+    categoryLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        categoriesDropdown.classList.remove('show');
+        categoriesToggle.classList.remove('active');
+      });
+    });
+  }
+
+// STAFF LOGIN DROPDOWN TOGGLE
+const loginToggle = document.getElementById('loginToggle');
+const loginDropdown = document.getElementById('loginDropdown');
+
+if (loginToggle && loginDropdown) {
+  loginToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    loginDropdown.classList.toggle('show');
+  });
+
+  // Optional: close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!loginToggle.contains(e.target) && !loginDropdown.contains(e.target)) {
+      loginDropdown.classList.remove('show');
+    }
+  });
+}
+// Toggle password visibility
+const togglePasswordIcons = document.querySelectorAll('.toggle-password');
+
+togglePasswordIcons.forEach(icon => {
+  icon.addEventListener('click', () => {
+    const passwordInput = icon.previousElementSibling;
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      icon.classList.remove('bi-eye-fill');
+      icon.classList.add('bi-eye-slash-fill');
+    } else {
+      passwordInput.type = 'password';
+      icon.classList.remove('bi-eye-slash-fill');
+      icon.classList.add('bi-eye-fill');
+    }
+  });
+});
+
+
 </script>
 </body>
 </html>

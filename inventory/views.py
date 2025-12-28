@@ -1031,10 +1031,13 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
                 old_quantity = old_product.quantity or 0
                 new_quantity = form.cleaned_data.get('quantity', 0) or 0
                 
+                # ✅ FIX: Check if this is a single item
+                is_single_item = self.object.category.is_single_item
+                
                 response = super().form_valid(form)
                 
-                # Create adjustment entry if quantity changed
-                if old_quantity != new_quantity:
+                # ✅ FIX: Only create adjustment entry for BULK items when quantity changes
+                if not is_single_item and old_quantity != new_quantity:
                     quantity_diff = new_quantity - old_quantity
                     buying_price = self.object.buying_price or Decimal('0.00')
                     
@@ -1048,6 +1051,13 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
                         notes=f"Manual adjustment: {old_quantity} → {new_quantity}"
                     )
                 
+                # ✅ FIX: For single items, log warning if quantity changed
+                elif is_single_item and old_quantity != new_quantity:
+                    logger.warning(
+                        f"Quantity change attempted on single item {self.object.product_code}: "
+                        f"{old_quantity} → {new_quantity}. No stock entry created."
+                    )
+                
                 # AJAX response
                 if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     return JsonResponse({
@@ -1059,8 +1069,8 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
                 return response
             
         except Exception as e:
-            print("Error updating product:")
-            print(traceback.format_exc())
+            logger.error(f"Error updating product: {str(e)}")
+            logger.error(traceback.format_exc())
             
             if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
@@ -1077,10 +1087,6 @@ class ProductEditView(LoginRequiredMixin, UpdateView):
                 'errors': form.errors
             }, status=400)
         return super().form_invalid(form)
-
-
-
-
 
 
 

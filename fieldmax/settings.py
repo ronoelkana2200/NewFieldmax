@@ -120,6 +120,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'website.context_processors.dashboard_url',
+                'inventory.context_processors.categories',
             ],
         },
     },
