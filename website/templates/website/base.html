@@ -734,40 +734,51 @@ body {
     width: calc(100% - 1rem);
   }
 
-  /* Login dropdown on mobile - FIXED BELOW NAVBAR like categories */
-  .login-dropdown-wrapper {
-    position: relative;
-  }
+/* Staff Login Dropdown Styles */
+.login-dropdown-wrapper {
+  position: relative;
+}
 
-  .login-btn {
-    background: #ffffff;
-    color: #0dcaf0;
-    padding: 0.5rem;
-  }
+.login-btn {
+  background: #ffffff;
+  color: #0dcaf0;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .login-dropdown {
-    position: fixed;
-    top: 60px; /* Below the fixed navbar */
-    right: 0.5rem;
-    left: auto;
-    margin-top: 0;
-    width: 320px;
-    max-width: calc(100vw - 1rem);
-    padding: 1.5rem;
-    border: none;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1002;
-  }
+.login-btn:hover {
+  background: #f8f9fa;
+  color: #0dcaf0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
-  .login-dropdown.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+.login-btn.active {
+  background: #e6f7fb;
+}
+
+.login-dropdown {
+  position: fixed;
+  top: 70px; /* Below desktop navbar */
+  right: 2rem;
+  margin-top: 0;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-width: 300px;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1002;
+}
+
+.login-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
   .footer-grid {
     grid-template-columns: 1fr;
