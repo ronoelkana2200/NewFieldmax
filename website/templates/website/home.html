@@ -1104,76 +1104,102 @@
 
 
  // Update the addToCart function
-    function addToCart(el) {
-    const productId = el.dataset.productId;
-    const productName = el.dataset.productName;
-    const productPrice = parseFloat(el.dataset.productPrice);
-    const productCode = el.dataset.productCode;
-    const productImage = el.dataset.productImage;
-    const maxQuantity = parseInt(el.dataset.maxQuantity) || 1;
-    const isSingleItem = el.dataset.isSingle === 'true';
-    let selectedQuantity = 1;
+// Fixed Add to Cart Function
+function addToCart(el) {
+  // Get all data attributes from the button
+  const productId = el.getAttribute('data-product-id');
+  const productName = el.getAttribute('data-product-name');
+  const productPrice = parseFloat(el.getAttribute('data-product-price'));
+  const productCode = el.getAttribute('data-product-code');
+  const productImage = el.getAttribute('data-product-image');
+  const maxQuantity = parseInt(el.getAttribute('data-max-quantity')) || 1;
+  
+  // Check if it's a single item (your HTML doesn't have this attribute, so we'll determine it from category)
+  const isSingleItem = maxQuantity === 1;
+  
+  let selectedQuantity = 1;
 
-    // Prompt for quantity if bulk item
-    if (!isSingleItem && maxQuantity > 1) {
-      const qty = prompt(`Enter quantity (Max ${maxQuantity}):`, '1');
-      if (qty === null) return;
-      
-      selectedQuantity = parseInt(qty);
-      if (isNaN(selectedQuantity) || selectedQuantity < 1) selectedQuantity = 1;
-      if (selectedQuantity > maxQuantity) selectedQuantity = maxQuantity;
-    }
-
-    // Get current cart
-    let cart = JSON.parse(localStorage.getItem('fieldmax_cart') || '[]');
-    const existingItemIndex = cart.findIndex(item => item.id === parseInt(productId));
-
-    if (existingItemIndex > -1) {
-      const newQuantity = cart[existingItemIndex].quantity + selectedQuantity;
-      
-      if (newQuantity > maxQuantity) {
-        showToast(`⚠️ Cannot add more. Maximum quantity (${maxQuantity}) reached.`);
-        return;
-      }
-      
-      cart[existingItemIndex].quantity = newQuantity;
-      cart[existingItemIndex].subtotal = cart[existingItemIndex].price * newQuantity;
-      showToast(`✅ ${productName} quantity updated to ${newQuantity}`);
-    } else {
-      cart.push({
-        id: parseInt(productId),
-        name: productName,
-        price: productPrice,
-        code: productCode,
-        image: productImage,
-        quantity: selectedQuantity,
-        subtotal: productPrice * selectedQuantity,
-        max_quantity: maxQuantity,
-        is_single_item: isSingleItem
-      });
-      showToast(`✅ ${productName} added to cart - KSh ${(productPrice * selectedQuantity).toLocaleString()}`);
-    }
-
-    // Save to localStorage
-    localStorage.setItem('fieldmax_cart', JSON.stringify(cart));
+  // Prompt for quantity if bulk item
+  if (!isSingleItem && maxQuantity > 1) {
+    const qty = prompt(`Enter quantity (Max ${maxQuantity}):`, '1');
+    if (qty === null) return; // User cancelled
     
-    // Update cart count
-    window.dispatchEvent(new Event('cartUpdated'));
+    selectedQuantity = parseInt(qty);
+    if (isNaN(selectedQuantity) || selectedQuantity < 1) selectedQuantity = 1;
+    if (selectedQuantity > maxQuantity) selectedQuantity = maxQuantity;
+  }
+
+  // Get current cart from localStorage
+  let cart = JSON.parse(localStorage.getItem('fieldmax_cart') || '[]');
+  
+  // Check if item already exists in cart
+  const existingItemIndex = cart.findIndex(item => item.id === parseInt(productId));
+
+  if (existingItemIndex > -1) {
+    // Item exists, update quantity
+    const newQuantity = cart[existingItemIndex].quantity + selectedQuantity;
     
-    // Button feedback
-    const originalHTML = el.innerHTML;
-    el.innerHTML = '<i class="bi bi-check-circle"></i> <span>ADDED!</span>';
-    el.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    // Check if new quantity exceeds max
+    if (newQuantity > maxQuantity) {
+      showToast(`⚠️ Cannot add more. Maximum quantity (${maxQuantity}) reached.`);
+      return;
+    }
+    
+    cart[existingItemIndex].quantity = newQuantity;
+    cart[existingItemIndex].subtotal = cart[existingItemIndex].price * newQuantity;
+    showToast(`✅ ${productName} quantity updated to ${newQuantity}`);
+  } else {
+    // New item, add to cart
+    cart.push({
+      id: parseInt(productId),
+      name: productName,
+      price: productPrice,
+      code: productCode,
+      image: productImage,
+      quantity: selectedQuantity,
+      subtotal: productPrice * selectedQuantity,
+      max_quantity: maxQuantity,
+      is_single_item: isSingleItem
+    });
+    showToast(`✅ ${productName} added to cart - KSh ${(productPrice * selectedQuantity).toLocaleString()}`);
+  }
+
+  // Save updated cart to localStorage
+  localStorage.setItem('fieldmax_cart', JSON.stringify(cart));
+  
+  // Trigger cart update event to update badge
+  window.dispatchEvent(new Event('cartUpdated'));
+  
+  // Visual feedback on button
+  const originalHTML = el.innerHTML;
+  el.innerHTML = '<i class="bi bi-check-circle"></i> <span>ADDED!</span>';
+  el.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+  el.disabled = true;
+  
+  setTimeout(() => {
+    el.innerHTML = originalHTML;
+    el.style.background = '';
+    el.disabled = false;
+  }, 2000);
+}
+
+// Toast notification function
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toastMessage');
+  
+  if (toast && toastMessage) {
+    toastMessage.textContent = message;
+    toast.classList.add('show');
     
     setTimeout(() => {
-      el.innerHTML = originalHTML;
-      el.style.background = '';
-    }, 2000);
+      toast.classList.remove('show');
+    }, 3000);
   }
+}
 
-  function viewProduct(productId) {
-    window.location.href = `/products/${productId}/`;
-  }
+// Make function globally available
+window.addToCart = addToCart;
 
   // Add click handlers to product cards
   document.addEventListener('DOMContentLoaded', () => {
