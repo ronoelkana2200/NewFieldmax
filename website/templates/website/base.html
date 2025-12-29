@@ -36,19 +36,12 @@ body {
   flex-direction: column;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 100px;
-}
-
 /* Navigation Bar */
 .main-navbar {
   background: linear-gradient(135deg, #0dcaf0 0%, #0ab4d6 100%);
   padding: 0;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 1001;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -425,12 +418,11 @@ html {
   opacity: 1;
 }
 
-/* Main Content Area - FIXED: Added padding to account for fixed navbar */
+/* Main Content Area */
 .main-content {
   flex: 1;
   width: 100%;
   padding: 0;
-  padding-top: 80px;
   background-color: #f8f9fa;
 }
 
@@ -593,18 +585,22 @@ html {
 
 /* Responsive Design - Tablets */
 @media (max-width: 992px) {
-  /* FIXED: Adjust scroll padding for smaller navbar */
-  html {
-    scroll-padding-top: 85px;
-  }
-
-  /* FIXED: Adjust content padding for mobile */
-  .main-content {
-    padding-top: 85px;
-  }
-
   .mobile-menu-toggle {
     display: block;
+  }
+
+  /* FIXED: Create a flex container for login button and mobile toggle */
+  .navbar-content {
+    padding: 1rem 1.5rem;
+  }
+
+  /* FIXED: Ensure all navbar items align properly */
+  .navbar-brand-section,
+  .categories-dropdown-wrapper,
+  .login-dropdown-wrapper,
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
   }
 
   .navbar-menu {
@@ -665,7 +661,6 @@ html {
     padding: 1rem;
     margin-top: 0.5rem;
     border: 2px solid #e5e7eb;
-    z-index: auto;
   }
 
   .logout-btn {
@@ -679,10 +674,6 @@ html {
     transform: translateX(5px);
   }
 
-  .navbar-content {
-    padding: 1rem 1.5rem;
-  }
-
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -693,29 +684,17 @@ html {
     right: -5px;
   }
 
-  /* FIXED: Position categories dropdown below navbar on mobile */
   .categories-dropdown {
     position: fixed;
-    top: 85px;
+    top: auto;
     left: 1rem;
     right: 1rem;
     max-width: none;
-    z-index: 998;
   }
 }
 
 /* Mobile Phones */
 @media (max-width: 768px) {
-  /* FIXED: Adjust scroll padding for mobile phones */
-  html {
-    scroll-padding-top: 75px;
-  }
-
-  /* FIXED: Adjust content padding for mobile phones */
-  .main-content {
-    padding-top: 75px;
-  }
-
   .brand-text {
     font-size: 1.2rem;
   }
@@ -751,25 +730,10 @@ html {
   .footer-brand-name {
     font-size: 1.3rem;
   }
-
-  /* FIXED: Adjust categories dropdown position */
-  .categories-dropdown {
-    top: 75px;
-  }
 }
 
 /* Small Mobile Phones */
 @media (max-width: 576px) {
-  /* FIXED: Adjust scroll padding for small phones */
-  html {
-    scroll-padding-top: 65px;
-  }
-
-  /* FIXED: Adjust content padding for small phones */
-  .main-content {
-    padding-top: 65px;
-  }
-
   .brand-logo {
     width: 40px;
     height: 40px;
@@ -782,17 +746,28 @@ html {
 
   .categories-toggle {
     font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
+    padding: 0.4rem 0.6rem;
   }
 
+  /* FIXED: Ensure proper vertical alignment on small screens */
   .navbar-content {
     padding: 0.75rem 0.875rem;
     gap: 0.5rem;
+    align-items: center;
   }
 
   .mobile-menu-toggle {
     font-size: 1.5rem;
-    padding: 0.4rem;
+    padding: 0.25rem;
+  }
+
+  /* FIXED: Adjust login button size on mobile */
+  .login-btn {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .login-btn i {
+    font-size: 1.2rem;
   }
 
   .navbar-menu {
@@ -835,11 +810,6 @@ html {
   .container-fluid {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
-  }
-
-  /* FIXED: Adjust categories dropdown position for small phones */
-  .categories-dropdown {
-    top: 65px;
   }
 }
   </style>
