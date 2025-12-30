@@ -204,13 +204,21 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
 
-# ✅ COMPATIBILITY
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+WHITENOISE_KEEP_ONLY_HASHED_FILES = False
+WHITENOISE_AUTOREFRESH = True if DEBUG else False
+WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = (
+    'jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 
+    'bz2', 'tbz', 'xz', 'br', 'swf', 'flv', 'woff', 'woff2',
+)
 
 
 # ============================================
