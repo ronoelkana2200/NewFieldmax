@@ -3514,13 +3514,13 @@ strong[style*="background-color"] {
 
 
 <!-- ============================= -->
-<!--     Enhanced Sales List Section     -->
+<!-- SALES SECTION     -->
 <!-- ============================= -->
 <div id="sales-list" class="content-section">
 
   <!-- Header with Filters and Action Button -->
   <div class="content-header">
-    <h1 class="page-title">All Sales</h1>
+    <h1 class="page-title">SALES MANAGEMENT</h1>
     <div style="display: flex; gap: 10px;">
       <!-- Status Filter -->
       <select id="statusFilter" class="form-select" onchange="filterSales()">
@@ -3553,7 +3553,7 @@ strong[style*="background-color"] {
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Daily Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ daily_sales_count }}</h3>
+        <h3 class="stat-value" id="daily_sales_count">{{ daily_sales_count }}</h3>
       </div>
     </div>
     <!-- Weekly Sales -->
@@ -3561,7 +3561,7 @@ strong[style*="background-color"] {
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Weekly Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ weekly_sales_count }}</h3>
+        <h3 class="stat-value" id="weeklySalesCount">{{ weekly_sales_count }}</h3>
       </div>
     </div>
     <!-- Monthly Sales -->
@@ -3569,7 +3569,7 @@ strong[style*="background-color"] {
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Monthly Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ monthly_sales_count }}</h3>
+        <h3 class="stat-value" id="monthlySalesCount">{{ monthly_sales_count }}</h3>
       </div>
     </div>
     <!-- Active Sales -->
@@ -3597,12 +3597,12 @@ strong[style*="background-color"] {
         <thead>
           <tr>
             <th><strong style="color:#000000;">SALE ID</strong></th>
-            <th><strong style="color:#000000;">ETR NO</strong></th>           
+            <th><strong style="color:#000000;">ETR NO</strong></th>    
             <th><strong style="color:#000000;">BUYER</strong></th>
             <th><strong style="color:#000000;">TOTAL AMOUNT</strong></th>
             <th><strong style="color:#000000;">SOLD BY</strong></th>
             <th><strong style="color:#000000;">DATE SOLD</strong></th>
-            <th><strong style="color:#ff0000;">ACTIONS</strong></th>
+            <th style="text-align: center; white-space: nowrap;"><strong style="color:#ff0000;">FIELDMAX SALES MANAGEMENT</strong></th>
           </tr>
         </thead>
         <tbody>
@@ -3641,25 +3641,29 @@ strong[style*="background-color"] {
             <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
 
              <!-- Actions -->
-            <td>
-            <div class="action-buttons">
-                  {% if not sale.is_reversed %}
+            <td style="text-align: center;">
+             <div class="action-buttons" style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                 {% if not sale.is_reversed %}
                     
-              <!-- Reverse Sale Link -->
-                <a href="#" 
-                    class="reverse-sale-btn btn btn-warning btn-sm"
-                      data-sale-id="{{ sale.sale_id }}">
-                    Reverse Sale
-                </a>
+                <!-- Reverse Sale Link -->
+                 <a href="#" 
+                      class="reverse-sale-btn btn btn-warning btn-sm"
+                      data-sale-id="{{ sale.sale_id }}"
+                      style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.875rem; text-decoration: none; white-space: nowrap;">
+                      Reverse Sale
+                 </a> 
 
-                  <!-- Optional: View Receipt -->
-                <a href="{% url 'sales:sale-etr' sale.sale_id %}" target="_blank" class="btn btn-primary">
-                  <i class="bi bi-receipt"></i> View Receipt
-                </a>
-                  {% else %}
-                  <span class="text-muted">Reversed</span>
-                  {% endif %}
-             </div>
+                    <!-- Optional: View Receipt -->
+                 <a href="{% url 'sales:sale-etr' sale.sale_id %}" 
+                    target="_blank" 
+                    class="btn btn-primary"
+                    style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.875rem; text-decoration: none; white-space: nowrap;">
+                    <i class="bi bi-receipt"></i> View Receipt
+                 </a>
+                 {% else %}
+                 <span class="text-muted">Reversed</span>
+                 {% endif %}
+              </div>
             </td>
           </tr>
           {% empty %}
@@ -3679,7 +3683,6 @@ strong[style*="background-color"] {
   </div>
 
 </div>
-
 
 
 

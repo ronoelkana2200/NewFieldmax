@@ -3088,7 +3088,6 @@ th.dragging {
 
 
 
-
 <!-- ============================= -->
 <!-- SALES SECTION     -->
 <!-- ============================= -->
@@ -3096,7 +3095,7 @@ th.dragging {
 
   <!-- Header with Filters and Action Button -->
   <div class="content-header">
-    <h1 class="page-title">All Sales</h1>
+    <h1 class="page-title">SALES MANAGEMENT</h1>
     <div style="display: flex; gap: 10px;">
       <!-- Status Filter -->
       <select id="statusFilter" class="form-select" onchange="filterSales()">
@@ -3118,32 +3117,18 @@ th.dragging {
         <option value="single">Single</option>
         <option value="bulk">Bulk</option>
       </select>
-
-      <!-- Record Sale Button -->
-      <a href="#record-sale" class="btn-action btn-success" data-section="record-sale">
-        <i class="bi bi-plus-circle"></i>
-        <span>Record Sale</span>
-      </a>
     </div>
   </div>
 
   <!-- Sales Summary Stats -->
   <div class="stats-grid" style="margin-bottom: 1.5rem;">
-    <!-- Total Sales -->
-    <div class="stat-card stat-card-info">
-      <div class="stat-icon"><i class="bi bi-receipt"></i></div>
-      <div class="stat-content">
-        <span class="stat-label">Total Sales</span>
-        <h3 class="stat-value" id="totalSalesCount">{{ all_sales.count }}</h3>
-      </div>
-    </div>
     
     <!-- Daily Sales -->
     <div class="stat-card stat-card-success">
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Daily Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ daily_sales_count }}</h3>
+        <h3 class="stat-value" id="dailySalesCount">{{ daily_sales_count }}</h3>
       </div>
     </div>
     <!-- Weekly Sales -->
@@ -3151,7 +3136,7 @@ th.dragging {
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Weekly Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ weekly_sales_count }}</h3>
+        <h3 class="stat-value" id="weeklySalesCount">{{ weekly_sales_count }}</h3>
       </div>
     </div>
     <!-- Monthly Sales -->
@@ -3159,15 +3144,7 @@ th.dragging {
       <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
       <div class="stat-content">
         <span class="stat-label">Monthly Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ monthly_sales_count }}</h3>
-      </div>
-    </div>
-    <!-- Annual Sales -->
-    <div class="stat-card stat-card-success">
-      <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
-      <div class="stat-content">
-        <span class="stat-label">Annual Sales</span>
-        <h3 class="stat-value" id="activeSalesCount">{{ annual_sales_count }}</h3>
+        <h3 class="stat-value" id="monthlySalesCount">{{ monthly_sales_count }}</h3>
       </div>
     </div>
     <!-- Active Sales -->
@@ -3195,11 +3172,12 @@ th.dragging {
         <thead>
           <tr>
             <th><strong style="color:#000000;">SALE ID</strong></th>
+            <th><strong style="color:#000000;">ETR NO</strong></th>              
             <th><strong style="color:#000000;">BUYER</strong></th>
             <th><strong style="color:#000000;">TOTAL AMOUNT</strong></th>
             <th><strong style="color:#000000;">SOLD BY</strong></th>
             <th><strong style="color:#000000;">DATE SOLD</strong></th>
-            <th><strong style="color:#ff0000;">ACTIONS</strong></th>
+            <th style="text-align: center; white-space: nowrap;"><strong style="color:#ff0000;">FIELDMAX SALES MANAGEMENT</strong></th>
           </tr>
         </thead>
         <tbody>
@@ -3222,6 +3200,9 @@ th.dragging {
               {% endif %}
             </td>
 
+            <!-- ETR NUMBER -->
+            <td>{{ sale.etr_receipt_number }}</td>
+
             <!-- Buyer -->
             <td>{{ sale.buyer_name|default:"Walk-in" }}</td>
 
@@ -3235,25 +3216,29 @@ th.dragging {
             <td>{{ sale.sale_date|date:"M d, Y H:i" }}</td>
 
              <!-- Actions -->
-            <td>
-                <div class="action-buttons">
-                    {% if not sale.is_reversed %}
+            <td style="text-align: center;">
+             <div class="action-buttons" style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                 {% if not sale.is_reversed %}
                     
-                    <!-- Reverse Sale Link -->
-                    <a href="#" 
-                           class="reverse-sale-btn btn btn-warning btn-sm"
-                           data-sale-id="{{ sale.sale_id }}">
-                         Reverse Sale
-                    </a>
+                <!-- Reverse Sale Link -->
+                 <a href="#" 
+                      class="reverse-sale-btn btn btn-warning btn-sm"
+                      data-sale-id="{{ sale.sale_id }}"
+                      style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.875rem; text-decoration: none; white-space: nowrap;">
+                      Reverse Sale
+                 </a> 
 
                     <!-- Optional: View Receipt -->
-                    <a href="{% url 'sales:sale-etr' sale.sale_id %}" target="_blank" class="btn btn-primary">
-                        <i class="bi bi-receipt"></i> View Receipt
-                    </a>
-                    {% else %}
-                    <span class="text-muted">Reversed</span>
-                    {% endif %}
-                </div>
+                 <a href="{% url 'sales:sale-etr' sale.sale_id %}" 
+                    target="_blank" 
+                    class="btn btn-primary"
+                    style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.875rem; text-decoration: none; white-space: nowrap;">
+                    <i class="bi bi-receipt"></i> View Receipt
+                 </a>
+                 {% else %}
+                 <span class="text-muted">Reversed</span>
+                 {% endif %}
+              </div>
             </td>
           </tr>
           {% empty %}
@@ -3273,8 +3258,6 @@ th.dragging {
   </div>
 
 </div>
-
-
 
 
 
