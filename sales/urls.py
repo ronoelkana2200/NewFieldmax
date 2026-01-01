@@ -64,5 +64,6 @@ urlpatterns = [
          views.download_batch_receipt_view, 
          name='download-batch-receipt'),
 
-    path("api/reports/", views.sales_report_api, name="sales-report-api"),
+    path('api/get-sellers/', views.get_sellers, name='get-sellers'),
+    path('api/reports/', views.sales_report_api, name='sales-report-api'),
 ]

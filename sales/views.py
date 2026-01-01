@@ -431,38 +431,77 @@ class SaleReverseView(LoginRequiredMixin, View):
 # ============================================
 # SALES REPORT API
 # ============================================
+# ============================================
+# FIXED SALES REPORT API
+# ============================================
 
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, F
+from .models import Sale, SaleItem
+from inventory.models import Category
+
+@login_required
 def sales_report_api(request):
-    seller_id = request.GET.get('seller')
-    category_id = request.GET.get('category')
-    start_date = request.GET.get('start')
-    end_date = request.GET.get('end')
-
-    sales = Sale.objects.all()
-
-    if seller_id:
-        sales = sales.filter(seller_id=seller_id)
-    if category_id:
-        sales = sales.filter(product__category_id=category_id)
-    if start_date:
-        sales = sales.filter(date__gte=start_date)
-    if end_date:
-        sales = sales.filter(date__lte=end_date)
-
-    results = []
-    for s in sales:
-        results.append({
-            "date": s.date.strftime("%Y-%m-%d"),
-            "seller": s.seller.username,
-            "category": s.product.category.name,
-            "product": s.product.name,
-            "quantity": s.quantity,
-            "total": float(s.quantity * s.unit_price),
+    """
+    Generate filtered sales report
+    Returns: JSON with sales data aggregated by product
+    """
+    # Get filter parameters
+    seller_id = request.GET.get('seller', '').strip()
+    category_id = request.GET.get('category', '').strip()
+    start_date = request.GET.get('start', '').strip()
+    end_date = request.GET.get('end', '').strip()
+    
+    try:
+        # Start with all sale items (not sales)
+        sale_items = SaleItem.objects.select_related(
+            'sale', 
+            'sale__seller',
+            'product',
+            'product__category'
+        ).filter(
+            sale__is_reversed=False  # Exclude reversed sales
+        )
+        
+        # Apply filters
+        if seller_id:
+            sale_items = sale_items.filter(sale__seller_id=seller_id)
+        
+        if category_id:
+            sale_items = sale_items.filter(product__category_id=category_id)
+        
+        if start_date:
+            sale_items = sale_items.filter(sale__sale_date__gte=start_date)
+        
+        if end_date:
+            sale_items = sale_items.filter(sale__sale_date__lte=end_date)
+        
+        # Build results list
+        results = []
+        for item in sale_items:
+            results.append({
+                "date": item.sale.sale_date.strftime("%Y-%m-%d"),
+                "seller": item.sale.seller.username if item.sale.seller else "N/A",
+                "category": item.product.category.name if item.product.category else "N/A",
+                "product": item.product_name,
+                "quantity": item.quantity,
+                "total": float(item.total_price)
+            })
+        
+        return JsonResponse({
+            "status": "success",
+            "results": results,
+            "count": len(results)
         })
-
-    return JsonResponse({"results": results})
-
-
+    
+    except Exception as e:
+        logger.error(f"Sales report error: {e}", exc_info=True)
+        return JsonResponse({
+            "status": "error",
+            "message": str(e),
+            "results": []
+        }, status=500)
 
 
 
