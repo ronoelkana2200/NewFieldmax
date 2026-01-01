@@ -3108,26 +3108,6 @@ th.dragging {
           <i class="bi bi-search"></i>
         </button>
       </div>
-
-      <!-- Status Filter -->
-      <select id="statusFilter" class="form-select" onchange="filterSales()">
-        <option value="all">All Status</option>
-        <option value="active">Active</option>
-        <option value="reversed">Reversed</option>
-      </select>
-
-      <!-- Seller Filter -->
-      <select id="sellerFilter" class="form-select" onchange="filterSales()">
-        <option value="all">All Sellers</option>
-        <!-- Options will be populated from database -->
-      </select>
-
-      <!-- Type Filter -->
-      <select id="typeFilter" class="form-select" onchange="filterSales()">
-        <option value="all">All Types</option>
-        <option value="single">Single</option>
-        <option value="bulk">Bulk</option>
-      </select>
     </div>
   </div>
 
@@ -4123,8 +4103,10 @@ document.addEventListener('DOMContentLoaded', initializeProductFilters);
 
 
 
+
+
 // ============================================================
-// SALES MANAGEMENT MODULE - CLEAN VERSION
+// SALES MANAGEMENT MODULE - COMPLETE FIX
 // ============================================================
 
 /**
@@ -4147,13 +4129,11 @@ const SalesFilterState = {
 async function loadSellers() {
   const sellerFilter = document.getElementById('sellerFilter');
   
-  // Guard: Check if element exists
   if (!sellerFilter) {
     console.warn('⚠️ Seller filter element not found');
     return;
   }
   
-  // Prevent duplicate loading
   if (SalesFilterState.isLoading) {
     console.log('⏳ Sellers already loading...');
     return;
@@ -4162,7 +4142,6 @@ async function loadSellers() {
   try {
     SalesFilterState.isLoading = true;
     
-    // Show loading state
     sellerFilter.innerHTML = '<option value="all">Loading sellers...</option>';
     sellerFilter.disabled = true;
     
@@ -4172,26 +4151,20 @@ async function loadSellers() {
       }
     });
     
-    // Check response status
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
     
     const data = await response.json();
-    
-    // Handle both response formats: {sellers: [...]} or [...]
     const sellers = data.sellers || data;
     
-    // Validate data
     if (!Array.isArray(sellers)) {
       throw new Error('Invalid sellers data format');
     }
     
-    // Store in state
     SalesFilterState.sellers = sellers;
     SalesFilterState.lastUpdated = new Date();
     
-    // Clear and populate dropdown
     sellerFilter.innerHTML = '<option value="all">All Sellers</option>';
     
     if (sellers.length === 0) {
@@ -4203,13 +4176,7 @@ async function loadSellers() {
       sellers.forEach(seller => {
         const option = document.createElement('option');
         option.value = seller.id;
-        
-        // Prioritize display name: username > first_name > fallback
-        option.textContent = seller.username || 
-                            seller.first_name || 
-                            seller.full_name ||
-                            `User #${seller.id}`;
-        
+        option.textContent = seller.username || seller.first_name || `User #${seller.id}`;
         sellerFilter.appendChild(option);
       });
     }
@@ -4218,13 +4185,8 @@ async function loadSellers() {
     
   } catch (error) {
     console.error('❌ Error loading sellers:', error);
-    
-    // Show error state
-    sellerFilter.innerHTML = '<option value="all">All Sellers (Error loading)</option>';
-    
-    // Show user-friendly error message
+    sellerFilter.innerHTML = '<option value="all">All Sellers (Error)</option>';
     showToast('Failed to load sellers list', 'error');
-    
   } finally {
     sellerFilter.disabled = false;
     SalesFilterState.isLoading = false;
@@ -4232,7 +4194,7 @@ async function loadSellers() {
 }
 
 // ================================
-// FILTER SALES
+// FILTER SALES - FIXED VERSION
 // ================================
 
 /**
@@ -4240,17 +4202,16 @@ async function loadSellers() {
  * @returns {void}
  */
 function filterSales() {
-  // Get filter values with null safety
   const statusFilter = document.getElementById('statusFilter')?.value || 'all';
   const sellerFilter = document.getElementById('sellerFilter')?.value || 'all';
   const typeFilter = document.getElementById('typeFilter')?.value || 'all';
   
-  // Get all sale rows
+  console.log('🔍 Filtering with:', { statusFilter, sellerFilter, typeFilter });
+  
   const rows = document.querySelectorAll('.sale-row');
   
-  // Early exit if no rows
   if (!rows || rows.length === 0) {
-    console.warn('⚠️ No sale rows found to filter');
+    console.warn('⚠️ No sale rows found');
     updateSalesStats(0, 0, 0);
     return;
   }
@@ -4259,19 +4220,17 @@ function filterSales() {
   let totalActive = 0;
   let totalReversed = 0;
   
-  // Filter each row
   rows.forEach(row => {
-    // Get row data attributes
-    const status = row.dataset.status || '';
-    const type = row.dataset.type || '';
-    const seller = row.dataset.seller || '';
+    // Get data attributes
+    const rowStatus = (row.dataset.status || '').toLowerCase().trim();
+    const rowSeller = (row.dataset.seller || '').trim();
+    const rowType = (row.dataset.type || '').toLowerCase().trim();
     
-    // Match conditions
-    const statusMatch = statusFilter === 'all' || status === statusFilter;
-    const sellerMatch = sellerFilter === 'all' || seller === sellerFilter;
-    const typeMatch = typeFilter === 'all' || type === typeFilter;
+    // Check each filter
+    const statusMatch = statusFilter === 'all' || rowStatus === statusFilter.toLowerCase();
+    const sellerMatch = sellerFilter === 'all' || rowSeller === sellerFilter;
+    const typeMatch = typeFilter === 'all' || rowType === typeFilter.toLowerCase();
     
-    // Determine visibility
     const isVisible = statusMatch && sellerMatch && typeMatch;
     
     if (isVisible) {
@@ -4279,22 +4238,17 @@ function filterSales() {
       row.style.display = '';
       visibleCount++;
       
-      // Count by status
-      if (status === 'active') totalActive++;
-      if (status === 'reversed') totalReversed++;
+      if (rowStatus === 'active') totalActive++;
+      if (rowStatus === 'reversed') totalReversed++;
     } else {
       row.classList.add('hidden');
       row.style.display = 'none';
     }
   });
   
-  // Log filter results
-  console.log(`✅ Sales filter: ${visibleCount} visible (${totalActive} active, ${totalReversed} reversed)`);
+  console.log(`✅ Filter result: ${visibleCount} visible (${totalActive} active, ${totalReversed} reversed)`);
   
-  // Update statistics
   updateSalesStats(visibleCount, totalActive, totalReversed);
-  
-  // Optional: Save filter state
   saveSalesFilterState();
 }
 
@@ -4302,41 +4256,67 @@ function filterSales() {
 // UPDATE SALES STATISTICS
 // ================================
 
-/**
- * Updates sales statistics counters in the UI
- * @param {number} visibleCount - Total visible sales
- * @param {number} activeCount - Active sales count
- * @param {number} reversedCount - Reversed sales count
- * @returns {void}
- */
 function updateSalesStats(visibleCount, activeCount, reversedCount) {
-  // Update total visible sales
-  const totalElement = document.getElementById('totalSalesCount');
-  if (totalElement) {
-    totalElement.textContent = visibleCount;
+  const activeSalesCount = document.getElementById('activeSalesCount');
+  const reversedSalesCount = document.getElementById('reversedSalesCount');
+  
+  if (activeSalesCount) {
+    activeSalesCount.textContent = activeCount;
   }
   
-  // Update active sales count
-  const activeElement = document.getElementById('activeSalesCount');
-  if (activeElement) {
-    activeElement.textContent = activeCount;
+  if (reversedSalesCount) {
+    reversedSalesCount.textContent = reversedCount;
   }
   
-  // Update reversed sales count
-  const reversedElement = document.getElementById('reversedSalesCount');
-  if (reversedElement) {
-    reversedElement.textContent = reversedCount;
+  console.log('📊 Stats updated:', { visible: visibleCount, active: activeCount, reversed: reversedCount });
+}
+
+// ================================
+// SEARCH SALE FUNCTION
+// ================================
+
+function searchSale() {
+  const searchTerm = document.getElementById('searchSaleInput')?.value.trim().toLowerCase() || '';
+  
+  if (!searchTerm) {
+    // Reset to show all (respecting other filters)
+    filterSales();
+    return;
   }
+  
+  const rows = document.querySelectorAll('.sale-row');
+  let visibleCount = 0;
+  let totalActive = 0;
+  let totalReversed = 0;
+  
+  rows.forEach(row => {
+    const saleId = (row.dataset.saleId || '').toLowerCase();
+    const etrNo = (row.cells[1]?.textContent || '').toLowerCase();
+    const buyer = (row.cells[2]?.textContent || '').toLowerCase();
+    
+    const matches = saleId.includes(searchTerm) || 
+                   etrNo.includes(searchTerm) || 
+                   buyer.includes(searchTerm);
+    
+    if (matches) {
+      row.style.display = '';
+      visibleCount++;
+      
+      const status = (row.dataset.status || '').toLowerCase();
+      if (status === 'active') totalActive++;
+      if (status === 'reversed') totalReversed++;
+    } else {
+      row.style.display = 'none';
+    }
+  });
+  
+  updateSalesStats(visibleCount, totalActive, totalReversed);
 }
 
 // ================================
 // FILTER STATE PERSISTENCE
 // ================================
 
-/**
- * Saves sales filter state to localStorage
- * @returns {void}
- */
 function saveSalesFilterState() {
   try {
     const filterState = {
@@ -4348,47 +4328,144 @@ function saveSalesFilterState() {
     
     localStorage.setItem('salesFilterState', JSON.stringify(filterState));
   } catch (error) {
-    console.error('❌ Failed to save sales filter state:', error);
+    console.error('❌ Failed to save filter state:', error);
   }
 }
 
-/**
- * Loads and applies saved sales filter state
- * @returns {void}
- */
 function loadSalesFilterState() {
   try {
     const saved = localStorage.getItem('salesFilterState');
-    
     if (!saved) return;
     
     const filterState = JSON.parse(saved);
     
-    // Apply saved values
-    const statusFilter = document.getElementById('statusFilter');
-    const sellerFilter = document.getElementById('sellerFilter');
-    const typeFilter = document.getElementById('typeFilter');
-    
-    if (statusFilter && filterState.status) {
-      statusFilter.value = filterState.status;
+    if (filterState.status) {
+      const statusFilter = document.getElementById('statusFilter');
+      if (statusFilter) statusFilter.value = filterState.status;
     }
     
-    if (sellerFilter && filterState.seller) {
-      sellerFilter.value = filterState.seller;
+    if (filterState.seller) {
+      const sellerFilter = document.getElementById('sellerFilter');
+      if (sellerFilter) sellerFilter.value = filterState.seller;
     }
     
-    if (typeFilter && filterState.type) {
-      typeFilter.value = filterState.type;
+    if (filterState.type) {
+      const typeFilter = document.getElementById('typeFilter');
+      if (typeFilter) typeFilter.value = filterState.type;
     }
     
-    // Apply filters
     filterSales();
-    
-    console.log('✅ Sales filter state restored');
+    console.log('✅ Filter state restored');
   } catch (error) {
-    console.error('❌ Failed to load sales filter state:', error);
+    console.error('❌ Failed to load filter state:', error);
   }
 }
+
+// ================================
+// CALCULATE INITIAL STATS
+// ================================
+
+function calculateInitialSalesStats() {
+  const rows = document.querySelectorAll('.sale-row');
+  let totalActive = 0;
+  let totalReversed = 0;
+  
+  rows.forEach(row => {
+    const status = (row.dataset.status || '').toLowerCase();
+    if (status === 'active') totalActive++;
+    if (status === 'reversed') totalReversed++;
+  });
+  
+  updateSalesStats(rows.length, totalActive, totalReversed);
+  console.log('📊 Initial stats calculated');
+}
+
+// ================================
+// INITIALIZATION
+// ================================
+
+function initializeSalesFilters() {
+  console.log('🚀 Initializing sales filters...');
+  
+  // Load sellers dropdown
+  loadSellers();
+  
+  // Add event listeners to all filters
+  const statusFilter = document.getElementById('statusFilter');
+  const sellerFilter = document.getElementById('sellerFilter');
+  const typeFilter = document.getElementById('typeFilter');
+  const searchInput = document.getElementById('searchSaleInput');
+  
+  if (statusFilter) {
+    statusFilter.addEventListener('change', function() {
+      console.log('Status filter changed:', this.value);
+      filterSales();
+    });
+  }
+  
+  if (sellerFilter) {
+    sellerFilter.addEventListener('change', function() {
+      console.log('Seller filter changed:', this.value);
+      filterSales();
+    });
+  }
+  
+  if (typeFilter) {
+    typeFilter.addEventListener('change', function() {
+      console.log('Type filter changed:', this.value);
+      filterSales();
+    });
+  }
+  
+  if (searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchSale();
+      }
+    });
+  }
+  
+  // Calculate initial stats
+  calculateInitialSalesStats();
+  
+  // Load saved filter state
+  loadSalesFilterState();
+  
+  console.log('✅ Sales filters initialized');
+}
+
+// Auto-initialize when sales section becomes active
+const salesSection = document.getElementById('sales-list');
+if (salesSection) {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.target.classList.contains('active')) {
+        initializeSalesFilters();
+      }
+    });
+  });
+  
+  observer.observe(salesSection, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+  
+  // Also init immediately if already active
+  if (salesSection.classList.contains('active')) {
+    initializeSalesFilters();
+  }
+}
+
+// Fallback: initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait a bit for the page to settle
+  setTimeout(initializeSalesFilters, 500);
+});
+
+
+
+
+
 
 // ============================================================
 // PRODUCT DETAILS MODULE - CLEAN VERSION
