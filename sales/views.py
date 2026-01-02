@@ -1748,7 +1748,7 @@ def sale_receipt_view(request, sale_id):
             "total": float(item.total_price),
         })
     
-    return render(request, 'sales/receipt.html', {
+    return render(request, 'sales/fieldmax_receipt.html', {
         'receipt': receipt,
         'sale': sale,
         'total_items': len(receipt['items'])

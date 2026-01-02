@@ -55,14 +55,14 @@ urlpatterns = [
          name='batch-sale-create'),
 
      # Batch receipt view
-    path('batch-receipt/<str:batch_id>/', 
+    path('fieldmax-receipt/<str:batch_id>/', 
          views.batch_receipt_view, 
-         name='batch-receipt'),
+         name='fieldmax-receipt'),
     
     # Optional: Download batch receipt as PDF
-    path('batch-receipt/<str:batch_id>/download/', 
+    path('fieldmax-receipt/<str:batch_id>/download/', 
          views.download_batch_receipt_view, 
-         name='download-batch-receipt'),
+         name='download-fieldmax-receipt'),
 
     # Report APIs
     path('api/reports/', views.sales_report_api, name='sales-report-api'),

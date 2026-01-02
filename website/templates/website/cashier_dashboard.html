@@ -998,7 +998,7 @@
 
                     // Check for batch_id or receipt_url in response
                     if (data.batch_id) {
-                        const receiptUrl = `/sales/batch-receipt/${data.batch_id}/`;
+                        const receiptUrl = `/sales/fieldmax-receipt/${data.batch_id}/`;
                         message += `\n\nReceipt generated successfully!`;
                         setTimeout(() => window.open(receiptUrl, '_blank'), 500);
                     } else if (data.receipt_url) {
