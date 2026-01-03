@@ -132,7 +132,11 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+
+                # ✅ CUSTOM CONTEXT PROCESSORS
+                'website.context_processors.categories_processor',
                 'website.context_processors.dashboard_url',
+                'website.context_processors.cart_data',
                 'inventory.context_processors.categories',
             ],
         },

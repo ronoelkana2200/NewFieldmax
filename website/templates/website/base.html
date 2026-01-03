@@ -983,7 +983,50 @@ body {
 }
 
 
-  </style>
+.category-count {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.125rem;
+}
+
+.category-badge {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 0.375rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+  margin-left: auto;
+}
+
+.category-item:hover .category-badge {
+  background: #e5e7eb;
+  color: #0dcaf0;
+}
+
+/* Loading state for categories */
+.categories-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.categories-loading i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+</style>
 </head>
 
 <body>
@@ -1400,6 +1443,197 @@ if (categoriesToggle && categoriesDropdown) {
   });
 }
 
+
+
+// ========================================
+// ENHANCED CATEGORIES DROPDOWN WITH AJAX
+// ========================================
+
+// Cache for categories data
+let categoriesCache = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Load categories dynamically via AJAX
+ */
+async function loadCategories() {
+  // Check cache first
+  if (categoriesCache && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
+    console.log('[CATEGORIES] Using cached data');
+    return categoriesCache;
+  }
+  
+  try {
+    const response = await fetch('/api/categories/');
+    const data = await response.json();
+    
+    if (data.success) {
+      categoriesCache = data.categories;
+      cacheTimestamp = Date.now();
+      console.log(`[CATEGORIES] Loaded ${data.categories.length} categories`);
+      return data.categories;
+    } else {
+      console.error('[CATEGORIES] Failed to load:', data.message);
+      return [];
+    }
+  } catch (error) {
+    console.error('[CATEGORIES] Error loading categories:', error);
+    return [];
+  }
+}
+
+/**
+ * Render categories in the dropdown
+ */
+function renderCategories(categories) {
+  const dropdown = document.getElementById('categoriesDropdown');
+  if (!dropdown) return;
+  
+  // Clear existing items (keep header)
+  const header = dropdown.querySelector('.categories-dropdown-header');
+  dropdown.innerHTML = '';
+  if (header) dropdown.appendChild(header);
+  
+  // Add "All Categories" option
+  const allItem = document.createElement('a');
+  allItem.href = '/shop/';
+  allItem.className = 'category-item';
+  allItem.innerHTML = `
+    <div class="category-icon">
+      <i class="bi bi-grid-3x3-gap"></i>
+    </div>
+    <div class="category-details">
+      <div class="category-name">All Categories</div>
+      <div class="category-count">${categories.length} total</div>
+    </div>
+  `;
+  dropdown.appendChild(allItem);
+  
+  // Add divider
+  const divider = document.createElement('div');
+  divider.style.borderTop = '1px solid #e5e7eb';
+  divider.style.margin = '0.5rem 0';
+  dropdown.appendChild(divider);
+  
+  // Add individual categories
+  if (categories.length === 0) {
+    const emptyItem = document.createElement('div');
+    emptyItem.className = 'category-item';
+    emptyItem.style.color = '#6b7280';
+    emptyItem.style.justifyContent = 'center';
+    emptyItem.innerHTML = `
+      <i class="bi bi-inbox"></i>
+      <span>No categories available</span>
+    `;
+    dropdown.appendChild(emptyItem);
+    return;
+  }
+  
+  categories.forEach(category => {
+    const item = document.createElement('a');
+    item.href = category.url;
+    item.className = 'category-item';
+    item.setAttribute('data-category-id', category.id);
+    
+    item.innerHTML = `
+      <div class="category-icon">
+        <i class="${category.icon}"></i>
+      </div>
+      <div class="category-details">
+        <div class="category-name">${category.name}</div>
+        <div class="category-count">${category.available_count} available</div>
+      </div>
+      <div class="category-badge">
+        <i class="bi bi-${category.is_single_item ? 'phone' : 'box-seam'}"></i>
+      </div>
+    `;
+    
+    dropdown.appendChild(item);
+  });
+}
+
+/**
+ * Initialize categories on page load
+ */
+document.addEventListener('DOMContentLoaded', async function() {
+  console.log('[CATEGORIES] Initializing...');
+  
+  // Load and render categories
+  const categories = await loadCategories();
+  renderCategories(categories);
+  
+  // Optional: Show loading state while fetching
+  const categoriesToggle = document.getElementById('categoriesToggle');
+  if (categoriesToggle) {
+    categoriesToggle.addEventListener('click', async function(e) {
+      const dropdown = document.getElementById('categoriesDropdown');
+      if (dropdown && !dropdown.classList.contains('show')) {
+        // Reload categories if cache is stale
+        if (!categoriesCache || (Date.now() - cacheTimestamp > CACHE_DURATION)) {
+          const categories = await loadCategories();
+          renderCategories(categories);
+        }
+      }
+    });
+  }
+});
+
+/**
+ * Optional: Real-time category updates via polling
+ * Only use this if you need real-time updates (e.g., for admin dashboard)
+ */
+function startCategoryPolling(intervalMinutes = 5) {
+  setInterval(async () => {
+    console.log('[CATEGORIES] Polling for updates...');
+    categoriesCache = null; // Force refresh
+    const categories = await loadCategories();
+    renderCategories(categories);
+  }, intervalMinutes * 60 * 1000);
+}
+
+// Uncomment to enable polling (not recommended for production)
+// startCategoryPolling(5);
+
+/**
+ * Handle category selection
+ */
+document.addEventListener('click', function(e) {
+  const categoryItem = e.target.closest('.category-item[data-category-id]');
+  if (categoryItem) {
+    const categoryId = categoryItem.getAttribute('data-category-id');
+    console.log(`[CATEGORIES] Selected category: ${categoryId}`);
+    
+    // Store selected category in sessionStorage for highlighting
+    sessionStorage.setItem('selectedCategory', categoryId);
+  }
+});
+
+/**
+ * Highlight currently selected category
+ */
+function highlightSelectedCategory() {
+  const selectedCategory = sessionStorage.getItem('selectedCategory');
+  if (!selectedCategory) return;
+  
+  const categoryItems = document.querySelectorAll('.category-item[data-category-id]');
+  categoryItems.forEach(item => {
+    if (item.getAttribute('data-category-id') === selectedCategory) {
+      item.style.background = '#f0f9ff';
+      item.style.borderLeft = '4px solid #0dcaf0';
+    }
+  });
+}
+
+// Highlight on load
+document.addEventListener('DOMContentLoaded', highlightSelectedCategory);
+
+
+
+
+
+
+
 // ========================================
 // STAFF LOGIN DROPDOWN FUNCTIONALITY
 // ========================================
@@ -1583,7 +1817,20 @@ function getCookie(name) {
   return cookieValue;
 }
 
+// Intercept all fetch requests to see what's calling /categories/
+const originalFetch = window.fetch;
+window.fetch = function(...args) {
+  console.log('[FETCH INTERCEPT]', args[0]);
+  return originalFetch.apply(this, args);
+};
 
+// Check all links
+document.addEventListener('DOMContentLoaded', function() {
+  const links = document.querySelectorAll('a[href="/categories/"]');
+  if (links.length > 0) {
+    console.warn('[404 SOURCE] Found links to /categories/:', links);
+  }
+});
 
 </script>
 </body>

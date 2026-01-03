@@ -13,6 +13,7 @@ from .views import (
 )
 from . import views
 from django.contrib.auth.views import LogoutView
+from django.views.generic import RedirectView
 
 urlpatterns = [
     # ============================================
@@ -74,4 +75,12 @@ urlpatterns = [
     
     # Product interactions
     path('products/<int:product_id>/view/', views.increment_product_view, name='increment_view'),
+
+    # ============================================
+    # ENHANCED CATEGORIES API
+    # ============================================
+    path('categories/', views.categories_list_public, name='categories-public'),
+    path('api/categories/', views.api_get_categories, name='api-get-categories'),
+    path('api/categories/<int:category_id>/', views.api_category_details, name='api-category-details'),
+    path('categories/', RedirectView.as_view(url='/shop/', permanent=False), name='categories-redirect'),
 ]

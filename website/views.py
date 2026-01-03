@@ -23,19 +23,232 @@ from .models import PendingOrder, PendingOrderItem
 from django.views.generic import ListView
 from django.conf import settings  
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Count, Q, Avg
-from django.utils import timezone
-from datetime import timedelta
 from .models import Order, Customer
-
+from django.views.decorators.http import require_GET
+from django.views.decorators.cache import cache_page
+import logging
 
 
 
 
 logger = logging.getLogger(__name__)
+
+
+
+
+# ============================================
+#  CATEGORIES  LIST PUBLIC -
+# ============================================
+@require_GET
+def categories_list_public(request):
+    """
+    Public endpoint for categories list
+    URL: /categories/
+    
+    This is different from the admin category list view.
+    Returns JSON for public consumption.
+    """
+    try:
+        from inventory.models import Category, Product
+        from django.db.models import Q
+        
+        categories = Category.objects.all().order_by('name')
+        
+        category_list = []
+        for category in categories:
+            # Count only available products
+            available_count = category.products.filter(
+                is_active=True
+            ).filter(
+                Q(status='available') | Q(status='lowstock')
+            ).count()
+            
+            total_count = category.products.filter(is_active=True).count()
+            
+            category_list.append({
+                'id': category.id,
+                'name': category.name,
+                'category_code': category.category_code,
+                'item_type': category.get_item_type_display(),
+                'is_single_item': category.is_single_item,
+                'product_count': total_count,
+                'available_count': available_count,
+                'url': f'/shop/?category={category.id}'
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'categories': category_list,
+            'count': len(category_list)
+        })
+    
+    except Exception as e:
+        logger.error(f"Error in categories_list_public: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'categories': []
+        }, status=500)
+
+
+
+# ============================================
+# API GET CATEGORIES -
+# ============================================
+@require_GET
+@cache_page(60 * 5)  # Cache for 5 minutes
+def api_get_categories(request):
+    """
+    Enhanced API endpoint to get all categories with metadata
+    URL: /api/categories/
+    
+    Returns:
+        - Category details
+        - Product counts
+        - Icons based on category type
+        - Filtering options
+    """
+    try:
+        # Get all categories
+        categories = Category.objects.all().order_by('name')
+        
+        category_list = []
+        
+        for category in categories:
+            # Count products by status
+            products = category.products.filter(is_active=True)
+            
+            available_count = products.filter(
+                Q(status='available') | Q(status='lowstock')
+            ).count()
+            
+            total_count = products.count()
+            
+            # Determine icon based on item type
+            if category.is_single_item:
+                if 'phone' in category.name.lower():
+                    icon = 'bi-phone'
+                elif 'tablet' in category.name.lower():
+                    icon = 'bi-tablet'
+                elif 'laptop' in category.name.lower():
+                    icon = 'bi-laptop'
+                elif 'watch' in category.name.lower():
+                    icon = 'bi-smartwatch'
+                else:
+                    icon = 'bi-phone'
+            else:
+                if 'cable' in category.name.lower() or 'charger' in category.name.lower():
+                    icon = 'bi-lightning-charge'
+                elif 'case' in category.name.lower() or 'cover' in category.name.lower():
+                    icon = 'bi-box'
+                elif 'headphone' in category.name.lower() or 'earphone' in category.name.lower():
+                    icon = 'bi-headphones'
+                elif 'accessory' in category.name.lower():
+                    icon = 'bi-bag'
+                else:
+                    icon = 'bi-box-seam'
+            
+            category_data = {
+                'id': category.id,
+                'name': category.name,
+                'category_code': category.category_code,
+                'item_type': category.get_item_type_display(),
+                'item_type_key': category.item_type,
+                'sku_type': category.get_sku_type_display(),
+                'is_single_item': category.is_single_item,
+                'icon': icon,
+                'product_count': total_count,
+                'available_count': available_count,
+                'url': f'/shop/?category={category.id}'
+            }
+            
+            category_list.append(category_data)
+        
+        return JsonResponse({
+            'success': True,
+            'categories': category_list,
+            'total': len(category_list)
+        })
+    
+    except Exception as e:
+        logger.error(f"Error in api_get_categories: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e),
+            'categories': []
+        }, status=500)
+
+
+
+
+
+
+# ============================================
+# API CATEGORY DETAILS-
+# ============================================
+@require_GET
+def api_category_details(request, category_id):
+    """
+    Get detailed information about a specific category
+    URL: /api/categories/<id>/
+    """
+    try:
+        category = Category.objects.get(id=category_id)
+        
+        # Get product statistics
+        products = category.products.filter(is_active=True)
+        
+        stats = {
+            'total': products.count(),
+            'available': products.filter(status='available').count(),
+            'lowstock': products.filter(status='lowstock').count(),
+            'outofstock': products.filter(status='outofstock').count(),
+            'sold': products.filter(status='sold').count() if category.is_single_item else 0
+        }
+        
+        # Get recent products
+        recent_products = []
+        for product in products.order_by('-created_at')[:5]:
+            recent_products.append({
+                'id': product.id,
+                'name': product.name,
+                'product_code': product.product_code,
+                'price': float(product.selling_price),
+                'status': product.get_status_display(),
+                'image_url': product.image.url if product.image else None
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'category': {
+                'id': category.id,
+                'name': category.name,
+                'category_code': category.category_code,
+                'item_type': category.get_item_type_display(),
+                'sku_type': category.get_sku_type_display(),
+                'is_single_item': category.is_single_item,
+                'stats': stats,
+                'recent_products': recent_products
+            }
+        })
+    
+    except Category.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Category not found'
+        }, status=404)
+    
+    except Exception as e:
+        logger.error(f"Error getting category details: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
+
+
+
 
 
 
