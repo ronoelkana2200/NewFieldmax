@@ -5,9 +5,14 @@ Optimized for Render deployment with Cloudinary media storage
 from dotenv import load_dotenv
 load_dotenv()
 
+import dj_database_url
+import sys
 from pathlib import Path
 import os
-import sys
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 
 # ============================================
@@ -141,24 +146,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fieldmax.wsgi.application'
 
 
-# ============================================
-# DATABASE CONFIGURATION
-# ============================================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT", "5432"),
-        'CONN_MAX_AGE': 600,
-        'OPTIONS': {
-            'connect_timeout': 10,
-        },
-    }
-}
-
 
 # ============================================
 # PASSWORD VALIDATION
@@ -241,9 +228,6 @@ STATICFILES_FINDERS = [
 # ============================================
 # ✅ CLOUDINARY CONFIGURATION (PRODUCTION READY)
 # ============================================
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 # Configure cloudinary module
 cloudinary.config(
@@ -525,7 +509,6 @@ ADMIN_INDEX_TITLE = "Welcome to FIELDMAX Administration"
 # ============================================
 def validate_settings():
     """Validate critical settings on startup"""
-    import sys
     
     errors = []
     warnings = []
@@ -672,8 +655,6 @@ SYNC_NOTIFICATIONS = {
 # ============================================
 # FALLBACK DATABASE FOR LOCAL DEVELOPMENT
 # ============================================
-import dj_database_url
-import sys
 
 # Check if we're in development mode
 if 'runserver' in sys.argv or 'test' in sys.argv or DEBUG:
