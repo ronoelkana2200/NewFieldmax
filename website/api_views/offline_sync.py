@@ -248,7 +248,7 @@ def process_offline_customer(request, data, timestamp):
     """
     Process an offline customer creation
     """
-    from sales.models import Customer
+    from website.models import Customer
     
     # Check if customer already exists
     existing = Customer.objects.filter(
@@ -292,7 +292,7 @@ def get_offline_data(request):
     Get essential data for offline use
     """
     from inventory.models import Product, Category
-    from sales.models import Customer
+    from website.models import Customer
     
     try:
         data = {

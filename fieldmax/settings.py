@@ -669,3 +669,37 @@ SYNC_NOTIFICATIONS = {
     'NOTIFY_ON_SYNC_COMPLETE': True,
     'NOTIFY_ON_SYNC_ERROR': True,
 }
+# ============================================
+# FALLBACK DATABASE FOR LOCAL DEVELOPMENT
+# ============================================
+import dj_database_url
+import sys
+
+# Check if we're in development mode
+if 'runserver' in sys.argv or 'test' in sys.argv or DEBUG:
+    print("⚠️  Development mode detected - using SQLite")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    # Production - use PostgreSQL from DATABASE_URL
+    DATABASE_URL = os.getenv('DATABASE_URL')
+    if DATABASE_URL:
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=DATABASE_URL,
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
+        }
+    else:
+        # Fallback to SQLite if no DATABASE_URL
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
