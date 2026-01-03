@@ -1,3 +1,4 @@
+import datetime
 # Create a new file: website/views/offline_sync.py
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -8,9 +9,19 @@ from django.db import transaction
 import json
 import logging
 
+
+
+
+
+
 logger = logging.getLogger(__name__)
 
 
+
+
+# ============================================
+# OFLINE QUEUE
+# ============================================
 @login_required
 @require_http_methods(["POST"])
 def sync_offline_queue(request):
@@ -71,6 +82,14 @@ def sync_offline_queue(request):
         }, status=500)
 
 
+
+
+
+
+
+# ============================================
+# OFLINE ITEM
+# ============================================
 def process_offline_item(request, item):
     """
     Process a single offline queued item
@@ -99,6 +118,16 @@ def process_offline_item(request, item):
         }
 
 
+
+
+
+
+
+
+
+# ============================================
+# OFLINE SALE
+# ============================================
 @transaction.atomic
 def process_offline_sale(request, data, timestamp):
     """
@@ -156,6 +185,15 @@ def process_offline_sale(request, data, timestamp):
     }
 
 
+
+
+
+
+
+
+# ============================================
+# CHECK SALE 
+# ============================================
 def check_sale_conflicts(data):
     """
     Check for conflicts in offline sale data
@@ -195,6 +233,13 @@ def check_sale_conflicts(data):
     return conflicts
 
 
+
+
+
+
+# ============================================
+# OFLINE STOCK UPDATE
+# ============================================
 @transaction.atomic
 def process_offline_stock_update(request, data, timestamp):
     """
@@ -205,7 +250,7 @@ def process_offline_stock_update(request, data, timestamp):
     product = Product.objects.get(id=data['product_id'])
     
     # Check for conflicts
-    if product.updated_at > timezone.datetime.fromisoformat(timestamp):
+    if product.updated_at > datetime.datetime.fromisoformat(timestamp):
         return {
             'status': 'conflict',
             'conflict': {
@@ -244,13 +289,21 @@ def process_offline_stock_update(request, data, timestamp):
     }
 
 
+
+
+
+
+
+# ============================================
+# OFLINE CUSTOMER
+# ============================================
 def process_offline_customer(request, data, timestamp):
     """
     Process an offline customer creation
     """
     from website.models import Customer
     
-    # Check if customer already exists
+    # Check if customer already exists by phone or email
     existing = Customer.objects.filter(
         phone=data['phone']
     ).first()
@@ -262,15 +315,15 @@ def process_offline_customer(request, data, timestamp):
                 'type': 'customer_exists',
                 'existing_customer': {
                     'id': existing.id,
-                    'name': existing.name,
+                    'name': existing.full_name,
                     'phone': existing.phone
                 }
             }
         }
     
-    # Create customer
+    # Create customer - use full_name field
     customer = Customer.objects.create(
-        name=data['name'],
+        full_name=data['name'],
         phone=data['phone'],
         email=data.get('email', ''),
         address=data.get('address', ''),
@@ -278,7 +331,7 @@ def process_offline_customer(request, data, timestamp):
         is_synced=True
     )
     
-    logger.info(f"Synced offline customer: {customer.name}")
+    logger.info(f"Synced offline customer: {customer.full_name}")
     
     return {
         'status': 'success',
@@ -286,6 +339,15 @@ def process_offline_customer(request, data, timestamp):
     }
 
 
+
+
+
+
+
+
+# ============================================
+# OFLINE DATA
+# ============================================
 @login_required
 def get_offline_data(request):
     """
@@ -293,22 +355,24 @@ def get_offline_data(request):
     """
     from inventory.models import Product, Category
     from website.models import Customer
+    from django.db.models import F
     
     try:
         data = {
             'products': list(Product.objects.filter(
                 is_active=True
             ).values(
-                'id', 'name', 'sku', 'selling_price', 
+                'id', 'name', 'sku_value', 'selling_price', 
                 'quantity', 'category__name'
             )[:500]),  # Limit to 500 most recent
             
             'categories': list(Category.objects.values(
-                'id', 'name', 'code'
+                'id', 'name', 'category_code'  # Already fixed this one
             )),
             
+            # FIX: Change 'name' to 'full_name'
             'customers': list(Customer.objects.values(
-                'id', 'name', 'phone', 'email'
+                'id', 'full_name', 'phone', 'email'  # Changed 'name' to 'full_name'
             )[:200]),  # Limit to 200 most recent
             
             'settings': {
