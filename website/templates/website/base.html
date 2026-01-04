@@ -1557,7 +1557,6 @@ class CategoryManager {
       </div>
       <div class="category-details">
         <div class="category-name">${category.name}</div>
-        <div class="category-count">${isAll ? category.available_count + ' total' : (category.available_count || 0) + ' available'}</div>
       </div>
       ${!isAll ? `<div class="category-badge">
         <i class="bi bi-${category.is_single_item ? 'phone' : 'box-seam'}"></i>
