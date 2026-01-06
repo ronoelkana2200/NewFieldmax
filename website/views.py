@@ -268,16 +268,19 @@ def home(request):
     if request.user.is_authenticated:
         if hasattr(request.user, 'profile') and request.user.profile:
             role = request.user.profile.role
-            if role == 'admin':
-                dashboard_url = '/admin-dashboard/'
-            elif role == 'manager':
-                dashboard_url = '/manager-dashboard/'
-            elif role == 'agent':
-                dashboard_url = '/agent-dashboard/'
-            elif role == 'cashier':
-                dashboard_url = '/cashier-dashboard/'
+            if role:  # Check if role is not None
+                role_name = role.name.lower()  # Access the name field
+                if role_name == 'admin':
+                    dashboard_url = '/admin-dashboard/'
+                elif role_name == 'manager':
+                    dashboard_url = '/manager-dashboard/'
+                elif role_name == 'agent':
+                    dashboard_url = '/agent-dashboard/'
+                elif role_name == 'cashier':
+                    dashboard_url = '/cashier-dashboard/'
         elif request.user.is_superuser:
             dashboard_url = '/admin-dashboard/'
+    
     
     # Get top 12 best-selling items
     best_sellers = []
@@ -623,19 +626,21 @@ def dashboard_url(request):
     if request.user.is_authenticated:
         if hasattr(request.user, 'profile') and request.user.profile:
             role = request.user.profile.role
-            if role == 'admin':
-                url = '/admin-dashboard/'
-            elif role == 'manager':
-                url = '/manager-dashboard/'
-            elif role == 'agent':
-                url = '/agent-dashboard/'
-            elif role == 'cashier':
-                url = '/cashier-dashboard/'
+            if role:  # Check if role is not None
+                role_name = role.name.lower()  # Access the name field
+                
+                if role_name == 'admin':
+                    url = '/admin-dashboard/'
+                elif role_name == 'manager':
+                    url = '/manager-dashboard/'
+                elif role_name == 'agent':
+                    url = '/agent-dashboard/'
+                elif role_name == 'cashier':
+                    url = '/cashier-dashboard/'
         elif request.user.is_superuser:
             url = '/admin-dashboard/'
     
     return {'dashboard_url': url}
-
 
 
 
@@ -1994,20 +1999,24 @@ class RoleBasedLoginView(LoginView):
         
     def get_success_url(self):
         user = self.request.user
-        role = getattr(user.profile, 'role', None)
-
-        if role == 'admin':
-            return '/admin-dashboard/'
-        elif role == 'manager':
-            return '/manager-dashboard/'
-        elif role == 'agent':
-            return '/agent-dashboard/'
-        elif role == 'cashier':
-            return '/cashier-dashboard/'
+        
+        # Check if user has a profile
+        if hasattr(user, 'profile'):
+            # Get the role name from the Role model (not a string field)
+            if user.profile.role:  # This is a Role object, not a string
+                role_name = user.profile.role.name.lower()  # Access the name field
+                
+                if role_name == 'admin':
+                    return '/admin-dashboard/'
+                elif role_name == 'manager':
+                    return '/manager-dashboard/'
+                elif role_name == 'agent':
+                    return '/agent-dashboard/'
+                elif role_name == 'cashier':
+                    return '/cashier-dashboard/'
+        
+        # Default redirect if no profile or role
         return '/'
-
-
-
 
 
 
