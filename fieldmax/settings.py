@@ -1,9 +1,7 @@
 """
 Django settings for fieldmax project - PRODUCTION READY
-Optimized for Render deployment with Cloudinary media storage
+Optimized for Koyeb deployment with PostgreSQL database
 """
-from dotenv import load_dotenv
-load_dotenv()
 
 import dj_database_url
 import sys
@@ -13,13 +11,21 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-
+# ============================================
+# LOAD ENVIRONMENT VARIABLES
+# ============================================
+from dotenv import load_dotenv
+load_dotenv()
 
 # ============================================
 # BASE DIRECTORY
 # ============================================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ============================================
+# DEBUG SETTING (MUST BE DEFINED EARLY)
+# ============================================
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ============================================
 # SECURITY SETTINGS
@@ -27,25 +33,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 if not SECRET_KEY:
-    raise ValueError(
-        "SECRET_KEY environment variable is not set! "
-        "Please set it in your Render environment variables."
-    )
+    if DEBUG:
+        # Development fallback - NEVER use in production
+        SECRET_KEY = 'django-insecure-dev-key-for-local-testing-only-change-in-production'
+        print("⚠️  WARNING: Using development SECRET_KEY. Set SECRET_KEY in Koyeb environment variables.")
+    else:
+        raise ValueError(
+            "SECRET_KEY environment variable is not set! "
+            "Please set it in your Koyeb environment variables."
+        )
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# Koyeb specific domains
+KOYEB_APP_NAME = os.getenv("KOYEB_APP_NAME", "fieldmax")
+KOYEB_DOMAIN = f"{KOYEB_APP_NAME}-*.koyeb.app"
 
-ALLOWED_HOSTS = [
-    "newfieldmax.onrender.com",
-    "127.0.0.1",
-    "localhost",
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', f'.koyeb.app,localhost,127.0.0.1,{KOYEB_APP_NAME}.koyeb.app').split(',')
 
-# ✅ CRITICAL: CSRF Trusted Origins for Render
+# ✅ CRITICAL: CSRF Trusted Origins for Koyeb
 CSRF_TRUSTED_ORIGINS = [
-    "https://newfieldmax.onrender.com",
+    "https://*.koyeb.app",
+    f"https://{KOYEB_APP_NAME}.koyeb.app",
+    f"https://{KOYEB_DOMAIN}",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 
-# ✅ CRITICAL: Proxy SSL Header for Render
+# ✅ CRITICAL: Proxy SSL Header for Koyeb
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Security settings for production
@@ -62,7 +75,6 @@ if not DEBUG:
 
 APPEND_SLASH = True
 
-
 # ============================================
 # INSTALLED APPLICATIONS
 # ============================================
@@ -73,23 +85,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     
-    # ✅ Cloudinary MUST be before staticfiles
+    # Cloudinary storage
     'cloudinary_storage',
     'cloudinary',
     
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    
+    # Django extensions
     'django_extensions',
     
+    # REST framework
     'rest_framework',
     'rest_framework.authtoken',
     
+    # new apps
     'users.apps.UsersConfig',
     'website.apps.WebsiteConfig',
     'inventory.apps.InventoryConfig',
     'sales.apps.SalesConfig',
 ]
-
 
 # ============================================
 # MIDDLEWARE
@@ -106,12 +121,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # ============================================
 # URL CONFIGURATION
 # ============================================
 ROOT_URLCONF = 'fieldmax.urls'
-
 
 # ============================================
 # TEMPLATES
@@ -143,13 +156,57 @@ TEMPLATES = [
     },
 ]
 
-
 # ============================================
 # WSGI APPLICATION
 # ============================================
 WSGI_APPLICATION = 'fieldmax.wsgi.application'
 
-
+# ============================================
+# DATABASE CONFIGURATION (KOYEB SPECIFIC)
+# ============================================
+if DEBUG or 'test' in sys.argv or 'runserver' in sys.argv:
+    # Local development - SQLite
+    print("🔧 Development mode - using SQLite database")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    # Production - Koyeb PostgreSQL
+    # Koyeb provides DATABASE_URL or POSTGRESQL_URL
+    DATABASE_URL = os.getenv('DATABASE_URL') or os.getenv('POSTGRESQL_URL')
+    
+    if DATABASE_URL:
+        print(f"🔗 Using PostgreSQL database from DATABASE_URL")
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+        }
+    else:
+        # Fallback: Check for individual PostgreSQL variables (Koyeb format)
+        db_config = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', os.getenv('PGDATABASE', 'fieldmax')),
+            'USER': os.getenv('POSTGRES_USER', os.getenv('PGUSER', 'fieldmax')),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', os.getenv('PGPASSWORD', '')),
+            'HOST': os.getenv('POSTGRES_HOST', os.getenv('PGHOST', 'localhost')),
+            'PORT': os.getenv('POSTGRES_PORT', os.getenv('PGPORT', '5432')),
+        }
+        
+        # Check if we have PostgreSQL credentials
+        if db_config['PASSWORD']:
+            DATABASES = {'default': db_config}
+            print(f"🔗 Using PostgreSQL: {db_config['HOST']}/{db_config['NAME']}")
+        else:
+            # Ultimate fallback to SQLite (not recommended for production)
+            print("⚠️  WARNING: No PostgreSQL credentials found, falling back to SQLite")
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': BASE_DIR / 'db.sqlite3',
+                }
+            }
 
 # ============================================
 # PASSWORD VALIDATION
@@ -172,7 +229,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # ============================================
 # INTERNATIONALIZATION
 # ============================================
@@ -186,31 +242,31 @@ USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = ','
 DECIMAL_SEPARATOR = '.'
 
-
 # ============================================
-# ✅ STORAGE CONFIGURATION
+# STORAGE CONFIGURATION
 # ============================================
+# Modern Django storage configuration
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+# Legacy configuration (for compatibility)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
-WHITENOISE_KEEP_ONLY_HASHED_FILES = False
-WHITENOISE_AUTOREFRESH = True if DEBUG else False
+# Whitenoise configuration
+WHITENOISE_KEEP_ONLY_HASHED_FILES = not DEBUG
+WHITENOISE_AUTOREFRESH = DEBUG
 WHITENOISE_MAX_AGE = 31536000 if not DEBUG else 0
 WHITENOISE_SKIP_COMPRESS_EXTENSIONS = (
     'jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 
     'bz2', 'tbz', 'xz', 'br', 'swf', 'flv', 'woff', 'woff2',
 )
-
 
 # ============================================
 # STATIC FILES (CSS, JavaScript, Images)
@@ -228,19 +284,24 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-
 # ============================================
-# ✅ CLOUDINARY CONFIGURATION (PRODUCTION READY)
+# CLOUDINARY CONFIGURATION
 # ============================================
-
 # Configure cloudinary module
-cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
-    secure=True
-)
+CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
 
+if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True
+    )
+    print(f"☁️  Cloudinary configured: {CLOUDINARY_CLOUD_NAME}")
+else:
+    print("⚠️  Cloudinary credentials missing. Media uploads will fail.")
 
 # ============================================
 # MEDIA FILES (User Uploads via Cloudinary)
@@ -251,7 +312,6 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 # Maximum upload size (100MB)
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
-
 
 # ============================================
 # AUTHENTICATION & AUTHORIZATION
@@ -267,7 +327,6 @@ SESSION_COOKIE_HTTPONLY = True
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
-
 
 # ============================================
 # REST FRAMEWORK CONFIGURATION
@@ -311,7 +370,6 @@ REST_FRAMEWORK = {
     'TIME_FORMAT': '%H:%M:%S',
 }
 
-
 # ============================================
 # INVENTORY MANAGEMENT CONFIGURATION
 # ============================================
@@ -342,7 +400,6 @@ INVENTORY_CONFIG = {
     'ALERT_CHECK_INTERVAL': 3600,
 }
 
-
 # ============================================
 # COMPANY INFORMATION
 # ============================================
@@ -370,12 +427,12 @@ FIELDMAX_BUSINESS_HOURS = {
     'Sunday': 'Closed',
 }
 
-
 # ============================================
 # EMAIL CONFIGURATION
 # ============================================
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    print("📧 Development mode - using console email backend")
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
@@ -385,11 +442,18 @@ else:
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
     DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@fieldmax.co.ke')
     SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
+    
+    if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
+        print(f"📧 Email configured: {EMAIL_HOST_USER}")
+    else:
+        print("⚠️  Email credentials missing. Email functionality disabled.")
 
 # ============================================
 # LOGGING CONFIGURATION
 # ============================================
+LOGS_DIR = BASE_DIR / 'logs'
+LOGS_DIR.mkdir(exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -405,17 +469,22 @@ LOGGING = {
             'style': '{',
             'datefmt': '%Y-%m-%d %H:%M:%S',
         },
+        'koyeb': {
+            'format': '{asctime} [{levelname}] {message}',
+            'style': '{',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
     },
     
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'koyeb',
             'level': 'INFO',
         },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'django.log',
+            'filename': LOGS_DIR / 'django.log',
             'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'verbose',
@@ -423,7 +492,7 @@ LOGGING = {
         },
         'inventory_file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'inventory.log',
+            'filename': LOGS_DIR / 'inventory.log',
             'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'verbose',
@@ -431,7 +500,7 @@ LOGGING = {
         },
         'sales_file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'sales.log',
+            'filename': LOGS_DIR / 'sales.log',
             'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'verbose',
@@ -439,7 +508,7 @@ LOGGING = {
         },
         'error_file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'errors.log',
+            'filename': LOGS_DIR / 'errors.log',
             'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'verbose',
@@ -454,7 +523,7 @@ LOGGING = {
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['error_file'],
+            'handlers': ['error_file', 'console'],
             'level': 'ERROR',
             'propagate': False,
         },
@@ -471,17 +540,13 @@ LOGGING = {
     },
     
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': ['console'],
         'level': 'INFO',
     },
 }
 
-LOGS_DIR = BASE_DIR / 'logs'
-LOGS_DIR.mkdir(exist_ok=True)
-
-
 # ============================================
-# ✅ IMPROVED CACHING
+# CACHING
 # ============================================
 CACHES = {
     'default': {
@@ -493,12 +558,10 @@ CACHES = {
     }
 }
 
-
 # ============================================
 # DEFAULT PRIMARY KEY FIELD TYPE
 # ============================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # ============================================
 # ADMIN CUSTOMIZATION
@@ -507,22 +570,14 @@ ADMIN_SITE_HEADER = "FIELDMAX Administration"
 ADMIN_SITE_TITLE = "FIELDMAX Admin Portal"
 ADMIN_INDEX_TITLE = "Welcome to FIELDMAX Administration"
 
-
 # ============================================
-# ✅ ENHANCED SETTINGS VALIDATION
+# SETTINGS VALIDATION
 # ============================================
 def validate_settings():
     """Validate critical settings on startup"""
     
     errors = []
     warnings = []
-    
-    # Check logs directory
-    if not LOGS_DIR.exists():
-        try:
-            LOGS_DIR.mkdir(parents=True)
-        except Exception as e:
-            errors.append(f"Cannot create logs directory: {e}")
     
     # Check Cloudinary credentials
     cloudinary_vars = {
@@ -536,29 +591,30 @@ def validate_settings():
     if missing_cloudinary:
         warnings.append("⚠️  Cloudinary credentials not fully configured!")
         warnings.append(f"   Missing: {', '.join(missing_cloudinary)}")
-        warnings.append("   Media uploads will fail. Set these in Render environment variables.")
+        warnings.append("   Media uploads will fail. Set these in Koyeb environment variables.")
     else:
         print("✅ Cloudinary configured successfully")
-        print(f"   Cloud Name: {os.getenv('CLOUDINARY_CLOUD_NAME')}")
     
-    # Check database connection
-    db_vars = ['DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_HOST']
-    missing_db = [var for var in db_vars if not os.getenv(var)]
-    
-    if missing_db:
-        errors.append(f"❌ Database credentials incomplete! Missing: {', '.join(missing_db)}")
+    # Check database
+    if not DEBUG and DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
+        warnings.append("⚠️  Using SQLite in production. Configure PostgreSQL for better performance.")
     
     # Check email configuration
     if INVENTORY_CONFIG['ENABLE_EMAIL_ALERTS'] and not DEBUG:
         if not all([os.getenv('EMAIL_HOST_USER'), os.getenv('EMAIL_HOST_PASSWORD')]):
             warnings.append("⚠️  Email alerts enabled but credentials missing!")
-            warnings.append("   Set EMAIL_HOST_USER and EMAIL_HOST_PASSWORD in environment variables.")
+            warnings.append("   Set EMAIL_HOST_USER and EMAIL_HOST_PASSWORD in Koyeb environment variables.")
     
     # Check static directory
     static_dir = BASE_DIR / "static"
     if not static_dir.exists():
         warnings.append(f"⚠️  Static directory not found: {static_dir}")
         warnings.append("   Create it or remove from STATICFILES_DIRS")
+    
+    # Check SECRET_KEY in production
+    if not DEBUG and SECRET_KEY.startswith('django-insecure-'):
+        errors.append("❌ Using development SECRET_KEY in production!")
+        errors.append("   Set a proper SECRET_KEY in Koyeb environment variables.")
     
     if errors:
         print("\n" + "="*70)
@@ -581,14 +637,9 @@ def validate_settings():
 if 'runserver' in sys.argv or 'migrate' in sys.argv or 'collectstatic' in sys.argv:
     validate_settings()
 
-
-
-
 # ============================================
 # OFFLINE & SYNC CONFIGURATION
 # ============================================
-
-# Service Worker Configuration
 PWA_APP_NAME = 'FieldMax'
 PWA_APP_SHORT_NAME = 'FieldMax'
 PWA_APP_DESCRIPTION = 'Field Management System with Offline Support'
@@ -609,23 +660,14 @@ PWA_APP_ICONS = [
     }
 ]
 
-# Offline Storage Configuration
 OFFLINE_STORAGE = {
     'ENABLE_OFFLINE_MODE': True,
     'SYNC_ON_RECONNECT': True,
     'QUEUE_REQUESTS_OFFLINE': True,
-    
-    # Maximum storage for offline data (in MB)
     'MAX_OFFLINE_STORAGE': 50,
-    
-    # How long to keep offline data before auto-deletion (days)
     'OFFLINE_DATA_RETENTION_DAYS': 7,
-    
-    # Sync retry configuration
     'SYNC_RETRY_ATTEMPTS': 3,
-    'SYNC_RETRY_DELAY': 5,  # seconds
-    
-    # What operations can be performed offline
+    'SYNC_RETRY_DELAY': 5,
     'OFFLINE_CAPABILITIES': {
         'view_inventory': True,
         'create_sale': True,
@@ -633,15 +675,10 @@ OFFLINE_STORAGE = {
         'view_reports': True,
         'create_customer': True,
     },
-    
-    # Conflict resolution strategy: 'server_wins', 'client_wins', 'manual'
     'CONFLICT_RESOLUTION': 'server_wins',
-    
-    # Enable background sync API
     'ENABLE_BACKGROUND_SYNC': True,
 }
 
-# API endpoints that support offline mode
 OFFLINE_ENABLED_ENDPOINTS = [
     '/api/inventory/',
     '/api/sales/',
@@ -649,42 +686,18 @@ OFFLINE_ENABLED_ENDPOINTS = [
     '/api/products/',
 ]
 
-# Sync status notification
 SYNC_NOTIFICATIONS = {
     'ENABLE_NOTIFICATIONS': True,
     'NOTIFY_ON_SYNC_START': False,
     'NOTIFY_ON_SYNC_COMPLETE': True,
     'NOTIFY_ON_SYNC_ERROR': True,
 }
-# ============================================
-# FALLBACK DATABASE FOR LOCAL DEVELOPMENT
-# ============================================
 
-# Check if we're in development mode
-if 'runserver' in sys.argv or 'test' in sys.argv or DEBUG:
-    print("⚠️  Development mode detected - using SQLite")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    # Production - use PostgreSQL from DATABASE_URL
-    DATABASE_URL = os.getenv('DATABASE_URL')
-    if DATABASE_URL:
-        DATABASES = {
-            'default': dj_database_url.config(
-                default=DATABASE_URL,
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        }
-    else:
-        # Fallback to SQLite if no DATABASE_URL
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+# ============================================
+# FINAL STARTUP MESSAGE
+# ============================================
+print(f"\n🚀 FieldMax initialized successfully!")
+print(f"   Environment: {'DEVELOPMENT' if DEBUG else 'PRODUCTION'}")
+print(f"   Database: {DATABASES['default']['ENGINE']}")
+print(f"   Allowed Hosts: {ALLOWED_HOSTS}")
+print("="*50 + "\n")
